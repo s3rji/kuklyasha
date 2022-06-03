@@ -1,0 +1,19 @@
+spring:
+  jpa:
+    defer-datasource-initialization: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 20
+        jdbc.batch_size: 20
+  datasource:
+    url: jdbc:postgresql://localhost:5432/kuklyasha
+    username: kuklyasha
+    password: kuklyasha
+  security:
+    user:
+      name: user
+      password: user
