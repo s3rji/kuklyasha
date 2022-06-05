@@ -1,4 +1,7 @@
 spring:
+  web.resources.static-locations: classpath:/frontend/
+  thymeleaf:
+    prefix: classpath:/frontend/
   jpa:
     defer-datasource-initialization: true
     open-in-view: false
