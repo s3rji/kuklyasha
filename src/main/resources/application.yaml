@@ -6,7 +6,7 @@ spring:
     defer-datasource-initialization: true
     open-in-view: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true
@@ -20,3 +20,7 @@ spring:
     user:
       name: user
       password: user
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:/db/schema.sql
