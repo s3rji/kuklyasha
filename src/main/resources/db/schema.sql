@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS doll;
 
-CREATE TABLE doll
+CREATE TABLE DOLL
 (
     id               SERIAL PRIMARY KEY,
     name             VARCHAR UNIQUE                    NOT NULL,

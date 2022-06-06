@@ -34,7 +34,7 @@ public class Doll extends BaseEntity {
     @Size(min = 10)
     private String description;
 
-    @Column(name = "price", nullable = false, precision = 6, scale = 2)
+    @Column(name = "price", nullable = false, precision = 8, scale = 2)
     @NotNull
     @Range(min = 1, max = 100000)
     @Digits(integer = 6, fraction = 2)
