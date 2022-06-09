@@ -6,7 +6,6 @@ import org.springframework.core.NestedExceptionUtils;
 import org.springframework.lang.NonNull;
 import ru.serji.kuklyasha.model.BaseEntity;
 import ru.serji.kuklyasha.util.exception.IllegalRequestDataException;
-import ru.serji.kuklyasha.util.exception.NotFoundException;
 
 import javax.lang.model.type.ErrorType;
 import javax.servlet.http.HttpServletRequest;
@@ -30,29 +29,9 @@ public class ValidationUtil {
         }
     }
 
-    public static <T> T checkNotFoundWithId(T object, int id) {
-        checkNotFoundWithId(object != null, id);
-        return object;
-    }
-
-    public static void checkNotFoundWithId(boolean found, int id) {
-        checkNotFound(found, "id=" + id);
-    }
-
-    public static <T> T checkNotFound(T object, String msg) {
-        checkNotFound(object != null, msg);
-        return object;
-    }
-
-    public static void checkNotFound(boolean found, String msg) {
-        if (!found) {
-            throw new NotFoundException("Not found entity with " + msg);
-        }
-    }
-
     public static void checkNew(BaseEntity bean) {
         if (!bean.isNew()) {
-            throw new IllegalRequestDataException(bean + " must be new (id=null)");
+            throw new IllegalRequestDataException(bean.getClass().getSimpleName() + " must be new (id=null)");
         }
     }
 
@@ -60,7 +39,13 @@ public class ValidationUtil {
         if (bean.isNew()) {
             bean.setId(id);
         } else if (bean.id() != id) {
-            throw new IllegalRequestDataException(bean + " must be with id=" + id);
+            throw new IllegalRequestDataException(bean.getClass().getSimpleName() + " must has id=" + id);
+        }
+    }
+
+    public static void checkModification(int count, int id) {
+        if (count == 0) {
+            throw new IllegalRequestDataException("Entity with id=" + id + " not found");
         }
     }
 
