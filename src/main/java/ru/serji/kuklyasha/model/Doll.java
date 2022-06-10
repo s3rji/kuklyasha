@@ -1,6 +1,5 @@
 package ru.serji.kuklyasha.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,7 +18,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "Doll")
 public class Doll extends BaseEntity {
@@ -46,4 +44,13 @@ public class Doll extends BaseEntity {
     @Column(name = "date_time", nullable = false)
     @NotNull
     private LocalDateTime dateTime;
+
+    public Doll(Integer id, String name, String description, BigDecimal price, String image, LocalDateTime dateTime) {
+        super(id);
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.image = image;
+        this.dateTime = dateTime;
+    }
 }
