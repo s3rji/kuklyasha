@@ -16,10 +16,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/kuklyasha
     username: kuklyasha
     password: kuklyasha
-  security:
-    user:
-      name: user
-      password: user
   sql:
     init:
       mode: always
