@@ -16,6 +16,7 @@ public interface DollRepository extends JpaRepository<Doll, Integer> {
     @Query("DELETE FROM Doll d WHERE d.id = :id")
     int delete(@Param("id") Integer id);
 
+    @Transactional
     default void deleteExisted(int id) {
         checkModification(delete(id), id);
     }
