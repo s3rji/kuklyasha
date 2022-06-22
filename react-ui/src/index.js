@@ -1,13 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React, {createContext} from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import DollStore from "./store/DollStore";
 
-import './index.css';
-
-import App from './App';
+export const Context = createContext(null)
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <React.StrictMode>
-        <App/>
-    </React.StrictMode>
+    <Context.Provider value={{
+        doll: new DollStore()
+    }}>
+        <React.StrictMode>
+            <App/>
+        </React.StrictMode>
+    </Context.Provider>
 );

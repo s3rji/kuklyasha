@@ -1,8 +1,11 @@
-import {Fragment} from 'react'
-import {Disclosure, Menu, Transition} from '@headlessui/react'
-import {MenuIcon, SearchIcon, ShoppingBagIcon, XIcon} from '@heroicons/react/outline'
-import logo from '../assets/main.jpeg'
-import flag from '../assets/flag.png'
+import {Fragment} from "react"
+import {Disclosure, Menu, Transition} from "@headlessui/react"
+import {MenuIcon, SearchIcon, ShoppingBagIcon, XIcon} from "@heroicons/react/outline"
+import logo from "../assets/main.jpeg"
+import flag from "../assets/flag.png"
+import {NavLink} from "react-router-dom";
+import {CATALOG_ROUTE} from "../utils/consts";
+import {observer} from "mobx-react-lite";
 
 const navigation = [
     {name: 'Каталог', href: '#', current: true},
@@ -15,7 +18,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function NavBar() {
+const NavBar = observer(() => {
     return (
         <Disclosure as="nav" className="bg-pink-600">
             {({open}) => (
@@ -34,18 +37,20 @@ export default function NavBar() {
                                 </Disclosure.Button>
                             </div>
                             <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                                <div className="flex-shrink-0 flex items-center">
-                                    <img
-                                        className="block lg:hidden h-8 w-auto"
-                                        src={logo}
-                                        alt="Kuklyasha"
-                                    />
-                                    <img
-                                        className="hidden lg:block h-8 w-auto"
-                                        src={logo}
-                                        alt="Kuklyasha"
-                                    />
-                                </div>
+                                <NavLink to={CATALOG_ROUTE}>
+                                    <div className="flex-shrink-0 flex items-center">
+                                        <img
+                                            className="block lg:hidden h-8 w-auto"
+                                            src={logo}
+                                            alt="Kuklyasha"
+                                        />
+                                        <img
+                                            className="hidden lg:block h-8 w-auto"
+                                            src={logo}
+                                            alt="Kuklyasha"
+                                        />
+                                    </div>
+                                </NavLink>
                                 <div className="hidden sm:block sm:ml-6">
                                     <div className="flex space-x-4">
                                         {navigation.map((item) => (
@@ -196,5 +201,7 @@ export default function NavBar() {
                 </>
             )}
         </Disclosure>
-    )
-}
+    );
+});
+
+export default NavBar;
