@@ -1,7 +1,10 @@
 DELETE FROM DOLL;
 INSERT INTO DOLL (name, description, price, image)
-VALUES ('Doll1', 'Pretty Doll', 100.00, '/image1'),
-       ('Doll2', 'Pretty Doll', 100.00, '/image2'),
-       ('Doll3', 'Pretty Doll', 100.00, '/image3'),
-       ('Doll4', 'Pretty Doll', 100.00, '/image4'),
-       ('Doll5', 'Pretty Doll', 100.00, '/image5');
+VALUES ('Manyasha', 'Pretty Doll', 100.00, 'doll-1.JPG'),
+       ('Paulina', 'Pretty Doll', 100.00, 'doll-2.JPG'),
+       ('Angelica', 'Pretty Doll', 100.00, 'doll-3.JPG'),
+       ('Olechka', 'Pretty Doll', 100.00, 'doll-4.JPG'),
+       ('Peppy', 'Pretty Doll', 100.00, 'doll-5.JPG'),
+       ('Polina', 'Pretty Doll', 100.00, 'doll-6.JPG'),
+       ('Margo', 'Pretty Doll', 100.00, 'doll-7.JPG'),
+       ('Marina', 'Pretty Doll', 100.00, 'doll-8.JPG');
