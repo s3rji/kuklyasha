@@ -1,7 +1,4 @@
 spring:
-  web.resources.static-locations: classpath:/frontend/
-  thymeleaf:
-    prefix: classpath:/frontend/
   jpa:
     defer-datasource-initialization: true
     open-in-view: false
@@ -33,3 +30,7 @@ server.servlet:
     charset: UTF-8 # Charset of HTTP requests and responses. Added to the "Content-Type" header if not set explicitly
     enabled: true # Enable http encoding support
     force: true
+
+upload:
+  images:
+    path: doll-images
