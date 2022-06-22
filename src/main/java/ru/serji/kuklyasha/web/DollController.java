@@ -21,6 +21,7 @@ import static ru.serji.kuklyasha.util.ValidationUtil.checkNew;
 @RestController
 @RequestMapping(value = DollController.API_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
+@CrossOrigin
 public class DollController {
     static final String API_URL = "/api/dolls";
 
