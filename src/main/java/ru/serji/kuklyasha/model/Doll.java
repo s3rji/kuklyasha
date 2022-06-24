@@ -14,12 +14,7 @@ import java.time.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "Doll")
-public class Doll extends BaseEntity {
-
-    @Column(name = "name", nullable = false, unique = true)
-    @NotBlank
-    @Size(min = 3, max = 30)
-    private String name;
+public class Doll extends NamedEntity {
 
     @Column(name = "description", nullable = false)
     @NotBlank()
@@ -35,16 +30,15 @@ public class Doll extends BaseEntity {
     @Column(name = "image")
     private String image;
 
-    @Column(name = "date_time", nullable = false)
+    @Column(name = "created", nullable = false)
     @NotNull
-    private LocalDateTime dateTime;
+    private LocalDateTime created;
 
-    public Doll(Integer id, String name, String description, BigDecimal price, String image, LocalDateTime dateTime) {
-        super(id);
-        this.name = name;
+    public Doll(Integer id, String name, String description, BigDecimal price, String image, LocalDateTime created) {
+        super(id, name);
         this.description = description;
         this.price = price;
         this.image = image;
-        this.dateTime = dateTime;
+        this.created = created;
     }
 }
