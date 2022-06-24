@@ -8,7 +8,7 @@ import java.time.*;
 import java.util.*;
 
 public class DollTestData {
-    public static final MatcherFactory.Matcher<Doll> DOLL_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Doll.class, "dateTime");
+    public static final MatcherFactory.Matcher<Doll> DOLL_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Doll.class, "created");
 
     public static final int DOLL_ID = 1;
 
