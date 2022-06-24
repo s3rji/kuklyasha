@@ -1,18 +1,16 @@
 package ru.serji.kuklyasha.service;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataAccessException;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import ru.serji.kuklyasha.model.Doll;
-import ru.serji.kuklyasha.util.exception.IllegalRequestDataException;
+import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.boot.test.context.*;
+import org.springframework.dao.*;
+import org.springframework.transaction.annotation.*;
+import ru.serji.kuklyasha.model.*;
+import ru.serji.kuklyasha.util.exception.*;
 
-import java.util.List;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static ru.serji.kuklyasha.service.DollTestData.*;
 
 @SpringBootTest

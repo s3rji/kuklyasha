@@ -1,11 +1,11 @@
 package ru.serji.kuklyasha.service;
 
-import ru.serji.kuklyasha.MatcherFactory;
-import ru.serji.kuklyasha.model.Doll;
+import ru.serji.kuklyasha.*;
+import ru.serji.kuklyasha.model.*;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
+import java.math.*;
+import java.time.*;
+import java.util.*;
 
 public class DollTestData {
     public static final MatcherFactory.Matcher<Doll> DOLL_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Doll.class, "dateTime");

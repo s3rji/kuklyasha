@@ -1,9 +1,9 @@
 package ru.serji.kuklyasha.util.exception;
 
-import org.springframework.boot.web.error.ErrorAttributeOptions;
-import org.springframework.http.HttpStatus;
+import org.springframework.boot.web.error.*;
+import org.springframework.http.*;
 
-import static org.springframework.boot.web.error.ErrorAttributeOptions.Include.MESSAGE;
+import static org.springframework.boot.web.error.ErrorAttributeOptions.Include.*;
 
 public class IllegalRequestDataException extends AppException {
     public IllegalRequestDataException(String msg) {

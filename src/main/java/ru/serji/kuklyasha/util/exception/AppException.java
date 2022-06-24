@@ -1,9 +1,9 @@
 package ru.serji.kuklyasha.util.exception;
 
-import lombok.Getter;
-import org.springframework.boot.web.error.ErrorAttributeOptions;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
+import lombok.*;
+import org.springframework.boot.web.error.*;
+import org.springframework.http.*;
+import org.springframework.web.server.*;
 
 @Getter
 public class AppException extends ResponseStatusException {

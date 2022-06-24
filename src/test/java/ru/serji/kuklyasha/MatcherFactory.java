@@ -1,15 +1,13 @@
 package ru.serji.kuklyasha;
 
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.ResultMatcher;
-import ru.serji.kuklyasha.util.JsonUtil;
+import org.springframework.test.web.servlet.*;
+import ru.serji.kuklyasha.util.*;
 
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.function.BiConsumer;
+import java.io.*;
+import java.util.*;
+import java.util.function.*;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Factory for creating test matchers.

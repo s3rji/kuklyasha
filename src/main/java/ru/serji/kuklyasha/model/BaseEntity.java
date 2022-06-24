@@ -1,10 +1,10 @@
 package ru.serji.kuklyasha.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.util.ProxyUtils;
-import org.springframework.util.Assert;
+import org.springframework.data.domain.*;
+import org.springframework.data.util.*;
+import org.springframework.util.*;
 
 import javax.persistence.*;
 

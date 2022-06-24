@@ -1,13 +1,11 @@
 package ru.serji.kuklyasha.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
-import ru.serji.kuklyasha.model.Doll;
+import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.*;
+import org.springframework.transaction.annotation.*;
+import ru.serji.kuklyasha.model.*;
 
-import static ru.serji.kuklyasha.util.ValidationUtil.checkModification;
+import static ru.serji.kuklyasha.util.ValidationUtil.*;
 
 @Transactional(readOnly = true)
 public interface DollRepository extends JpaRepository<Doll, Integer> {

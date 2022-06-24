@@ -1,12 +1,11 @@
 package ru.serji.kuklyasha.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import ru.serji.kuklyasha.model.Doll;
-import ru.serji.kuklyasha.repository.DollRepository;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
+import ru.serji.kuklyasha.model.*;
+import ru.serji.kuklyasha.repository.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class DollService {

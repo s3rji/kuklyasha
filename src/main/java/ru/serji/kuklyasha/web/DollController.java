@@ -1,22 +1,18 @@
 package ru.serji.kuklyasha.web;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import lombok.extern.slf4j.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.serji.kuklyasha.model.Doll;
-import ru.serji.kuklyasha.service.DollService;
+import org.springframework.web.servlet.support.*;
+import ru.serji.kuklyasha.model.*;
+import ru.serji.kuklyasha.service.*;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.util.List;
-import java.util.Objects;
+import javax.validation.*;
+import java.net.*;
+import java.util.*;
 
-import static ru.serji.kuklyasha.util.ValidationUtil.assureIdConsistent;
-import static ru.serji.kuklyasha.util.ValidationUtil.checkNew;
+import static ru.serji.kuklyasha.util.ValidationUtil.*;
 
 @RestController
 @RequestMapping(value = DollController.API_URL, produces = MediaType.APPLICATION_JSON_VALUE)
