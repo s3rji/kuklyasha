@@ -1,10 +1,7 @@
 package ru.serji.kuklyasha.model;
 
-import com.fasterxml.jackson.annotation.*;
 import lombok.*;
-import org.springframework.data.domain.*;
 import org.springframework.data.util.*;
-import org.springframework.util.*;
 
 import javax.persistence.*;
 
@@ -14,22 +11,11 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class BaseEntity implements Persistable<Integer> {
+public abstract class BaseEntity implements HasId {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
-
-    public int id() {
-        Assert.notNull(id, "Entity must have id");
-        return id;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isNew() {
-        return id == null;
-    }
 
     @Override
     public boolean equals(Object o) {
