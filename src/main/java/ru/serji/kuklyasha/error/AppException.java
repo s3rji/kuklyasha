@@ -1,4 +1,4 @@
-package ru.serji.kuklyasha.util.exception;
+package ru.serji.kuklyasha.error;
 
 import lombok.*;
 import org.springframework.boot.web.error.*;

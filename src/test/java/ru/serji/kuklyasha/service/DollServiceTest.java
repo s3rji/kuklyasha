@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.context.*;
 import org.springframework.dao.*;
 import org.springframework.transaction.annotation.*;
+import ru.serji.kuklyasha.error.*;
 import ru.serji.kuklyasha.model.*;
-import ru.serji.kuklyasha.util.exception.*;
 
 import java.util.*;
 

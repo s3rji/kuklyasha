@@ -1,4 +1,4 @@
-package ru.serji.kuklyasha.util.exception;
+package ru.serji.kuklyasha.error;
 
 import org.springframework.boot.web.error.*;
 import org.springframework.http.*;
