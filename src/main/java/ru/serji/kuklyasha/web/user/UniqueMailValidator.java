@@ -34,7 +34,7 @@ public class UniqueMailValidator implements Validator {
     public void validate(@NonNull Object target, @NonNull Errors errors) {
         HasIdAndEmail user = ((HasIdAndEmail) target);
         if (StringUtils.hasText(user.getEmail())) {
-            userService.getByEmail(user.getEmail())
+            userService.getByEmailIgnoreCase(user.getEmail())
                     .ifPresent(dbUser -> {
                         if (request.getMethod().equals("PUT")) {
                             int dbId = dbUser.id();

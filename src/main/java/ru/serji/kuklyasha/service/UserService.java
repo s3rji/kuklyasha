@@ -7,7 +7,7 @@ import java.util.*;
 public interface UserService {
     Optional<User> get(int id);
 
-    Optional<User> getByEmail(String email);
+    Optional<User> getByEmailIgnoreCase(String email);
 
     List<User> getAll();
 
