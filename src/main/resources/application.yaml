@@ -34,3 +34,8 @@ server.servlet:
 upload:
   images:
     path: doll-images
+
+jwt:
+  token:
+    secret: bigsecret
+    expired: 3600000
