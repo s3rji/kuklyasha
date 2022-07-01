@@ -1,5 +1,7 @@
 package ru.serji.kuklyasha.model;
 
+import com.fasterxml.jackson.annotation.*;
+
 import java.util.*;
 
 public interface HasId {
@@ -7,6 +9,7 @@ public interface HasId {
 
     void setId(Integer id);
 
+    @JsonIgnore
     default boolean isNew() {
         return getId() == null;
     }

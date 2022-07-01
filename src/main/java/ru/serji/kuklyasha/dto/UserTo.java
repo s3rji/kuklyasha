@@ -1,5 +1,6 @@
 package ru.serji.kuklyasha.dto;
 
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import ru.serji.kuklyasha.model.*;
 
@@ -8,6 +9,7 @@ import javax.validation.constraints.*;
 @Value
 @EqualsAndHashCode(callSuper = true)
 public class UserTo extends NamedTo implements HasIdAndEmail {
+
     @Email
     @NotBlank
     @Size(max = 128)
@@ -15,6 +17,7 @@ public class UserTo extends NamedTo implements HasIdAndEmail {
 
     @NotBlank
     @Size(min = 5, max = 32)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
 
     public UserTo(Integer id, String name, String email, String password) {
