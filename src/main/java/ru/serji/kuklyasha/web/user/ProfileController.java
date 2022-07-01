@@ -15,12 +15,14 @@ import ru.serji.kuklyasha.web.*;
 import javax.validation.*;
 import java.net.*;
 
+import static ru.serji.kuklyasha.util.UserUtil.*;
 import static ru.serji.kuklyasha.util.ValidationUtil.*;
 
 @RestController
 @RequestMapping(value = ProfileController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 public class ProfileController extends AbstractUserController {
+
     static final String REST_URL = "/api/profile";
 
     @Autowired
@@ -41,14 +43,14 @@ public class ProfileController extends AbstractUserController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<User> register(@Valid @RequestBody UserTo userTo) {
+    public ResponseEntity<UserTo> register(@Valid @RequestBody UserTo userTo) {
         log.info("register {}", userTo);
         checkNew(userTo);
-        User created = prepareAndSave(UserUtil.createNewFromTo(userTo));
+        User created = prepareAndSave(createNewFromTo(userTo));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL)
                 .build().toUri();
-        return ResponseEntity.created(uriOfNewResource).body(created);
+        return ResponseEntity.created(uriOfNewResource).body(createToFromUser(created));
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
