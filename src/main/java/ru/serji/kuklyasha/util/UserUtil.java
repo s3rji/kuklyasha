@@ -27,4 +27,8 @@ public class UserUtil {
         user.setEmail(user.getEmail().toLowerCase());
         return user;
     }
+
+    public static UserTo createToFromUser(User user) {
+        return new UserTo(user.getId(), user.getName(), user.getEmail(), user.getPassword());
+    }
 }
