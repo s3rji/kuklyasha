@@ -1,6 +1,5 @@
-import NavBar from "./components/NavBar"
+import {NavBar, AppRouter} from "./components/index"
 import {BrowserRouter} from "react-router-dom";
-import AppRouter from "./components/AppRouter";
 import {observer} from "mobx-react-lite";
 
 const App = observer(() => {

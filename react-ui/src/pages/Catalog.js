@@ -1,6 +1,5 @@
 import React, {useContext, useEffect} from "react";
-import DollList from "../components/DollList";
-import Pages from "../components/Pages";
+import {DollList, Pages} from "../components/index";
 import {observer} from "mobx-react-lite";
 import {Context} from "../index";
 import {fetchDolls} from "../http/dollApi";
