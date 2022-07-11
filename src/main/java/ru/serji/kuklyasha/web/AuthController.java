@@ -12,8 +12,6 @@ import ru.serji.kuklyasha.security.jwt.*;
 
 import javax.validation.*;
 
-import static ru.serji.kuklyasha.util.UserUtil.*;
-
 @RestController
 @RequestMapping(value = AuthController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
