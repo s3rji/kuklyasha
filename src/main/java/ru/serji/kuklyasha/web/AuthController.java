@@ -17,6 +17,7 @@ import static ru.serji.kuklyasha.util.UserUtil.*;
 @RestController
 @RequestMapping(value = AuthController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
 
     static final String REST_URL = "/api/auth";
@@ -31,7 +32,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserTo> login(@RequestBody @Valid AuthRequest request) {
+    public ResponseEntity<AuthResponse> login(@RequestBody @Valid AuthRequest request) {
         log.debug("Authenticating '{}'", request.getEmail());
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
@@ -40,7 +41,7 @@ public class AuthController {
 
             return ResponseEntity.ok()
                     .header(HttpHeaders.AUTHORIZATION, token)
-                    .body(createToFromUser(user));
+                    .body(new AuthResponse(user.getEmail(), token));
         } catch (AuthenticationException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
