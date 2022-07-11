@@ -1,6 +1,6 @@
 import React from 'react';
 import {NavLink} from "react-router-dom";
-import {LOGIN_ROUTE, PROFILE_ROUTE} from "../utils/consts";
+import {LOGIN_ROUTE, REGISTRATION_ROUTE} from "../utils/consts";
 
 const Identification = () => {
     return (
@@ -10,7 +10,7 @@ const Identification = () => {
                 Войти
             </NavLink>
             <span className="h-6 w-px bg-gray-200" aria-hidden="true"/>
-            <NavLink to={PROFILE_ROUTE}
+            <NavLink to={REGISTRATION_ROUTE}
                      className="text-gray-100 hover:bg-pink-700 hover:text-white rounded-md text-sm font-semibold font-sans">
                 Зарегистрироваться
             </NavLink>
