@@ -4,8 +4,9 @@ import {useNavigate} from "react-router-dom";
 import logo from "../assets/main.jpeg";
 import {registration} from "../http/userAPI";
 import {LOGIN_ROUTE} from "../utils/consts";
+import {observer} from "mobx-react-lite";
 
-const Registration = () => {
+const Registration = observer(() => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -105,6 +106,6 @@ const Registration = () => {
             </div>
         </>
     )
-}
+});
 
 export default Registration;

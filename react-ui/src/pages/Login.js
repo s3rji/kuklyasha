@@ -5,8 +5,9 @@ import logo from "../assets/main.jpeg";
 import {Context} from "../index";
 import {login} from "../http/userAPI";
 import {CATALOG_ROUTE} from "../utils/consts";
+import {observer} from "mobx-react-lite";
 
-const Login = () => {
+const Login = observer(() => {
     const {user} = useContext(Context)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -114,6 +115,6 @@ const Login = () => {
             </div>
         </>
     )
-}
+});
 
 export default Login;
