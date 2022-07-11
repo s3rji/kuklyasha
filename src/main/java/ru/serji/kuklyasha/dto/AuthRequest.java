@@ -15,4 +15,6 @@ public class AuthRequest {
     @NotBlank
     @Size(min = 5, max = 32)
     String password;
+
+    boolean rememberMe;
 }
