@@ -21,6 +21,7 @@ import static ru.serji.kuklyasha.util.ValidationUtil.*;
 @RestController
 @RequestMapping(value = ProfileController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProfileController extends AbstractUserController {
 
     static final String REST_URL = "/api/profile";
