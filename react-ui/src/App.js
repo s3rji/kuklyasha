@@ -1,8 +1,25 @@
-import {NavBar, AppRouter} from "./components/index"
+import {NavBar, AppRouter, Loading} from "./components/index"
 import {BrowserRouter} from "react-router-dom";
 import {observer} from "mobx-react-lite";
+import {useContext, useEffect, useState} from "react";
+import {check} from "./http/userAPI";
+import {Context} from "./index";
 
 const App = observer(() => {
+    const {user} = useContext(Context)
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        check().then(data => {
+            user.setUser(data)
+            user.setIsAuth(true)
+        }).finally(() => setLoading(false))
+    }, [])
+
+    if (loading) {
+        return <Loading/>
+    }
+
     return (
         <BrowserRouter>
             <NavBar></NavBar>
