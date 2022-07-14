@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.*;
+import org.springframework.security.core.annotation.*;
 import org.springframework.web.bind.annotation.*;
 import ru.serji.kuklyasha.dto.*;
 import ru.serji.kuklyasha.model.*;
@@ -43,5 +44,15 @@ public class AuthController {
         } catch (AuthenticationException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+    }
+
+    @GetMapping()
+    public ResponseEntity<AuthResponse> checkAuth(@AuthenticationPrincipal AuthUser authUser) {
+        log.debug("Checking auth");
+        String token = jwtTokenProvider.createToken(authUser.getUser());
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, token)
+                .body(new AuthResponse(authUser.getUser().getEmail(), token));
     }
 }
