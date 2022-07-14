@@ -17,7 +17,7 @@ const Login = observer(() => {
     const click = async () => {
         try {
             let data = await login(email, password, rememberMe)
-            user.setUser(user)
+            user.setUser(data)
             user.setIsAuth(true)
             navigate(CATALOG_ROUTE)
         } catch (e) {

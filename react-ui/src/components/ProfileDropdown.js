@@ -1,12 +1,22 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useContext} from 'react';
 import {Menu, Transition} from "@headlessui/react";
 import {NavLink} from "react-router-dom";
+import {Context} from "../index";
+import {observer} from "mobx-react-lite";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-const ProfileDropdown = () => {
+const ProfileDropdown = observer(() => {
+    const {user} = useContext(Context)
+
+    const logOut = () => {
+        user.setUser({})
+        user.setIsAuth(false)
+        localStorage.setItem("token", null)
+    }
+
     return (
         <Menu as="div" className="ml-3 relative">
             <div>
@@ -37,7 +47,7 @@ const ProfileDropdown = () => {
                                 to={"#"}
                                 className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                             >
-                                Your Profile
+                                Ваш профиль
                             </NavLink>
                         )}
                     </Menu.Item>
@@ -47,7 +57,7 @@ const ProfileDropdown = () => {
                                 to={"#"}
                                 className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                             >
-                                Settings
+                                Настройки
                             </NavLink>
                         )}
                     </Menu.Item>
@@ -55,9 +65,10 @@ const ProfileDropdown = () => {
                         {({active}) => (
                             <NavLink
                                 to={"#"}
+                                onClick={() => logOut()}
                                 className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                             >
-                                Sign out
+                                Выйти
                             </NavLink>
                         )}
                     </Menu.Item>
@@ -65,6 +76,6 @@ const ProfileDropdown = () => {
             </Transition>
         </Menu>
     );
-};
+});
 
 export default ProfileDropdown;

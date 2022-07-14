@@ -1,12 +1,14 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import {LockClosedIcon} from "@heroicons/react/solid"
 import {useNavigate} from "react-router-dom";
 import logo from "../assets/main.jpeg";
 import {registration} from "../http/userAPI";
 import {LOGIN_ROUTE} from "../utils/consts";
 import {observer} from "mobx-react-lite";
+import {Context} from "../index";
 
 const Registration = observer(() => {
+    const {user} = useContext(Context)
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -15,7 +17,7 @@ const Registration = observer(() => {
     const click = async () => {
         try {
             let data = await registration(name, email, password)
-            console.log(data)
+            user.setUser(data)
             navigate(LOGIN_ROUTE)
         } catch (e) {
             alert(e)
