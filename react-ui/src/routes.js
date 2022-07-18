@@ -1,4 +1,4 @@
-import {Catalog, Login, Registration} from "./pages/index";
+import {Catalog, DollPage, Login, Registration} from "./pages/index";
 import {CATALOG_ROUTE, DOLL_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE} from "./utils/consts";
 
 export const publicRoutes = [
@@ -8,7 +8,7 @@ export const publicRoutes = [
     },
     {
         path: DOLL_ROUTE + "/:id",
-        Component: Catalog
+        Component: DollPage
     },
     {
         path: LOGIN_ROUTE,
