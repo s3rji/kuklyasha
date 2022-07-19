@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.*;
 import ru.serji.kuklyasha.error.*;
 import ru.serji.kuklyasha.model.*;
 
+import javax.validation.*;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,6 +48,12 @@ class DollServiceTest {
         DOLL_MATCHER.assertMatch(dollService.get(newId).get(), newDoll);
     }
 
+    @Test
+    void createInvalid() {
+        Doll newDoll = getNew();
+        newDoll.setName("");
+        assertThrows(ConstraintViolationException.class, () -> dollService.save(newDoll));
+    }
 
     @Test
     void update() {
