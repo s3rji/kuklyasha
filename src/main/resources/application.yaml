@@ -24,6 +24,8 @@ logging:
     root: WARN
     ru.serji.kuklyasha: DEBUG
     org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
+  file:
+    name: log/latest.log
 
 server.servlet:
   encoding:
