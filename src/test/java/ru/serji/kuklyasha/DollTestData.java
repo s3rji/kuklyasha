@@ -1,6 +1,5 @@
-package ru.serji.kuklyasha.service;
+package ru.serji.kuklyasha;
 
-import ru.serji.kuklyasha.*;
 import ru.serji.kuklyasha.model.*;
 
 import java.math.*;

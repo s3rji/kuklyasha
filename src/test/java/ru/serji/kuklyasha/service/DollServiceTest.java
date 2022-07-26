@@ -12,7 +12,7 @@ import javax.validation.*;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static ru.serji.kuklyasha.service.DollTestData.*;
+import static ru.serji.kuklyasha.DollTestData.*;
 
 @SpringBootTest
 @Transactional
