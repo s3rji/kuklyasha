@@ -32,8 +32,8 @@ public class ProfileController extends AbstractUserController {
     }
 
     @GetMapping
-    public User get(@AuthenticationPrincipal AuthUser authUser) {
-        return authUser.getUser();
+    public UserTo get(@AuthenticationPrincipal AuthUser authUser) {
+        return createToFromUser(authUser.getUser());
     }
 
     @DeleteMapping
