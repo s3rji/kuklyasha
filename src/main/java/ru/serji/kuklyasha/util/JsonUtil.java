@@ -50,4 +50,12 @@ public class JsonUtil {
         map.putAll(addProps);
         return writeValue(map);
     }
+
+    public static <T> void writeValue(OutputStream outputStream, T obj) {
+        try {
+            mapper.writeValue(outputStream, obj);
+        } catch (IOException e) {
+            throw new IllegalStateException("Invalid write to JSON:\n'" + obj + "'", e);
+        }
+    }
 }
