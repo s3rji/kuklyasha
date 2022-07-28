@@ -1,9 +1,13 @@
 package ru.serji.kuklyasha.security.error;
 
-import org.springframework.security.core.*;
+import org.springframework.boot.web.error.*;
+import org.springframework.http.*;
+import ru.serji.kuklyasha.error.*;
 
-public class JwtAuthenticationException extends AuthenticationException {
+import static org.springframework.boot.web.error.ErrorAttributeOptions.Include.*;
+
+public class JwtAuthenticationException extends AppException {
     public JwtAuthenticationException(String msg) {
-        super(msg);
+        super(HttpStatus.UNAUTHORIZED, msg, ErrorAttributeOptions.of(MESSAGE));
     }
 }
