@@ -6,6 +6,7 @@ import org.springframework.boot.web.error.*;
 import org.springframework.boot.web.servlet.error.*;
 import org.springframework.http.*;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.*;
 import org.springframework.validation.*;
 import org.springframework.web.bind.*;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> entityNotFoundException(WebRequest request, EntityNotFoundException ex) {
         log.error("EntityNotFoundException: {}", ex.getMessage());
         return createResponseEntity(request, ErrorAttributeOptions.of(MESSAGE), null, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<?> authenticationException(WebRequest request, AuthenticationException ex) {
+        log.error("AuthenticationException: {}", ex.getMessage());
+        return createResponseEntity(request, ErrorAttributeOptions.of(MESSAGE), null, HttpStatus.UNAUTHORIZED);
     }
 
     @NonNull
