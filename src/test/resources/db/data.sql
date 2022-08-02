@@ -9,7 +9,7 @@ VALUES ('Doll1', 'Pretty Doll', 100.00, '/image1'),
        ('Doll5', 'Pretty Doll', 100.00, '/image5');
 
 INSERT INTO USERS (name, email, password)
-VALUES ('User', 'user@yandex.ru', 'password'),
+VALUES ('User', 'user@yandex.ru', '{bcrypt}$2a$10$zAJ7/voOp9SwObfHN4CBLe/9KDnx.b/0TRcU53NzmmxuErVP15rWu'),
        ('Admin', 'admin@gmail.com', 'admin');
 
 INSERT INTO USER_ROLES (role, user_id)
