@@ -33,17 +33,13 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody @Valid AuthRequest request) {
         log.debug("Authenticating '{}'", request.getEmail());
-        try {
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-            User user = ((AuthUser) authentication.getPrincipal()).getUser();
-            String token = jwtTokenProvider.createToken(user);
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        User user = ((AuthUser) authentication.getPrincipal()).getUser();
+        String token = jwtTokenProvider.createToken(user);
 
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.AUTHORIZATION, token)
-                    .body(new AuthResponse(user.getEmail(), token));
-        } catch (AuthenticationException ex) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, token)
+                .body(new AuthResponse(user.getEmail(), token));
     }
 
     @GetMapping()
