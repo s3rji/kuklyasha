@@ -24,6 +24,7 @@ logging:
     root: WARN
     ru.serji.kuklyasha: DEBUG
     org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
+    org.springframework.security: DEBUG
   file:
     name: log/latest.log
 
