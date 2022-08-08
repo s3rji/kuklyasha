@@ -1,8 +1,9 @@
-package ru.serji.kuklyasha.web;
+package ru.serji.kuklyasha.web.doll;
 
 import lombok.extern.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
+import org.springframework.web.bind.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.*;
 import ru.serji.kuklyasha.model.*;
@@ -15,17 +16,26 @@ import java.util.*;
 import static ru.serji.kuklyasha.util.ValidationUtil.*;
 
 @RestController
-@RequestMapping(value = DollController.API_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = DollController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @CrossOrigin(origins = "http://localhost:3000")
 public class DollController {
-    static final String API_URL = "/api/dolls";
+
+    static final String REST_URL = "/api/dolls";
 
     private final DollService dollService;
 
+    private final UniqueNameValidator validator;
+
     @Autowired
-    public DollController(DollService dollService) {
+    public DollController(DollService dollService, UniqueNameValidator validator) {
         this.dollService = dollService;
+        this.validator = validator;
+    }
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.addValidators(validator);
     }
 
     @GetMapping("/{id}")
@@ -47,7 +57,7 @@ public class DollController {
         checkNew(doll);
         Doll created = dollService.save(doll);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(API_URL + "/{id}")
+                .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
