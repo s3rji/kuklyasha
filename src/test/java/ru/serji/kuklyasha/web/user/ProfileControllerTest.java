@@ -83,7 +83,7 @@ class ProfileControllerTest extends AbstractControllerTest {
         UserTo newTo = new UserTo(null, null, null, null);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newTo)))
+                .content(jsonFromObject(newTo)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -94,7 +94,7 @@ class ProfileControllerTest extends AbstractControllerTest {
         UserTo updatedTo = new UserTo(null, null, "password", null);
         perform(MockMvcRequestBuilders.put(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updatedTo)))
+                .content(jsonFromObject(updatedTo)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
