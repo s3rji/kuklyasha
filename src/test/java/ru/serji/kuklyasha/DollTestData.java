@@ -1,6 +1,7 @@
 package ru.serji.kuklyasha;
 
 import ru.serji.kuklyasha.model.*;
+import ru.serji.kuklyasha.util.*;
 
 import java.math.*;
 import java.time.*;
@@ -29,5 +30,9 @@ public class DollTestData {
 
     public static Doll getUpdated() {
         return new Doll(DOLL_ID, "UpdatedDoll", "Very Ugly Doll", new BigDecimal("100.00"), "/image1", LocalDateTime.now());
+    }
+
+    public static String jsonFromObject(Doll doll) {
+        return JsonUtil.writeValue(doll);
     }
 }
