@@ -16,19 +16,28 @@ public class DollServiceImpl implements DollService {
         this.dollRepository = dollRepository;
     }
 
+    @Override
     public Optional<Doll> get(int id) {
         return dollRepository.findById(id);
     }
 
+    @Override
     public List<Doll> getAll() {
         return dollRepository.findAll();
     }
 
+    @Override
     public Doll save(Doll doll) {
         return dollRepository.save(doll);
     }
 
+    @Override
     public void delete(int id) {
         dollRepository.deleteExisted(id);
+    }
+
+    @Override
+    public Optional<Doll> getByName(String name) {
+        return dollRepository.findByName(name);
     }
 }

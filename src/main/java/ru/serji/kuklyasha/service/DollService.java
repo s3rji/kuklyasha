@@ -12,4 +12,6 @@ public interface DollService {
     Doll save(Doll doll);
 
     void delete(int id);
+
+    Optional<Doll> getByName(String name);
 }
