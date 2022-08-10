@@ -19,7 +19,7 @@ public class Doll extends BaseEntity implements HasIdAndName {
     @NotBlank
     @Size(min = 2, max = 128)
     @Column(name = "name", nullable = false, unique = true)
-    protected String name;
+    private String name;
 
     @Column(name = "description", nullable = false)
     @NotBlank()
