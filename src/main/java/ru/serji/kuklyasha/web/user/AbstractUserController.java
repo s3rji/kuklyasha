@@ -13,16 +13,16 @@ public abstract class AbstractUserController {
 
     protected final UserService userService;
 
-    private final UniqueMailValidator emailValidator;
+    private final UniqueMailValidator validator;
 
-    public AbstractUserController(UserService userService, UniqueMailValidator emailValidator) {
+    public AbstractUserController(UserService userService, UniqueMailValidator validator) {
         this.userService = userService;
-        this.emailValidator = emailValidator;
+        this.validator = validator;
     }
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
-        binder.addValidators(emailValidator);
+        binder.addValidators(validator);
     }
 
     public ResponseEntity<User> get(int id) {
