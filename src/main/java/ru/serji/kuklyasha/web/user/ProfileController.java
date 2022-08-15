@@ -9,7 +9,6 @@ import org.springframework.web.servlet.support.*;
 import ru.serji.kuklyasha.dto.*;
 import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.service.*;
-import ru.serji.kuklyasha.util.*;
 import ru.serji.kuklyasha.web.*;
 
 import javax.validation.*;
@@ -59,6 +58,6 @@ public class ProfileController extends AbstractUserController {
     public void update(@RequestBody @Valid UserTo userTo, @AuthenticationPrincipal AuthUser authUser) {
         assureIdConsistent(userTo, authUser.id());
         User user = authUser.getUser();
-        prepareAndSave(UserUtil.updateFromTo(user, userTo));
+        prepareAndSave(updateFromTo(user, userTo));
     }
 }
