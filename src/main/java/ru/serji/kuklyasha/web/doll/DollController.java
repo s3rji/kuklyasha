@@ -13,7 +13,7 @@ import javax.validation.*;
 import java.net.*;
 import java.util.*;
 
-import static ru.serji.kuklyasha.util.ValidationUtil.*;
+import static ru.serji.kuklyasha.service.util.ValidationUtil.*;
 
 @RestController
 @RequestMapping(value = DollController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)

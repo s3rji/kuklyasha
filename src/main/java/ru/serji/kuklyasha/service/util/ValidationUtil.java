@@ -1,4 +1,4 @@
-package ru.serji.kuklyasha.util;
+package ru.serji.kuklyasha.service.util;
 
 import ch.qos.logback.classic.*;
 import lombok.experimental.*;

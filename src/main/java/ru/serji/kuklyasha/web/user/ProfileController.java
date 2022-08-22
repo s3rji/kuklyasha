@@ -15,7 +15,7 @@ import javax.validation.*;
 import java.net.*;
 
 import static ru.serji.kuklyasha.web.user.UserUtil.*;
-import static ru.serji.kuklyasha.util.ValidationUtil.*;
+import static ru.serji.kuklyasha.service.util.ValidationUtil.*;
 
 @RestController
 @RequestMapping(value = ProfileController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)

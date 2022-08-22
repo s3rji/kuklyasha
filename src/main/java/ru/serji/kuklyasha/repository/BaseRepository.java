@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.*;
 import org.springframework.transaction.annotation.*;
 
-import static ru.serji.kuklyasha.util.ValidationUtil.*;
+import static ru.serji.kuklyasha.service.util.ValidationUtil.*;
 
 @NoRepositoryBean
 public interface BaseRepository<T> extends JpaRepository<T, Integer> {
