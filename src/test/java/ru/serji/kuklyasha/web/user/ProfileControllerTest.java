@@ -9,7 +9,6 @@ import org.springframework.test.web.servlet.request.*;
 import ru.serji.kuklyasha.dto.*;
 import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.service.*;
-import ru.serji.kuklyasha.util.*;
 import ru.serji.kuklyasha.web.*;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;

@@ -1,4 +1,4 @@
-package ru.serji.kuklyasha.util;
+package ru.serji.kuklyasha.web.user;
 
 import lombok.experimental.*;
 import org.springframework.security.crypto.factory.*;

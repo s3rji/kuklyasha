@@ -14,7 +14,7 @@ import ru.serji.kuklyasha.web.*;
 import javax.validation.*;
 import java.net.*;
 
-import static ru.serji.kuklyasha.util.UserUtil.*;
+import static ru.serji.kuklyasha.web.user.UserUtil.*;
 import static ru.serji.kuklyasha.util.ValidationUtil.*;
 
 @RestController
