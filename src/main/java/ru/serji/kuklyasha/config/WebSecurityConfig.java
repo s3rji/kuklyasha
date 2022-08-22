@@ -14,9 +14,9 @@ import org.springframework.security.config.http.*;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.web.authentication.*;
 import ru.serji.kuklyasha.security.jwt.*;
-import ru.serji.kuklyasha.util.*;
+import ru.serji.kuklyasha.web.*;
 
-import static ru.serji.kuklyasha.util.UserUtil.*;
+import static ru.serji.kuklyasha.web.user.UserUtil.*;
 
 @Configuration
 @EnableWebSecurity
@@ -44,6 +44,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    @Bean
+    public JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint() {
+        return new JwtAuthenticationEntryPoint(HttpStatus.UNAUTHORIZED);
+    }
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
@@ -68,6 +73,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling().authenticationEntryPoint(new JwtAuthenticationEntryPoint(HttpStatus.UNAUTHORIZED));
+                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint());
     }
 }
