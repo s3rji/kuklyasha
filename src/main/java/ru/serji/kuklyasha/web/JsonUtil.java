@@ -1,4 +1,4 @@
-package ru.serji.kuklyasha.util;
+package ru.serji.kuklyasha.web;
 
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.core.type.*;

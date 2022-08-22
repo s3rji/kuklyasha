@@ -1,7 +1,7 @@
 package ru.serji.kuklyasha;
 
 import org.springframework.test.web.servlet.*;
-import ru.serji.kuklyasha.util.*;
+import ru.serji.kuklyasha.web.*;
 
 import java.io.*;
 import java.util.*;
