@@ -58,15 +58,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @NonNull
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex,
+            @NonNull MethodArgumentNotValidException ex,
             @NonNull HttpHeaders headers, @NonNull HttpStatus status, @NonNull WebRequest request) {
+        log.error("Exception", ex);
         return handleBindingErrors(ex.getBindingResult(), request);
     }
 
     @NonNull
     @Override
     protected ResponseEntity<Object> handleBindException(
-            BindException ex, @NonNull HttpHeaders headers, @NonNull HttpStatus status, @NonNull WebRequest request) {
+            @NonNull BindException ex, @NonNull HttpHeaders headers, @NonNull HttpStatus status, @NonNull WebRequest request) {
+        log.error("Exception", ex);
         return handleBindingErrors(ex.getBindingResult(), request);
     }
 
