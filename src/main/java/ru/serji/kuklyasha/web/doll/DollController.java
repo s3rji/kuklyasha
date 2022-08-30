@@ -3,6 +3,7 @@ package ru.serji.kuklyasha.web.doll;
 import lombok.extern.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
+import org.springframework.transaction.annotation.*;
 import org.springframework.web.bind.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.*;
@@ -51,6 +52,7 @@ public class DollController {
     }
 
     @GetMapping(params = {"page", "limit"})
+    @Transactional
     public Map<String, Object> getLimitByPage(@RequestParam int page, @RequestParam int limit) {
         log.info("get dolls by page {} and limit {}", page, limit);
         Map<String, Object> body = new LinkedHashMap<>();
