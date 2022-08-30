@@ -50,6 +50,15 @@ public class DollController {
         return dollService.getAll();
     }
 
+    @GetMapping(params = {"page", "limit"})
+    public Map<String, Object> getLimitByPage(@RequestParam int page, @RequestParam int limit) {
+        log.info("get dolls by page {} and limit {}", page, limit);
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("dolls", dollService.getLimitByPage(page, limit));
+        body.put("total", dollService.totalCount());
+        return body;
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Doll> create(@Valid @RequestBody Doll doll) {
         log.info("create doll = {}", doll);

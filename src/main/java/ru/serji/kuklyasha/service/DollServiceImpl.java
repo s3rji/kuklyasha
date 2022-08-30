@@ -1,6 +1,7 @@
 package ru.serji.kuklyasha.service;
 
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.*;
 import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.repository.*;
@@ -39,5 +40,14 @@ public class DollServiceImpl implements DollService {
     @Override
     public Optional<Doll> getByName(String name) {
         return dollRepository.findByName(name);
+    }
+
+    @Override
+    public List<Doll> getLimitByPage(int page, int limit) {
+        return dollRepository.findAll(PageRequest.of(page, limit, Sort.by("name"))).getContent();
+    }
+
+    public long totalCount() {
+        return dollRepository.count();
     }
 }

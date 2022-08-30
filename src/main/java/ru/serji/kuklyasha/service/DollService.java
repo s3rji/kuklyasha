@@ -14,4 +14,8 @@ public interface DollService {
     void delete(int id);
 
     Optional<Doll> getByName(String name);
+
+    List<Doll> getLimitByPage(int page, int limit);
+
+    long totalCount();
 }
