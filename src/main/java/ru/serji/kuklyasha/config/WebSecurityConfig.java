@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.*;
 import ru.serji.kuklyasha.security.jwt.*;
 import ru.serji.kuklyasha.web.util.*;
 
-import static ru.serji.kuklyasha.web.user.UserUtil.*;
+import static ru.serji.kuklyasha.web.util.UserUtil.*;
 
 @Configuration
 @EnableWebSecurity

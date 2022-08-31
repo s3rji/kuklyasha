@@ -6,6 +6,7 @@ import org.springframework.web.bind.*;
 import org.springframework.web.bind.annotation.*;
 import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.service.*;
+import ru.serji.kuklyasha.web.util.*;
 
 @Slf4j
 public abstract class AbstractUserController {
