@@ -14,7 +14,7 @@ import org.springframework.security.config.http.*;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.web.authentication.*;
 import ru.serji.kuklyasha.security.jwt.*;
-import ru.serji.kuklyasha.web.*;
+import ru.serji.kuklyasha.web.util.*;
 
 import static ru.serji.kuklyasha.web.user.UserUtil.*;
 

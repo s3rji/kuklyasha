@@ -1,7 +1,7 @@
 package ru.serji.kuklyasha;
 
 import ru.serji.kuklyasha.model.*;
-import ru.serji.kuklyasha.web.*;
+import ru.serji.kuklyasha.web.util.*;
 
 import java.math.*;
 import java.time.*;

@@ -7,7 +7,7 @@ import org.springframework.util.*;
 import org.springframework.validation.*;
 import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.service.*;
-import ru.serji.kuklyasha.web.*;
+import ru.serji.kuklyasha.web.util.*;
 
 import javax.servlet.http.*;
 

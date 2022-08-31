@@ -5,7 +5,7 @@ import lombok.extern.slf4j.*;
 import org.springframework.http.*;
 import org.springframework.security.core.*;
 import org.springframework.security.web.*;
-import ru.serji.kuklyasha.web.*;
+import ru.serji.kuklyasha.web.util.*;
 
 import javax.servlet.http.*;
 import java.io.*;

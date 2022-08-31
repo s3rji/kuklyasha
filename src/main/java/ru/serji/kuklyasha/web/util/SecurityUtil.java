@@ -1,9 +1,10 @@
-package ru.serji.kuklyasha.web;
+package ru.serji.kuklyasha.web.util;
 
 import lombok.experimental.*;
 import org.springframework.security.core.*;
 import org.springframework.security.core.context.*;
 import ru.serji.kuklyasha.model.*;
+import ru.serji.kuklyasha.web.*;
 
 import static java.util.Objects.*;
 
