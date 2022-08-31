@@ -17,5 +17,5 @@ public interface DollService {
 
     List<Doll> getLimitByPage(int page, int limit);
 
-    long totalCount();
+    int totalCount();
 }

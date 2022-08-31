@@ -47,7 +47,7 @@ public class DollServiceImpl implements DollService {
         return dollRepository.findAll(PageRequest.of(page, limit, Sort.by("name"))).getContent();
     }
 
-    public long totalCount() {
-        return dollRepository.count();
+    public int totalCount() {
+        return (int) dollRepository.count();
     }
 }
