@@ -7,8 +7,10 @@ import org.springframework.transaction.annotation.*;
 import org.springframework.web.bind.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.*;
+import ru.serji.kuklyasha.dto.*;
 import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.service.*;
+import ru.serji.kuklyasha.web.util.*;
 
 import javax.validation.*;
 import java.net.*;
@@ -53,12 +55,12 @@ public class DollController {
 
     @GetMapping(params = {"page", "limit"})
     @Transactional
-    public Map<String, Object> getLimitByPage(@RequestParam int page, @RequestParam int limit) {
+    public ResponseEntity<DollPage> getLimitByPage(@RequestParam int page, @RequestParam int limit) {
         log.info("get dolls by page {} and limit {}", page, limit);
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("dolls", dollService.getLimitByPage(page, limit));
-        body.put("total", dollService.totalCount());
-        return body;
+        List<Doll> content = dollService.getLimitByPage(page, limit);
+        int total = dollService.totalCount();
+        DollPage body = DollUtil.createDollPage(content, total);
+        return ResponseEntity.of(Optional.of(body));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

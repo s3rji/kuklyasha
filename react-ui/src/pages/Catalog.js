@@ -9,14 +9,14 @@ const Catalog = observer(() => {
 
     useEffect(() => {
         fetchDollsByPage(doll.page, doll.limit).then(data => {
-            doll.setDolls(data.dolls)
+            doll.setDolls(data.content)
             doll.setTotal(data.total)
         })
     }, [doll])
 
     useEffect(() => {
         fetchDollsByPage(doll.page, doll.limit).then(data => {
-            doll.setDolls(data.dolls)
+            doll.setDolls(data.content)
             doll.setTotal(data.total)
         })
     }, [doll, doll.page])
