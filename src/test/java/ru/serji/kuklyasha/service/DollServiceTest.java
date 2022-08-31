@@ -39,6 +39,18 @@ class DollServiceTest {
     }
 
     @Test
+    void getLimitByPage() {
+        List<Doll> actual = dollService.getLimitByPage(0, 3);
+        DOLL_MATCHER.assertMatch(actual, allDolls.subList(0, 3));
+    }
+
+    @Test
+    void getLimitByPageNotFound() {
+        List<Doll> actual = dollService.getLimitByPage(2, 3);
+        DOLL_MATCHER.assertMatch(actual, Collections.emptyList());
+    }
+
+    @Test
     void create() {
         Doll created = dollService.save(getNew());
         int newId = created.id();

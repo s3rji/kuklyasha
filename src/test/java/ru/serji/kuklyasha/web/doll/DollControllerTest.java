@@ -5,12 +5,14 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
 import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.request.*;
+import ru.serji.kuklyasha.dto.*;
 import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.service.*;
 import ru.serji.kuklyasha.web.*;
+import ru.serji.kuklyasha.web.util.*;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.serji.kuklyasha.DollTestData.*;
@@ -46,6 +48,20 @@ class DollControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(DOLL_MATCHER.contentJson(allDolls));
+    }
+
+    @Test
+    void getLimitByPage() throws Exception {
+        ResultActions action = perform(MockMvcRequestBuilders.get(REST_URL)
+                .param("page", "0")
+                .param("limit", "3"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+
+        DollPage actual = JsonUtil.readValue(action.andReturn().getResponse().getContentAsString(), DollPage.class);
+        DOLL_MATCHER.assertMatch(actual.getContent(), allDolls.subList(0, 3));
+        assertThat(actual.getTotal()).isEqualTo(allDolls.size());
     }
 
     @Test
@@ -126,7 +142,7 @@ class DollControllerTest extends AbstractControllerTest {
     void delete() throws Exception {
         perform(MockMvcRequestBuilders.delete(REST_URL + DOLL_ID))
                 .andExpect(status().isNoContent());
-        assertTrue(dollService.get(DOLL_ID).isEmpty());
+        assertThat(dollService.get(DOLL_ID).isEmpty()).isTrue();
     }
 
     @Test
