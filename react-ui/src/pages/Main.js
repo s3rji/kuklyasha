@@ -24,13 +24,12 @@ const Main = () => {
                     <main className="mx-auto mt-10 max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
                         <div className="sm:text-center lg:text-left">
                             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-4xl">
-                                <span className="block xl:inline">Добро пожаловать в магазин декоративных авторских кукол</span>{' '}
+                                <span className="block xl:inline">Добро пожаловать в магазин авторских интерьерных кукол</span>{' '}
                                 <span className="block text-indigo-600 xl:inline">Кукляша</span>
                             </h1>
                             <p className="mt-3 text-base text-gray-500 sm:mx-auto sm:mt-5 sm:max-w-xl sm:text-lg md:mt-5 md:text-xl lg:mx-0">
-                                В нашем магазине вы можете выбрать декоративную куклу из широкого ассортимента или
-                                воспользоваться
-                                конструктором и заказать куклу по своему образу.
+                                В нашем магазине вы можете выбрать интерьерную куклу из широкого ассортимента или
+                                воспользоваться конструктором и заказать куклу по своему образу.
                             </p>
                             <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                                 <div className="rounded-md shadow">
