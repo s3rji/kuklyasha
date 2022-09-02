@@ -5,7 +5,7 @@ export default class NavigationStore {
         this._ways = [
             {name: 'Каталог', href: '/catalog', id: 1},
             {name: 'Конструктор', href: '#', id: 2},
-            {name: 'О магазине', href: '#', id: 3},
+            {name: 'О магазине', href: '/about', id: 3},
             {name: 'Контакты', href: '#', id: 4},
         ]
         this._selectedWay = 0
