@@ -1,5 +1,13 @@
-import {Main, Catalog, DollPage, Login, Registration, AboutUs} from "./pages/index";
-import {CATALOG_ROUTE, DOLL_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, REGISTRATION_ROUTE, ABOUT_US_ROUTE} from "./utils/consts";
+import {AboutUs, Catalog, Contacts, DollPage, Login, Main, Registration} from "./pages/index";
+import {
+    ABOUT_US_ROUTE,
+    CATALOG_ROUTE,
+    CONTACTS_ROUTE,
+    DOLL_ROUTE,
+    LOGIN_ROUTE,
+    MAIN_ROUTE,
+    REGISTRATION_ROUTE
+} from "./utils/consts";
 
 export const publicRoutes = [
     {
@@ -25,5 +33,9 @@ export const publicRoutes = [
     {
         path: ABOUT_US_ROUTE,
         Component: AboutUs
+    },
+    {
+        path: CONTACTS_ROUTE,
+        Component: Contacts
     }
 ]

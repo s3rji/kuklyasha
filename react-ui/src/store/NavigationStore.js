@@ -6,7 +6,7 @@ export default class NavigationStore {
             {name: 'Каталог', href: '/catalog', id: 1},
             {name: 'Конструктор', href: '#', id: 2},
             {name: 'О магазине', href: '/about', id: 3},
-            {name: 'Контакты', href: '#', id: 4},
+            {name: 'Контакты', href: '/contacts', id: 4},
         ]
         this._selectedWay = 0
         makeAutoObservable(this)
