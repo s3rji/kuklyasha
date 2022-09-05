@@ -3,6 +3,7 @@ import {Menu, Transition} from "@headlessui/react";
 import {NavLink} from "react-router-dom";
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
+import {CATALOG_ROUTE, PROFILE_ROUTE} from "../utils/consts";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -10,6 +11,7 @@ function classNames(...classes) {
 
 const ProfileDropdown = observer(() => {
     const {user} = useContext(Context)
+    const {navigation} = useContext(Context)
 
     const logOut = () => {
         user.setUser({})
@@ -44,7 +46,8 @@ const ProfileDropdown = observer(() => {
                     <Menu.Item>
                         {({active}) => (
                             <NavLink
-                                to={"#"}
+                                to={PROFILE_ROUTE}
+                                onClick={() => navigation.setSelectedWay(0)}
                                 className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                             >
                                 Ваш профиль
@@ -64,7 +67,7 @@ const ProfileDropdown = observer(() => {
                     <Menu.Item>
                         {({active}) => (
                             <NavLink
-                                to={"#"}
+                                to={CATALOG_ROUTE}
                                 onClick={() => logOut()}
                                 className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                             >
