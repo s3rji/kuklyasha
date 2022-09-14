@@ -11,3 +11,4 @@ export { default as Navigation } from './Navigation';
 export { default as Pages } from './Pages';
 export { default as ProfileDropdown } from './ProfileDropdown';
 export { default as SearchButton } from './SearchButton';
+export { default as InputField } from './InputField';
