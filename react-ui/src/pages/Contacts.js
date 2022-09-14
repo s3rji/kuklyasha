@@ -1,11 +1,11 @@
 const Contacts = () => {
     return (
-        <div className="overflow-hidden bg-white sm:rounded-lg py-12">
-            <div className="px-4 py-5 sm:px-6 mx-auto max-w-7xl">
+        <div className="overflow-hidden bg-white sm:rounded-lg shadow-xl shadow-gray-500/50 max-w-7xl mx-auto mt-12">
+            <div className="px-4 py-5 sm:px-6">
                 <h3 className="text-lg text-center font-medium leading-6 text-gray-900 ">Контактная информация</h3>
                 <p className="mt-1 text-sm text-gray-500 text-center">Интернет-магазин Кукляша.</p>
             </div>
-            <div className="border-t border-gray-900 max-w-7xl mx-auto border-solid">
+            <div className="border-t border-gray-900 border-solid sm:rounded-lg">
                 <dl>
                     <div className="bg-gray-100 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 ">
                         <dt className="text-sm font-medium text-gray-500">Менеджер по работе с клиентами</dt>
