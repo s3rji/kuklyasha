@@ -12,3 +12,4 @@ export { default as Pages } from './Pages';
 export { default as ProfileDropdown } from './ProfileDropdown';
 export { default as SearchButton } from './SearchButton';
 export { default as InputField } from './InputField';
+export { default as Checkbox } from './Checkbox';
