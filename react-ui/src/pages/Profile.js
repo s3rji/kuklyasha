@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {InputField} from "../components/index";
+import {EyeIcon} from '@heroicons/react/outline'
 
 const profile = {
     firstName: "Marina",
@@ -11,6 +12,33 @@ const profile = {
     region: "Some region",
     zipcode: "123456"
 }
+
+const orders = [
+    {
+        id: 1,
+        data: "05-09-2022",
+        status: "ready",
+        amount: 1000,
+        goods: [],
+        delivery: "15-09-2022"
+    },
+    {
+        id: 2,
+        data: "05-09-2022",
+        status: "delivering",
+        amount: 2000,
+        goods: [],
+        delivery: "20-09-2022"
+    },
+    {
+        id: 3,
+        data: "05-09-2022",
+        status: "done",
+        amount: 1500,
+        goods: [],
+        delivery: "14-09-2022"
+    }
+]
 
 const Profile = () => {
     const [firstName, setFirstName] = useState(profile.firstName)
@@ -128,75 +156,57 @@ const Profile = () => {
                     <div className="mt-5 md:col-span-2 md:mt-0">
                         <form action="#" method="POST">
                             <div className="overflow-hidden shadow-xl shadow-gray-500/50 sm:rounded-md">
-                                <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
-                                    <fieldset>
-                                        <legend className="sr-only">By Email</legend>
-                                        <div className="text-base font-medium text-gray-900" aria-hidden="true">
-                                            By Email
-                                        </div>
-                                        <div className="mt-4 space-y-4">
-                                            <div className="flex items-start">
-                                                <div className="flex h-5 items-center">
-                                                    <input
-                                                        id="comments"
-                                                        name="comments"
-                                                        type="checkbox"
-                                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                                    />
+                                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                    <thead
+                                        className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" className="py-3 px-6">
+                                            Номер заказа
+                                        </th>
+                                        <th scope="col" className="py-3 px-6">
+                                            Статус
+                                        </th>
+                                        <th scope="col" className="py-3 px-6">
+                                            Стоимость
+                                        </th>
+                                        <th scope="col" className="py-3 px-6">
+                                            Дата доставки
+                                        </th>
+                                        <th scope="col" className="py-3 px-6">
+                                            Просмотр
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {orders.map(order =>
+                                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                            <th scope="row"
+                                                className="py-4 px-6 font-medium text-zinc-700 whitespace-nowrap dark:text-white">
+                                                {order.id}
+                                            </th>
+                                            <td className="py-4 px-6 text-zinc-700">
+                                                <div className="flex items-center">
+                                                    <div className="h-2.5 w-2.5 rounded-full bg-green-400 mr-2"></div>
+                                                    {order.status}
                                                 </div>
-                                                <div className="ml-3 text-sm">
-                                                    <label htmlFor="comments" className="font-medium text-gray-700">
-                                                        Comments
-                                                    </label>
-                                                    <p className="text-gray-500">Get notified when someones posts a
-                                                        comment on a posting.</p>
-                                                </div>
-                                            </div>
-                                            <div className="flex items-start">
-                                                <div className="flex h-5 items-center">
-                                                    <input
-                                                        id="candidates"
-                                                        name="candidates"
-                                                        type="checkbox"
-                                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                                    />
-                                                </div>
-                                                <div className="ml-3 text-sm">
-                                                    <label htmlFor="candidates" className="font-medium text-gray-700">
-                                                        Candidates
-                                                    </label>
-                                                    <p className="text-gray-500">Get notified when a candidate applies
-                                                        for a job.</p>
-                                                </div>
-                                            </div>
-                                            <div className="flex items-start">
-                                                <div className="flex h-5 items-center">
-                                                    <input
-                                                        id="offers"
-                                                        name="offers"
-                                                        type="checkbox"
-                                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                                    />
-                                                </div>
-                                                <div className="ml-3 text-sm">
-                                                    <label htmlFor="offers" className="font-medium text-gray-700">
-                                                        Offers
-                                                    </label>
-                                                    <p className="text-gray-500">Get notified when a candidate accepts
-                                                        or rejects an offer.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                </div>
-                                <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
-                                    <button
-                                        type="submit"
-                                        className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                                    >
-                                        Save
-                                    </button>
-                                </div>
+                                            </td>
+                                            <td className="py-4 px-6 text-zinc-700">
+                                                {order.amount + " руб."}
+                                            </td>
+                                            <td className="py-4 px-6 text-zinc-700">
+                                                {order.delivery}
+                                            </td>
+                                            <td className="py-4 px-6 text-zinc-700 indent-5">
+                                                <button type="button"
+                                                        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                                    <EyeIcon className="h-3 w-3" aria-hidden="true"/>
+                                                    <span className="sr-only">Просмотр</span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    )}
+                                    </tbody>
+                                </table>
                             </div>
                         </form>
                     </div>
