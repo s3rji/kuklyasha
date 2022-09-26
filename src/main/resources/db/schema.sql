@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS USER_ROLES;
+DROP TABLE IF EXISTS USER_INFO;
 DROP TABLE IF EXISTS USERS;
 DROP TABLE IF EXISTS DOLL;
 
@@ -27,5 +28,19 @@ CREATE TABLE USER_ROLES
     user_id INTEGER NOT NULL,
     role    VARCHAR,
     CONSTRAINT user_roles_idx UNIQUE (user_id, role),
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
+
+CREATE TABLE USER_INFO
+(
+    id        SERIAL PRIMARY KEY,
+    user_id   INTEGER UNIQUE,
+    lastname  VARCHAR,
+    phone     VARCHAR UNIQUE,
+    country   VARCHAR,
+    city      VARCHAR,
+    region    VARCHAR,
+    street    VARCHAR,
+    zipcode   VARCHAR,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
