@@ -1,4 +1,5 @@
 DELETE FROM DOLL;
+DELETE FROM USER_INFO;
 DELETE FROM USERS;
 
 INSERT INTO DOLL (name, description, price, image)
@@ -16,3 +17,7 @@ INSERT INTO USER_ROLES (role, user_id)
 VALUES ('USER', 1),
        ('ADMIN', 2),
        ('USER', 2);
+
+INSERT INTO USER_INFO (user_id, lastname, phone, country, city, region, street, zipcode)
+VALUES (1, 'Pupkin', '+79201112233', 'Россия', 'Москва', 'Москва', 'главная д.5', '123456'),
+       (2, 'Sidorov', '+79251112233', 'Россия', 'Одинцово', 'Московская обл.', 'вторая д.10', '123456');
