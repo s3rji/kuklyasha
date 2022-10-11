@@ -16,11 +16,15 @@ public class UserInfoTestData {
 
     public static final UserInfo userInfo = new UserInfo(user.id(), user, "Pupkin", "+79201112233", userAddress);
 
-    public static UserInfo getNew() {
-        return new UserInfo(null, null, "New", "+79001112233", userAddress);
+    public static UserInfo getNew(User user) {
+        return new UserInfo(null, user, "New", "+79001112233", new Address("Россия", "Москва", "Москва", "главная д.5", "123456"));
     }
 
     public static UserInfo getUpdated() {
-        return new UserInfo(user.id(), user, "Updated", "+79001112244", userAddress);
+        return new UserInfo(user.id(), user, "Updated", "+79001112244", new Address("Россия", "Москва", "Москва", "главная д.5", "123456"));
+    }
+
+    public static UserInfo getUpdatedDuplicate() {
+        return new UserInfo(user.id(), admin, "Updated", "+79001112244", new Address("Россия", "Москва", "Москва", "главная д.5", "123456"));
     }
 }

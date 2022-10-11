@@ -4,6 +4,7 @@ import lombok.extern.slf4j.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
 import org.springframework.security.core.annotation.*;
+import org.springframework.transaction.annotation.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.*;
 import ru.serji.kuklyasha.dto.*;
@@ -14,8 +15,8 @@ import ru.serji.kuklyasha.web.*;
 import javax.validation.*;
 import java.net.*;
 
-import static ru.serji.kuklyasha.web.util.UserUtil.*;
 import static ru.serji.kuklyasha.service.util.ValidationUtil.*;
+import static ru.serji.kuklyasha.web.util.UserUtil.*;
 
 @RestController
 @RequestMapping(value = ProfileController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -25,14 +26,24 @@ public class ProfileController extends AbstractUserController {
 
     static final String REST_URL = "/api/profile";
 
+    private final UserInfoService userInfoService;
+
     @Autowired
-    public ProfileController(UserService userService, UniqueMailValidator emailValidator) {
+    public ProfileController(UserService userService, UniqueMailValidator emailValidator, UserInfoService userInfoService) {
         super(userService, emailValidator);
+        this.userInfoService = userInfoService;
     }
 
     @GetMapping
     public UserTo get(@AuthenticationPrincipal AuthUser authUser) {
-        return createToFromUser(authUser.getUser());
+        User user = authUser.getUser();
+        UserInfo userInfo = userInfoService.getByUser(user)
+                .orElseGet(() -> {
+                    UserInfo ui = new UserInfo(user);
+                    userInfoService.save(ui);
+                    return ui;
+                });
+        return createToFromUser(user, userInfo);
     }
 
     @DeleteMapping
@@ -43,14 +54,18 @@ public class ProfileController extends AbstractUserController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
+    @Transactional
     public ResponseEntity<UserTo> register(@Valid @RequestBody UserTo userTo) {
         log.info("register {}", userTo);
         checkNew(userTo);
         User created = prepareAndSave(createNewFromTo(userTo));
+        UserInfo userInfo = new UserInfo(created);
+        userInfoService.save(userInfo);
+
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL)
                 .build().toUri();
-        return ResponseEntity.created(uriOfNewResource).body(createToFromUser(created));
+        return ResponseEntity.created(uriOfNewResource).body(createToFromUser(created, userInfo));
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

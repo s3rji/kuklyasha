@@ -51,8 +51,7 @@ class UserInfoServiceTest {
     @Test
     void create() {
         User newUser = userService.save(UserTestData.getNew());
-        UserInfo newUserInfo = getNew();
-        newUserInfo.setUser(newUser);
+        UserInfo newUserInfo = getNew(newUser);
         UserInfo created = userInfoService.save(newUserInfo);
         int newId = created.id();
 
@@ -63,8 +62,7 @@ class UserInfoServiceTest {
     @Test
     void createInvalidLastname() {
         User newUser = userService.save(UserTestData.getNew());
-        UserInfo newUserInfo = getNew();
-        newUserInfo.setUser(newUser);
+        UserInfo newUserInfo = getNew(newUser);
         newUserInfo.setLastname("");
 
         assertThrows(ConstraintViolationException.class, () -> userInfoService.save(newUserInfo));
@@ -73,8 +71,7 @@ class UserInfoServiceTest {
     @Test
     void createInvalidPhone() {
         User newUser = userService.save(UserTestData.getNew());
-        UserInfo newUserInfo = getNew();
-        newUserInfo.setUser(newUser);
+        UserInfo newUserInfo = getNew(newUser);
         newUserInfo.setPhone("+7921-28828-11");
 
         assertThrows(ConstraintViolationException.class, () -> userInfoService.save(newUserInfo));
@@ -83,8 +80,7 @@ class UserInfoServiceTest {
     @Test
     void createInvalidAddress() {
         User newUser = userService.save(UserTestData.getNew());
-        UserInfo newUserInfo = getNew();
-        newUserInfo.setUser(newUser);
+        UserInfo newUserInfo = getNew(newUser);
         newUserInfo.getAddress().setZipcode("123-456");
 
         assertThrows(ConstraintViolationException.class, () -> userInfoService.save(newUserInfo));
@@ -108,8 +104,7 @@ class UserInfoServiceTest {
     @Test
     @Transactional(propagation = Propagation.NEVER)
     void duplicateUserUpdated() {
-        UserInfo duplicateUpdated = getUpdated();
-        duplicateUpdated.setUser(UserTestData.admin);
+        UserInfo duplicateUpdated = getUpdatedDuplicate();
         assertThrows(DataAccessException.class, () -> userInfoService.save(duplicateUpdated));
     }
 
@@ -129,19 +124,5 @@ class UserInfoServiceTest {
     void notFoundAfterUserWasDeleting() {
         userService.delete(UserTestData.USER_ID);
         assertTrue(userInfoService.get(USER_INFO_ID).isEmpty());
-    }
-
-    @Test
-    void updateUserAfterUserInfoWasUpdating() {
-        User userUpdated = UserTestData.getUpdated();
-        UserInfo userInfo = userInfoService.get(USER_INFO_ID).get();
-        userInfo.setUser(userUpdated);
-        USER_INFO_MATCHER.assertMatch(userInfoService.get(USER_INFO_ID).get(), userInfo);
-
-        userUpdated.setName("MoreUpdated");
-        USER_INFO_MATCHER.assertMatch(userInfoService.get(USER_INFO_ID).get(), userInfo);
-
-        userInfoService.save(userInfo);
-        UserTestData.USER_MATCHER.assertMatch(userService.get(UserTestData.USER_ID).get(), userUpdated);
     }
 }
