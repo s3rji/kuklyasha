@@ -13,24 +13,27 @@ import javax.validation.constraints.*;
 @NoArgsConstructor
 public class UserInfo extends BaseEntity implements HasId {
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @OneToOne(optional = false)
     @JoinColumn(name = "user_id", unique = true)
     @NotNull
+    @Setter(AccessLevel.NONE)
     private User user;
 
     @Column(name = "lastname")
-    @NotBlank
     @Size(min = 2, max = 128)
     private String lastname;
 
     @Column(name = "phone", unique = true)
-    @NotBlank
     @Pattern(regexp = "^(\\+7)?\\d{3}?\\d{3}?\\d{2}?\\d{2}$")
     private String phone;
 
     @Embedded
     @Valid
     private Address address;
+
+    public UserInfo(User user) {
+        this.user = user;
+    }
 
     public UserInfo(Integer id, User user, String lastname, String phone, Address address) {
         super(id);
