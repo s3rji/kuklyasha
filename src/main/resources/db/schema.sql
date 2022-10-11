@@ -34,7 +34,7 @@ CREATE TABLE USER_ROLES
 CREATE TABLE USER_INFO
 (
     id        SERIAL PRIMARY KEY,
-    user_id   INTEGER UNIQUE,
+    user_id   INTEGER NOT NULL UNIQUE,
     lastname  VARCHAR,
     phone     VARCHAR UNIQUE,
     country   VARCHAR,
