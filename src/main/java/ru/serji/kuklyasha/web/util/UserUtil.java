@@ -28,7 +28,15 @@ public class UserUtil {
         return user;
     }
 
-    public static UserTo createToFromUser(User user) {
-        return new UserTo(user.getId(), user.getName(), user.getEmail(), user.getPassword());
+    public static UserTo createToFromUser(User user, UserInfo userInfo) {
+        return new UserTo(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getPassword(),
+                userInfo.getLastname(),
+                userInfo.getPhone(),
+                userInfo.getAddress()
+        );
     }
 }
