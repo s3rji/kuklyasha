@@ -1,17 +1,9 @@
-import React, {useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {InputField} from "../components/index";
 import {EyeIcon} from '@heroicons/react/outline'
-
-const profile = {
-    firstName: "Marina",
-    lastName: "Shalimova",
-    email: "my@email.ru",
-    phone: "8-921-111-11-11",
-    street: "Some street",
-    city: "Some city",
-    region: "Some region",
-    zipcode: "123456"
-}
+import {get} from "../http/userAPI";
+import {Context} from "../index";
+import {observer} from "mobx-react-lite";
 
 const orders = [
     {
@@ -40,16 +32,34 @@ const orders = [
     }
 ]
 
-const Profile = () => {
-    const [firstName, setFirstName] = useState(profile.firstName)
-    const [lastName, setLastName] = useState(profile.lastName)
-    const [email, setEmail] = useState(profile.email)
-    const [phone, setPhone] = useState(profile.phone)
-    const [street, setStreet] = useState(profile.street)
-    const [city, setCity] = useState(profile.city)
-    const [region, setRegion] = useState(profile.region)
-    const [zipcode, setZipcode] = useState(profile.zipcode)
+const Profile = observer(() => {
+    const {user} = useContext(Context)
+
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [email, setEmail] = useState('')
+    const [phone, setPhone] = useState('')
+    const [country, setCountry] = useState('')
+    const [region, setRegion] = useState('')
+    const [city, setCity] = useState('')
+    const [street, setStreet] = useState('')
+    const [zipcode, setZipcode] = useState('')
     const [readOnly, setReadOnly] = useState(true)
+
+    useEffect(() => {
+        get().then(data => {
+            user.setUser(data)
+            data.name && setFirstName(data.name)
+            data.lastname && setLastName(data.lastname)
+            data.email && setEmail(data.email)
+            data.phone && setPhone(data.phone)
+            data.country && setCountry(data.country)
+            data.region && setRegion(data.region)
+            data.city && setCity(data.city)
+            data.street && setStreet(data.street)
+            data.zipcode && setZipcode(data.zipcode)
+        })
+    }, [user])
 
     return (
         <>
@@ -93,7 +103,7 @@ const Profile = () => {
                                         </div>
                                         <div className="col-span-6 sm:col-span-2">
                                             <InputField type="text" name="country" label="Страна"
-                                                        value={process.env.REACT_APP_COUNTRY_LOCATION}
+                                                        value={country}
                                                         readOnly="true" autoComplete="country-name"
                                             />
                                         </div>
@@ -179,7 +189,8 @@ const Profile = () => {
                                     </thead>
                                     <tbody>
                                     {orders.map(order =>
-                                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                        <tr key={order.id}
+                                            className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                             <th scope="row"
                                                 className="py-4 px-6 font-medium text-zinc-700 whitespace-nowrap dark:text-white">
                                                 {order.id}
@@ -214,6 +225,6 @@ const Profile = () => {
             </div>
         </>
     );
-};
+});
 
 export default Profile;
