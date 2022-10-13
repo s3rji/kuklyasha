@@ -49,15 +49,15 @@ const AboutUs = () => {
                     <p className="mt-2 text-justify max-w-7xl text-xl text-gray-500 lg:mx-auto">
                         Выбираете необычный подарок для коллекционера? Хотите порадовать себя и близких?
                         Ознакомьтесь с ассортиментом нашего каталога. У нас можно купить куклы авторской работы:
-                        <ul className="indent-8 mt-2 text-justify max-w-7xl text-xl text-gray-500 lg:mx-auto">
-                            <li>
-                                • текстильные
-                            </li>
-                            <li>
-                                • будуарные с подвижными элементами.
-                            </li>
-                        </ul>
                     </p>
+                    <ul className="indent-8 mt-2 text-justify max-w-7xl text-xl text-gray-500 lg:mx-auto">
+                        <li>
+                            • текстильные
+                        </li>
+                        <li>
+                            • будуарные с подвижными элементами.
+                        </li>
+                    </ul>
                     <p className="mt-2 text-justify max-w-7xl text-xl text-gray-500 lg:mx-auto">
                         Авторские интерьерные куклы ручной работы изготовлены из качественных материалов, имеют разные
                         размеры.
