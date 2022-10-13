@@ -1,4 +1,4 @@
-import {NavBar, AppRouter, Loading} from "./components/index"
+import {AppRouter, Loading, NavBar} from "./components/index"
 import {BrowserRouter} from "react-router-dom";
 import {observer} from "mobx-react-lite";
 import {useContext, useEffect, useState} from "react";
@@ -10,8 +10,7 @@ const App = observer(() => {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        check().then(data => {
-            user.setUser(data)
+        check().then(() => {
             user.setIsAuth(true)
         }).finally(() => setLoading(false))
     }, [])
