@@ -3,7 +3,7 @@ import {Menu, Transition} from "@headlessui/react";
 import {NavLink} from "react-router-dom";
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
-import {CATALOG_ROUTE, PROFILE_ROUTE} from "../utils/consts";
+import {CATALOG_ROUTE, PROFILE_ROUTE, SETTINGS_ROUTE} from "../utils/consts";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -57,7 +57,7 @@ const ProfileDropdown = observer(() => {
                     <Menu.Item>
                         {({active}) => (
                             <NavLink
-                                to={"#"}
+                                to={SETTINGS_ROUTE}
                                 className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                             >
                                 Настройки
