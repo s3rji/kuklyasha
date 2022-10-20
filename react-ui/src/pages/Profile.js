@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import {InputField} from "../components/index";
 import {EyeIcon} from '@heroicons/react/outline'
-import {get} from "../http/userAPI";
+import {get, update} from "../http/userAPI";
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
 
@@ -40,8 +40,8 @@ const Profile = observer(() => {
     const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
     const [country, setCountry] = useState('')
-    const [region, setRegion] = useState('')
     const [city, setCity] = useState('')
+    const [region, setRegion] = useState('')
     const [street, setStreet] = useState('')
     const [zipcode, setZipcode] = useState('')
     const [readOnly, setReadOnly] = useState(true)
@@ -60,6 +60,25 @@ const Profile = observer(() => {
             data.zipcode && setZipcode(data.zipcode)
         })
     }, [user])
+
+    const saveChanges = () => {
+        setReadOnly(!readOnly)
+        user.user.name = firstName
+        user.user.email = email
+        user.user.password = "ignored"
+        user.user.lastname = lastName
+        user.user.phone = phone
+        user.user.country = country
+        user.user.city = city
+        user.user.region = region
+        user.user.street = street
+        user.user.zipcode = zipcode
+        try {
+            update(user.user).then(future => {})
+        } catch (e) {
+            alert(e.response.data.message)
+        }
+    }
 
     return (
         <>
@@ -137,7 +156,7 @@ const Profile = observer(() => {
                                 <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                                     <button
                                         type="button"
-                                        onClick={() => setReadOnly(!readOnly)}
+                                        onClick={readOnly ? () => setReadOnly(!readOnly) : saveChanges}
                                         className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                     >
                                         {readOnly ? "Изменить" : "Сохранить"}

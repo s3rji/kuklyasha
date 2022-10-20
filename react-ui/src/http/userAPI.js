@@ -21,3 +21,6 @@ export const get = async () => {
     const {data} = await $authHost.get('api/profile' )
     return data
 }
+export const update = async (user) => {
+    await $authHost.put('api/profile', user)
+}
