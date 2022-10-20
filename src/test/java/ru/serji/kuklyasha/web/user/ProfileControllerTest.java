@@ -83,7 +83,8 @@ class ProfileControllerTest extends AbstractControllerTest {
 
     @Test
     void registerInvalid() throws Exception {
-        UserTo newTo = new UserTo(null, null, null, null, null, null, new Address());
+        UserTo newTo = new UserTo(null, null, null, null, null, null,
+                null, null, null, null, null);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonFromObject(newTo)))
@@ -94,7 +95,8 @@ class ProfileControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_EMAIL)
     void updateInvalid() throws Exception {
-        UserTo updatedTo = new UserTo(null, null, "password", null, null, null, new Address());
+        UserTo updatedTo = new UserTo(null, null, "password", null, null, null,
+                null, null, null, null, null);
         perform(MockMvcRequestBuilders.put(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonFromObject(updatedTo)))
@@ -105,7 +107,9 @@ class ProfileControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_EMAIL)
     void updateDuplicate() throws Exception {
-        UserTo updatedTo = new UserTo(null, "newName", ADMIN_EMAIL, "newPassword", "newLastname", "+79001112233", UserInfoTestData.userAddress);
+        User updated = getUpdated();
+        updated.setEmail(ADMIN_EMAIL);
+        UserTo updatedTo = UserUtil.createToFromUser(updated, UserInfoTestData.userInfo);
         perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(updatedTo, "newPassword")))
                 .andDo(print())
