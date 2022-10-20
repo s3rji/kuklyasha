@@ -29,6 +29,22 @@ public class UserUtil {
     }
 
     public static UserTo createToFromUser(User user, UserInfo userInfo) {
+        if (userInfo.getAddress() == null) {
+            return new UserTo(
+                    user.getId(),
+                    user.getName(),
+                    user.getEmail(),
+                    user.getPassword(),
+                    userInfo.getLastname(),
+                    userInfo.getPhone(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+        }
+
         return new UserTo(
                 user.getId(),
                 user.getName(),
@@ -36,7 +52,11 @@ public class UserUtil {
                 user.getPassword(),
                 userInfo.getLastname(),
                 userInfo.getPhone(),
-                userInfo.getAddress()
+                userInfo.getAddress().getCountry(),
+                userInfo.getAddress().getCity(),
+                userInfo.getAddress().getRegion(),
+                userInfo.getAddress().getStreet(),
+                userInfo.getAddress().getZipcode()
         );
     }
 }

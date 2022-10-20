@@ -41,25 +41,18 @@ public class UserTo extends NamedTo implements HasIdAndEmail {
     @Pattern(regexp = "^\\d{6}$")
     String zipcode;
 
-    public UserTo(Integer id, String name, String email, String password, String lastname, String phone, Address address) {
+    public UserTo(Integer id, String name, String email, String password, String lastname, String phone, String country,
+                  String city, String region, String street, String zipcode) {
         super(id, name);
         this.email = email;
         this.password = password;
         this.lastname = lastname;
         this.phone = phone;
-        if (address != null) {
-            this.country = address.getCountry();
-            this.city = address.getCity();
-            this.region = address.getRegion();
-            this.street = address.getStreet();
-            this.zipcode = address.getZipcode();
-        } else {
-            this.country = null;
-            this.city = null;
-            this.region = null;
-            this.street = null;
-            this.zipcode = null;
-        }
+        this.country = country;
+        this.city = city;
+        this.region = region;
+        this.street = street;
+        this.zipcode = zipcode;
     }
 
     @Override
