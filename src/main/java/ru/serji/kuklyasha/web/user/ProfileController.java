@@ -26,24 +26,15 @@ public class ProfileController extends AbstractUserController {
 
     static final String REST_URL = "/api/profile";
 
-    private final UserInfoService userInfoService;
-
     @Autowired
-    public ProfileController(UserService userService, UniqueMailValidator emailValidator, UserInfoService userInfoService) {
+    public ProfileController(UserService userService, UniqueMailValidator emailValidator) {
         super(userService, emailValidator);
-        this.userInfoService = userInfoService;
     }
 
     @GetMapping
     public UserTo get(@AuthenticationPrincipal AuthUser authUser) {
         User user = authUser.getUser();
-        UserInfo userInfo = userInfoService.getByUser(user)
-                .orElseGet(() -> {
-                    UserInfo ui = new UserInfo(user);
-                    userInfoService.save(ui);
-                    return ui;
-                });
-        return createToFromUser(user, userInfo);
+        return createToFromUser(user);
     }
 
     @DeleteMapping
@@ -59,13 +50,11 @@ public class ProfileController extends AbstractUserController {
         log.info("register {}", userTo);
         checkNew(userTo);
         User created = prepareAndSave(createNewFromTo(userTo));
-        UserInfo userInfo = new UserInfo(created);
-        userInfoService.save(userInfo);
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL)
                 .build().toUri();
-        return ResponseEntity.created(uriOfNewResource).body(createToFromUser(created, userInfo));
+        return ResponseEntity.created(uriOfNewResource).body(createToFromUser(created));
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

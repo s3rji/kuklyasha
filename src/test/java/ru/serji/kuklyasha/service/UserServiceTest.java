@@ -73,6 +73,21 @@ class UserServiceTest {
     }
 
     @Test
+    void createInvalidPhone() {
+        User newUser = getNew();
+        newUser.getInfo().setPhone("8999-123-4455");
+        assertThrows(ConstraintViolationException.class, () -> userService.save(newUser));
+    }
+
+    @Test
+    void createInvalidZipcode() {
+        User newUser = getNew();
+        newUser.getInfo().getAddress().setZipcode("123-456");
+
+        assertThrows(ConstraintViolationException.class, () -> userService.save(newUser));
+    }
+
+    @Test
     void update() {
         User updatedUser = getUpdated();
         userService.save(updatedUser);
@@ -84,6 +99,14 @@ class UserServiceTest {
     void duplicateEmailUpdated() {
         User duplicateUpdated = getUpdated();
         duplicateUpdated.setEmail(ADMIN_EMAIL);
+        assertThrows(DataAccessException.class, () -> userService.save(duplicateUpdated));
+    }
+
+    @Test
+    @Transactional(propagation = Propagation.NEVER)
+    void duplicatePhoneUpdated() {
+        User duplicateUpdated = getUpdated();
+        duplicateUpdated.getInfo().setPhone(ADMIN_PHONE);
         assertThrows(DataAccessException.class, () -> userService.save(duplicateUpdated));
     }
 

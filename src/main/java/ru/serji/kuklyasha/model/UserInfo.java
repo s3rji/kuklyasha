@@ -6,18 +6,11 @@ import javax.persistence.*;
 import javax.validation.*;
 import javax.validation.constraints.*;
 
-@Entity
-@Table(name = "user_info")
+@Embeddable
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserInfo extends BaseEntity implements HasId {
-
-    @OneToOne(optional = false)
-    @JoinColumn(name = "user_id", unique = true)
-    @NotNull
-    @Setter(AccessLevel.NONE)
-    private User user;
+public class UserInfo {
 
     @Column(name = "lastname")
     @Size(min = 2, max = 128)
@@ -31,13 +24,7 @@ public class UserInfo extends BaseEntity implements HasId {
     @Valid
     private Address address;
 
-    public UserInfo(User user) {
-        this.user = user;
-    }
-
-    public UserInfo(Integer id, User user, String lastname, String phone, Address address) {
-        super(id);
-        this.user = user;
+    public UserInfo(String lastname, String phone, Address address) {
         this.lastname = lastname;
         this.phone = phone;
         this.address = address;

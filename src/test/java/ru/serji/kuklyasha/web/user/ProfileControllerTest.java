@@ -6,7 +6,6 @@ import org.springframework.http.*;
 import org.springframework.security.test.context.support.*;
 import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.request.*;
-import ru.serji.kuklyasha.*;
 import ru.serji.kuklyasha.dto.*;
 import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.service.*;
@@ -30,7 +29,7 @@ class ProfileControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(USER_TO_MATCHER.contentJson(UserUtil.createToFromUser(user, UserInfoTestData.userInfo)));
+                .andExpect(USER_TO_MATCHER.contentJson(UserUtil.createToFromUser(user)));
     }
 
     @Test
@@ -50,7 +49,7 @@ class ProfileControllerTest extends AbstractControllerTest {
     @Test
     void register() throws Exception {
         User newUser = getNew();
-        UserTo newTo = UserUtil.createToFromUser(newUser, new UserInfo(newUser));
+        UserTo newTo = UserUtil.createToFromUser(newUser);
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(newTo, "newPassword")))
@@ -70,8 +69,7 @@ class ProfileControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = USER_EMAIL)
     void update() throws Exception {
         User updatedUser = getUpdated();
-        UserInfo userInfo = UserInfoTestData.getUpdated();
-        UserTo updatedTo = UserUtil.createToFromUser(updatedUser, userInfo);
+        UserTo updatedTo = UserUtil.createToFromUser(updatedUser);
         perform(MockMvcRequestBuilders.put(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(updatedTo, "newPassword")))
@@ -109,7 +107,7 @@ class ProfileControllerTest extends AbstractControllerTest {
     void updateDuplicate() throws Exception {
         User updated = getUpdated();
         updated.setEmail(ADMIN_EMAIL);
-        UserTo updatedTo = UserUtil.createToFromUser(updated, UserInfoTestData.userInfo);
+        UserTo updatedTo = UserUtil.createToFromUser(updated);
         perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(updatedTo, "newPassword")))
                 .andDo(print())

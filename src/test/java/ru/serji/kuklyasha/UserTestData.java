@@ -20,19 +20,38 @@ public class UserTestData {
     public static final int NOT_FOUND = 1000;
 
     public static final String USER_EMAIL = "user@yandex.ru";
+    public static final String USER_PHONE = "+79201112233";
 
     public static final String ADMIN_EMAIL = "admin@gmail.com";
+    public static final String ADMIN_PHONE = "+79251112233";
 
-    public static final User user = new User(USER_ID, "User", USER_EMAIL, "password", Role.USER);
 
-    public static final User admin = new User(ADMIN_ID, "Admin", ADMIN_EMAIL, "admin", Role.ADMIN, Role.USER);
+    public static final Address userAddress = new Address("Россия", "Москва", "Москва", "главная д.5", "123456");
+
+    public static final UserInfo userInfo = new UserInfo("Pupkin", USER_PHONE, userAddress);
+
+    public static final User user = new User(USER_ID, "User", USER_EMAIL, "password", userInfo, Role.USER);
+
+    public static final Address adminAddress = new Address("Россия", "Одинцово", "Московская обл.", "вторая д.10", "123456");
+
+    public static final UserInfo adminInfo = new UserInfo("Sidorov", ADMIN_PHONE, adminAddress);
+
+    public static final User admin = new User(ADMIN_ID, "Admin", ADMIN_EMAIL, "admin", adminInfo, Role.ADMIN, Role.USER);
 
     public static User getNew() {
-        return new User(null, "New", "new@gmail.com", "newPass", true, LocalDateTime.now(), Collections.singleton(Role.USER));
+        return new User(null, "New", "new@gmail.com", "newPass", getNewUserInfo(), true, LocalDateTime.now(), Collections.singleton(Role.USER));
+    }
+
+    public static UserInfo getNewUserInfo() {
+        return new UserInfo("newLastname", "+71112223344", getNewAddress());
+    }
+
+    public static Address getNewAddress() {
+        return new Address("newCountry", "newCity", "newRegion", "newStreet", "777888");
     }
 
     public static User getUpdated() {
-        return new User(USER_ID, "UpdatedName", USER_EMAIL, "newPass", true, LocalDateTime.now(), Collections.singleton(Role.ADMIN));
+        return new User(USER_ID, "UpdatedName", USER_EMAIL, "newPass", getNewUserInfo(), true, LocalDateTime.now(), Collections.singleton(Role.ADMIN));
     }
 
     public static String jsonWithPassword(UserTo userTo, String password) {
