@@ -17,7 +17,7 @@ public class UserInfo {
     private String lastname;
 
     @Column(name = "phone", unique = true)
-    @Pattern(regexp = "^(\\+7)?\\d{3}?\\d{3}?\\d{2}?\\d{2}$")
+    @Pattern(regexp = "^(7)?\\d{3}?\\d{3}?\\d{2}?\\d{2}$")
     private String phone;
 
     @Embedded

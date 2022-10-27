@@ -23,7 +23,7 @@ public class UserTo extends NamedTo implements HasIdAndEmail {
     @Size(min = 2, max = 128)
     String lastname;
 
-    @Pattern(regexp = "^(\\+7)?\\d{3}?\\d{3}?\\d{2}?\\d{2}$")
+    @Pattern(regexp = "^(7)?\\d{3}?\\d{3}?\\d{2}?\\d{2}$")
     String phone;
 
     @Size(min = 2, max = 64)

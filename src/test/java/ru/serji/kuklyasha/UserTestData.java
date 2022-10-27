@@ -20,10 +20,10 @@ public class UserTestData {
     public static final int NOT_FOUND = 1000;
 
     public static final String USER_EMAIL = "user@yandex.ru";
-    public static final String USER_PHONE = "+79201112233";
+    public static final String USER_PHONE = "79201112233";
 
     public static final String ADMIN_EMAIL = "admin@gmail.com";
-    public static final String ADMIN_PHONE = "+79251112233";
+    public static final String ADMIN_PHONE = "79251112233";
 
 
     public static final Address userAddress = new Address("Россия", "Москва", "Москва", "главная д.5", "123456");
@@ -43,7 +43,7 @@ public class UserTestData {
     }
 
     public static UserInfo getNewUserInfo() {
-        return new UserInfo("newLastname", "+71112223344", getNewAddress());
+        return new UserInfo("newLastname", "71112223344", getNewAddress());
     }
 
     public static Address getNewAddress() {
