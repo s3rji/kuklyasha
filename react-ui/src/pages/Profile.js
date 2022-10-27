@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import {InputField} from "../components/index";
+import {InputField, InputPhone} from "../components/index";
 import {EyeIcon} from '@heroicons/react/outline'
 import {get, update} from "../http/userAPI";
 import {Context} from "../index";
@@ -46,6 +46,17 @@ const Profile = observer(() => {
     const [zipcode, setZipcode] = useState('')
     const [readOnly, setReadOnly] = useState(true)
 
+    const [firstnameErr, setFirstnameErr] = useState('')
+    const [lastnameErr, setLastnameErr] = useState('')
+    const [emailErr, setEmailErr] = useState('')
+    const [phoneErr, setPhoneErr] = useState('')
+    const [streetErr, setStreetErr] = useState('')
+    const [cityErr, setCityErr] = useState('')
+    const [regionErr, setRegionErr] = useState('')
+    const [zipcodeErr, setZipcodeErr] = useState('')
+    const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    const zipcodeRegex = /(^\d{6}$)/
+
     useEffect(() => {
         get().then(data => {
             user.setUser(data)
@@ -62,6 +73,10 @@ const Profile = observer(() => {
     }, [user])
 
     const saveChanges = () => {
+        if (validationFailed()) {
+            return
+        }
+
         setReadOnly(!readOnly)
         user.user.name = firstName
         user.user.email = email
@@ -74,10 +89,58 @@ const Profile = observer(() => {
         user.user.street = street
         user.user.zipcode = zipcode
         try {
-            update(user.user).then(future => {})
+            console.log(phone)
+            update(user.user).then(future => {
+            })
         } catch (e) {
             alert(e.response.data.message)
         }
+    }
+
+    const validationFailed = () => {
+        setFirstnameErr('')
+        setLastnameErr('')
+        setEmailErr('')
+        setPhoneErr('')
+        setStreetErr('')
+        setCityErr('')
+        setRegionErr('')
+        setZipcodeErr('')
+        let hasErrors = false;
+        if (firstName.length < 2) {
+            setFirstnameErr("Не менее двух символов")
+            hasErrors = true
+        }
+        if (lastName.length < 2) {
+            setLastnameErr("Не менее двух символов")
+            hasErrors = true
+        }
+        if (!email.toLowerCase().match(emailRegex)) {
+            setEmailErr("Неверный формат электронной почты")
+            hasErrors = true
+        }
+        if (phone.length !== 11) {
+            setPhoneErr("Введите 10 цифр номера без +7")
+            hasErrors = true
+        }
+        if (street.length < 2) {
+            setStreetErr("Не менее двух символов")
+            hasErrors = true
+        }
+        if (city.length < 2) {
+            setCityErr("Не менее двух символов")
+            hasErrors = true
+        }
+        if (region.length < 2) {
+            setRegionErr("Не менее двух символов")
+            hasErrors = true
+        }
+        if (!zipcode.match(zipcodeRegex)) {
+            setZipcodeErr("Почтовый индекс должен состоять из 6 цифр")
+            hasErrors = true
+        }
+
+        return hasErrors
     }
 
     return (
@@ -100,25 +163,29 @@ const Profile = observer(() => {
                                             <InputField type="text" name="first-name" label="Имя" value={firstName}
                                                         readOnly={readOnly} autoComplete="given-name"
                                                         setValue={e => setFirstName(e.target.value)}
+                                                        error={firstnameErr}
                                             />
                                         </div>
                                         <div className="col-span-6 sm:col-span-3">
                                             <InputField type="text" name="last-name" label="Фамилия" value={lastName}
                                                         readOnly={readOnly} autoComplete="family-name"
                                                         setValue={e => setLastName(e.target.value)}
+                                                        error={lastnameErr}
                                             />
                                         </div>
                                         <div className="col-span-6 sm:col-span-3">
                                             <InputField type="email" name="email-address" label="Имейл" value={email}
                                                         readOnly={readOnly} autoComplete="email"
                                                         setValue={e => setEmail(e.target.value)}
+                                                        error={emailErr}
                                             />
                                         </div>
                                         <div className="col-span-6 sm:col-span-3">
-                                            <InputField type="tel" name="phone" label="Телефон" value={phone}
-                                                        readOnly={readOnly} autoComplete="phone"
-                                                        setValue={e => setPhone(e.target.value)}
+                                            <InputPhone name="phone" label="Телефон" value={phone}
+                                                        readOnly={readOnly} setValue={e => setPhone(e)}
+                                                        error={phoneErr}
                                             />
+
                                         </div>
                                         <div className="col-span-6 sm:col-span-2">
                                             <InputField type="text" name="country" label="Страна"
@@ -130,18 +197,21 @@ const Profile = observer(() => {
                                             <InputField type="text" name="street-address" label="Адрес" value={street}
                                                         readOnly={readOnly} autoComplete="street-address"
                                                         setValue={e => setStreet(e.target.value)}
+                                                        error={streetErr}
                                             />
                                         </div>
                                         <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                                             <InputField type="text" name="city" label="Город" value={city}
                                                         readOnly={readOnly} autoComplete="address-level2"
                                                         setValue={e => setCity(e.target.value)}
+                                                        error={cityErr}
                                             />
                                         </div>
                                         <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                                             <InputField type="text" name="region" label="Область" value={region}
                                                         readOnly={readOnly} autoComplete="address-level1"
                                                         setValue={e => setRegion(e.target.value)}
+                                                        error={regionErr}
                                             />
                                         </div>
                                         <div className="col-span-6 sm:col-span-3 lg:col-span-2">
@@ -149,6 +219,7 @@ const Profile = observer(() => {
                                                         value={zipcode}
                                                         readOnly={readOnly} autoComplete="postal-code"
                                                         setValue={e => setZipcode(e.target.value)}
+                                                        error={zipcodeErr}
                                             />
                                         </div>
                                     </div>
