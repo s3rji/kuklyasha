@@ -104,9 +104,21 @@ class ProfileControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = USER_EMAIL)
-    void updateDuplicate() throws Exception {
+    void updateDuplicateEmail() throws Exception {
         User updated = getUpdated();
         updated.setEmail(ADMIN_EMAIL);
+        UserTo updatedTo = UserUtil.createToFromUser(updated);
+        perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
+                .content(jsonWithPassword(updatedTo, "newPassword")))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @WithUserDetails(value = USER_EMAIL)
+    void updateDuplicatePhone() throws Exception {
+        User updated = getUpdated();
+        updated.setEmail(ADMIN_PHONE);
         UserTo updatedTo = UserUtil.createToFromUser(updated);
         perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(updatedTo, "newPassword")))

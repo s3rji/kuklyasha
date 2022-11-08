@@ -27,7 +27,7 @@ public class ProfileController extends AbstractUserController {
     static final String REST_URL = "/api/profile";
 
     @Autowired
-    public ProfileController(UserService userService, UniqueMailValidator emailValidator) {
+    public ProfileController(UserService userService, UniqueMailAndPhoneValidator emailValidator) {
         super(userService, emailValidator);
     }
 

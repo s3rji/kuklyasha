@@ -11,4 +11,7 @@ public interface UserRepository extends BaseRepository<User> {
 
     @Query("SELECT u FROM User u WHERE u.email = LOWER(:email)")
     Optional<User> findByEmailIgnoreCase(String email);
+
+    @Query("SELECT u FROM User u WHERE u.info.phone = :phone")
+    Optional<User> findByPhone(String phone);
 }

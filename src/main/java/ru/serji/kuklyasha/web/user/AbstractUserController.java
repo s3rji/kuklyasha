@@ -13,9 +13,9 @@ public abstract class AbstractUserController {
 
     protected final UserService userService;
 
-    private final UniqueMailValidator validator;
+    private final UniqueMailAndPhoneValidator validator;
 
-    public AbstractUserController(UserService userService, UniqueMailValidator validator) {
+    public AbstractUserController(UserService userService, UniqueMailAndPhoneValidator validator) {
         this.userService = userService;
         this.validator = validator;
     }

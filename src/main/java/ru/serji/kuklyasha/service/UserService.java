@@ -9,6 +9,8 @@ public interface UserService {
 
     Optional<User> getByEmailIgnoreCase(String email);
 
+    Optional<User> getByPhone(String phone);
+
     List<User> getAll();
 
     User save(User user);

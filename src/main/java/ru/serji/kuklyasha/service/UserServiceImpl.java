@@ -28,6 +28,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<User> getByPhone(String phone) {
+        return userRepository.findByPhone(phone);
+    }
+
+    @Override
     public List<User> getAll() {
         return userRepository.findAll();
     }
