@@ -1,5 +1,7 @@
+DELETE FROM ORDER_DOLL;
 DELETE FROM DOLL;
 DELETE FROM USERS;
+DELETE FROM ORDERS;
 
 INSERT INTO DOLL (name, description, price, image)
 VALUES ('Doll1', 'Pretty Doll', 100.00, '/image1'),
@@ -18,3 +20,13 @@ INSERT INTO USER_ROLES (role, user_id)
 VALUES ('USER', 1),
        ('ADMIN', 2),
        ('USER', 2);
+
+INSERT INTO ORDERS (user_id, status, status_modified, total)
+VALUES (1, 'NEW', '31.10.2022', 500.00);
+
+INSERT INTO ORDER_DOLL (order_id, doll_id)
+VALUES (1, 1),
+       (1, 2),
+       (1, 3),
+       (1, 4),
+       (1, 5);
