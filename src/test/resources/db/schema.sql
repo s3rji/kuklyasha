@@ -53,7 +53,7 @@ CREATE TABLE ORDERS
 CREATE TABLE ORDER_DOLL
 (
     order_id INTEGER NOT NULL,
-    doll_id INTEGER NOT NULL,
+    doll_id  INTEGER NOT NULL,
     PRIMARY KEY (order_id, doll_id),
     FOREIGN KEY (order_id) REFERENCES orders (id) ON DELETE CASCADE,
     FOREIGN KEY (doll_id) REFERENCES doll (id)

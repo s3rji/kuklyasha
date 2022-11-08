@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS ORDER_DOLL;
+DROP TABLE IF EXISTS ORDERS;
 DROP TABLE IF EXISTS USER_ROLES;
 DROP TABLE IF EXISTS USERS;
 DROP TABLE IF EXISTS DOLL;
@@ -35,4 +37,24 @@ CREATE TABLE USER_ROLES
     role    VARCHAR,
     CONSTRAINT user_roles_idx UNIQUE (user_id, role),
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
+
+CREATE TABLE ORDERS
+(
+    id              SERIAL PRIMARY KEY,
+    user_id         INTEGER                 NOT NULL,
+    status          VARCHAR                 NOT NULL,
+    status_modified TIMESTAMP DEFAULT now() NOT NULL,
+    total           NUMERIC(10, 2)          NOT NULL,
+    created         TIMESTAMP DEFAULT now() NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
+
+CREATE TABLE ORDER_DOLL
+(
+    order_id INTEGER NOT NULL,
+    doll_id  INTEGER NOT NULL,
+    PRIMARY KEY (order_id, doll_id),
+    FOREIGN KEY (order_id) REFERENCES orders (id) ON DELETE CASCADE,
+    FOREIGN KEY (doll_id) REFERENCES doll (id)
 );
