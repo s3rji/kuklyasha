@@ -9,16 +9,16 @@ import javax.validation.constraints.*;
 import java.math.*;
 import java.time.*;
 
+@Entity
+@Table(name = "doll")
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-@Table(name = "Doll")
 public class Doll extends BaseEntity implements HasIdAndName {
 
+    @Column(name = "name", nullable = false, unique = true)
     @NotBlank
     @Size(min = 2, max = 128)
-    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @Column(name = "description", nullable = false)
@@ -35,7 +35,7 @@ public class Doll extends BaseEntity implements HasIdAndName {
     @Column(name = "image")
     private String image;
 
-    @Column(name = "created", nullable = false)
+    @Column(name = "created", nullable = false, updatable = false)
     @NotNull
     private LocalDateTime created;
 
