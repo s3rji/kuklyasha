@@ -10,6 +10,7 @@ CREATE TABLE DOLL
     name        VARCHAR UNIQUE          NOT NULL,
     description VARCHAR                 NOT NULL,
     price       NUMERIC(8, 2)           NOT NULL,
+    quatity     INTEGER   DEFAULT 0     NOT NULL,
     image       VARCHAR                 NOT NULL,
     created     TIMESTAMP DEFAULT now() NOT NULL
 );

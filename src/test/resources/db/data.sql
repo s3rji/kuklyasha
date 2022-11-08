@@ -3,12 +3,12 @@ DELETE FROM DOLL;
 DELETE FROM USERS;
 DELETE FROM ORDERS;
 
-INSERT INTO DOLL (name, description, price, image)
-VALUES ('Doll1', 'Pretty Doll', 100.00, '/image1'),
-       ('Doll2', 'Pretty Doll', 100.00, '/image2'),
-       ('Doll3', 'Pretty Doll', 100.00, '/image3'),
-       ('Doll4', 'Pretty Doll', 100.00, '/image4'),
-       ('Doll5', 'Pretty Doll', 100.00, '/image5');
+INSERT INTO DOLL (name, description, price, quatity, image)
+VALUES ('Doll1', 'Pretty Doll', 100.00, 1, '/image1'),
+       ('Doll2', 'Pretty Doll', 100.00, 1, '/image2'),
+       ('Doll3', 'Pretty Doll', 100.00, 1, '/image3'),
+       ('Doll4', 'Pretty Doll', 100.00, 1, '/image4'),
+       ('Doll5', 'Pretty Doll', 100.00, 1, '/image5');
 
 INSERT INTO USERS (name, email, password, lastname, phone, country, city, region, street, zipcode)
 VALUES ('User', 'user@yandex.ru', '{bcrypt}$2a$10$zAJ7/voOp9SwObfHN4CBLe/9KDnx.b/0TRcU53NzmmxuErVP15rWu', 'Pupkin',

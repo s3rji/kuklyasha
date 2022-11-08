@@ -32,6 +32,11 @@ public class Doll extends BaseEntity implements HasIdAndName {
     @Digits(integer = 6, fraction = 2)
     private BigDecimal price;
 
+    @Column(name = "quatity", nullable = false)
+    @NotNull
+    @Range(min = 0)
+    private Integer quatity;
+
     @Column(name = "image")
     private String image;
 
@@ -39,12 +44,13 @@ public class Doll extends BaseEntity implements HasIdAndName {
     @NotNull
     private LocalDateTime created;
 
-    public Doll(Integer id, String name, String description, BigDecimal price, String image, LocalDateTime created) {
+    public Doll(Integer id, String name, String description, BigDecimal price, Integer quatity, String image) {
         super(id);
         this.name = name;
         this.description = description;
         this.price = price;
+        this.quatity = quatity;
         this.image = image;
-        this.created = created;
+        this.created = LocalDateTime.now();
     }
 }
