@@ -42,7 +42,7 @@ public class DollController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Doll> get(@PathVariable int id) {
+    public ResponseEntity<Doll> get(@PathVariable("id") int id) {
         log.info("get doll {}", id);
         return ResponseEntity.of(dollService.get(id));
     }
@@ -69,6 +69,7 @@ public class DollController {
         Objects.requireNonNull(doll, "doll must not be null");
         checkNew(doll);
         Doll created = dollService.save(doll);
+
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
