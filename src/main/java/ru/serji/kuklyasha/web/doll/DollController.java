@@ -54,7 +54,7 @@ public class DollController {
     }
 
     @GetMapping(params = {"page", "limit"})
-    @Transactional
+    @Transactional(readOnly = true)
     public ResponseEntity<DollPage> getLimitByPage(@RequestParam int page, @RequestParam int limit) {
         log.info("get dolls by page {} and limit {}", page, limit);
         List<Doll> content = dollService.getLimitByPage(page, limit);
