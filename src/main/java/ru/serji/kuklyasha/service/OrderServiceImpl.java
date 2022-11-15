@@ -7,6 +7,8 @@ import ru.serji.kuklyasha.repository.*;
 
 import java.util.*;
 
+import static ru.serji.kuklyasha.service.util.ValidationUtil.*;
+
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -18,22 +20,26 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Optional<Order> get(int id) {
-        return repository.findById(id);
+    public Optional<Order> get(int id, User user) {
+        return repository.findByIdAndUser(id, user);
     }
 
     @Override
-    public List<Order> getAllByUser(User user) {
+    public List<Order> getAll(User user) {
         return repository.findAllByUser(user);
     }
 
     @Override
-    public Order save(Order order) {
+    public Order save(Order order, User user) {
+        if (order.getId() != null) {
+            int id = order.id();
+            checkNotFoundWithId(get(id, user).orElse(null), id);
+        }
         return repository.save(order);
     }
 
     @Override
-    public void delete(int id) {
-        repository.deleteExisted(id);
+    public void delete(int id, User user) {
+        checkModification(repository.deleteByIdAndUser(id, user), id);
     }
 }

@@ -6,11 +6,11 @@ import java.util.*;
 
 public interface OrderService {
 
-    Optional<Order> get(int id);
+    Optional<Order> get(int id, User user);
 
-    List<Order> getAllByUser(User user);
+    List<Order> getAll(User user);
 
-    Order save(Order order);
+    Order save(Order order, User user);
 
-    void delete(int id);
+    void delete(int id, User user);
 }
