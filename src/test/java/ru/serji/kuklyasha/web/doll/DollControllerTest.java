@@ -137,17 +137,4 @@ class DollControllerTest extends AbstractControllerTest {
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(EXCEPTION_DUPLICATE_NAME)));
     }
-
-    @Test
-    void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + DOLL_ID))
-                .andExpect(status().isNoContent());
-        assertThat(dollService.get(DOLL_ID).isEmpty()).isTrue();
-    }
-
-    @Test
-    void deleteNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + NOT_FOUND))
-                .andExpect(status().isUnprocessableEntity());
-    }
 }

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.context.*;
 import org.springframework.dao.*;
 import org.springframework.transaction.annotation.*;
-import ru.serji.kuklyasha.error.*;
 import ru.serji.kuklyasha.model.*;
 
 import javax.validation.*;
@@ -80,17 +79,5 @@ class DollServiceTest {
         Doll duplicateUpdated = getUpdated();
         duplicateUpdated.setName("Doll2");
         assertThrows(DataAccessException.class, () -> dollService.save(duplicateUpdated));
-    }
-
-    @Test
-    void delete() {
-        dollService.delete(DOLL_ID);
-        assertThrows(IllegalRequestDataException.class, () -> dollService.delete(DOLL_ID));
-        assertTrue(dollService.get(DOLL_ID).isEmpty());
-    }
-
-    @Test
-    void deleteNotFound() {
-        assertThrows(IllegalRequestDataException.class, () -> dollService.delete(NOT_FOUND));
     }
 }
