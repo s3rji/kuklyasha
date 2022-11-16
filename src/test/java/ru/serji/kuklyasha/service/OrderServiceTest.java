@@ -47,7 +47,7 @@ class OrderServiceTest {
     @Test
     void getAllByUser() {
         List<Order> actual = orderService.getAll(user);
-        ORDER_MATCHER.assertMatch(actual, order);
+        ORDER_MATCHER.assertMatch(actual, order, order1);
         actual.forEach(order -> {
             User actualUser = (User) Hibernate.unproxy(order.getUser());
             USER_MATCHER.assertMatch(actualUser, user);

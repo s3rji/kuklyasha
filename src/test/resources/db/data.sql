@@ -22,11 +22,13 @@ VALUES ('USER', 1),
        ('USER', 2);
 
 INSERT INTO ORDERS (user_id, status, status_modified, total)
-VALUES (1, 'NEW', '31.10.2022', 500.00);
+VALUES (1, 'NEW', '31.10.2022', 500.00),
+       (1, 'DONE', '31.10.2022', 100.00);
 
 INSERT INTO ORDER_DOLL (order_id, doll_id)
 VALUES (1, 1),
        (1, 2),
        (1, 3),
        (1, 4),
-       (1, 5);
+       (1, 5),
+       (2, 1);
