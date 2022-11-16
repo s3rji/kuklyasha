@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.*;
 import ru.serji.kuklyasha.dto.*;
-import ru.serji.kuklyasha.error.*;
 import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.service.*;
 import ru.serji.kuklyasha.web.util.*;
@@ -38,8 +37,11 @@ public class OrderController {
     public ResponseEntity<OrderTo> get(@PathVariable("id") int id) {
         User user = SecurityUtil.authUser();
         log.info("get order {} by user {}", id, user.id());
-        Order order = orderService.get(id, user)
-                .orElseThrow(() -> new IllegalRequestDataException("Entity with id=" + id + " not found"));
+        Order order = orderService.get(id, user).orElse(null);
+        if (order == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
         return ResponseEntity.of(Optional.of(createToFromOrder(order)));
     }
 
