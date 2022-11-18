@@ -22,6 +22,7 @@ import static ru.serji.kuklyasha.web.util.OrderUtil.*;
 @RequestMapping(value = OrderController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Log4j2
 @Transactional(readOnly = true)
+@CrossOrigin(origins = "http://localhost:3000")
 public class OrderController {
 
     final static String REST_URL = "/api/orders";
