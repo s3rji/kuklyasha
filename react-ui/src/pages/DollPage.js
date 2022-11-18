@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react"
 import {StarIcon} from "@heroicons/react/solid"
 import {RadioGroup} from "@headlessui/react"
-import {fetchOneDoll} from "../http/dollApi";
+import {getDoll} from "../http/dollApi";
 import {useParams} from "react-router-dom";
 import {CATALOG_ROUTE, DOLL_ROUTE} from "../utils/consts";
 import {observer} from "mobx-react-lite";
@@ -32,7 +32,7 @@ const DollPage = observer(() => {
     const [doll, setDoll] = useState({})
     const {id} = useParams()
     useEffect(() => {
-        fetchOneDoll(id).then(data => setDoll(data))
+        getDoll(id).then(data => setDoll(data))
     }, [])
     const [selectedColor, setSelectedColor] = useState(colors[0])
 
