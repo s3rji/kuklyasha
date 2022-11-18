@@ -17,10 +17,11 @@ export const check = async () => {
     localStorage.setItem('token', data.token)
 }
 
-export const get = async () => {
+export const getUser = async () => {
     const {data} = await $authHost.get('api/profile' )
     return data
 }
-export const update = async (user) => {
+
+export const updateUser = async (user) => {
     await $authHost.put('api/profile', user)
 }
