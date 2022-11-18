@@ -1,5 +1,6 @@
 package ru.serji.kuklyasha.model;
 
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ public class Status {
 
     @Column(name = "status_modified", nullable = false)
     @NotNull
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
     private LocalDateTime modified;
 
     public Status(StatusType type) {
