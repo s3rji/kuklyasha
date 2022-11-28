@@ -1,7 +1,17 @@
-import React from "react";
+import React, {useState} from "react";
 import {EyeIcon} from "@heroicons/react/outline";
+import {ShowOrder} from "./index";
+import status from "../utils/functions"
+
 
 const Orders = ({orders}) => {
+    const [isShowModal, setIsShowModal] = useState(false)
+    const [order, setOrder] = useState(null)
+
+    const showOrder = (order) => {
+        setOrder(order)
+        setIsShowModal(true)
+    }
 
     return (
         <div className="mt-10 sm:mt-0 mx-auto max-w-7xl">
@@ -49,29 +59,30 @@ const Orders = ({orders}) => {
                                         <td className="py-4 px-6 text-zinc-700">
                                             <div className="flex items-center">
                                                 <div className="h-2.5 w-2.5 rounded-full bg-green-400 mr-2"></div>
-                                                {order.status.type}
+                                                {status(order.status.type)}
                                             </div>
                                         </td>
                                         <td className="py-4 px-6 text-zinc-700">
                                             {order.total + " руб."}
                                         </td>
                                         <td className="py-4 px-6 text-zinc-700">
-                                            {order.status.modified}
+                                            {order.deliveryDate}
                                         </td>
                                         <td className="py-4 px-6 text-zinc-700 indent-5">
-                                            <button type="button"
+                                            <button type="button" onClick={() => showOrder(order)}
                                                     className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                 <EyeIcon className="h-3 w-3" aria-hidden="true"/>
                                                 <span className="sr-only">Просмотр</span>
                                             </button>
                                         </td>
                                     </tr>
-                                )}
+                                    )}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 }
+                {order && <ShowOrder order={order} show={isShowModal} onClose={() => setIsShowModal(false)}></ShowOrder>}
             </div>
         </div>
     )
