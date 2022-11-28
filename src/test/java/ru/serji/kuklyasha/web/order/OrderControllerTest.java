@@ -87,7 +87,7 @@ class OrderControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_EMAIL)
     void createInvalid() throws Exception {
-        OrderTo newTo = new OrderTo(null, Collections.emptySet(), null, null);
+        OrderTo newTo = new OrderTo(null, Collections.emptySet(), null, null, null);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonFromObject(newTo)))
@@ -112,7 +112,7 @@ class OrderControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_EMAIL)
     void updateInvalid() throws Exception {
-        OrderTo updatedTo = new OrderTo(null, Collections.emptySet(), null, null);
+        OrderTo updatedTo = new OrderTo(null, Collections.emptySet(), null, null, null);
         perform(MockMvcRequestBuilders.put(REST_URL + ORDER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonFromObject(updatedTo)))

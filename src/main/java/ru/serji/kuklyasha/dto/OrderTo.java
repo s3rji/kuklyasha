@@ -25,12 +25,15 @@ public class OrderTo extends BaseTo {
     @Digits(integer = 8, fraction = 2)
     BigDecimal total;
 
+    String deliveryDate;
 
-    public OrderTo(Integer id, Set<Doll> items, Status status, BigDecimal total) {
+
+    public OrderTo(Integer id, Set<Doll> items, Status status, BigDecimal total, String deliveryDate) {
         super(id);
         this.items = items;
         this.status = status;
         this.total = total;
+        this.deliveryDate = deliveryDate;
     }
 
     public Set<Doll> getItems() {
