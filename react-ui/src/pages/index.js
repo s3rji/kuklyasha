@@ -6,4 +6,4 @@ export {default as Registration} from "./Registration";
 export {default as AboutUs} from "./AboutUs";
 export {default as Contacts} from "./Contacts";
 export {default as Profile} from "./Profile";
-export {default as Settings} from "./Settings";
+export {default as Orders} from "./Orders";

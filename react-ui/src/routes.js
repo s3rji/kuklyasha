@@ -1,4 +1,4 @@
-import {AboutUs, Catalog, Contacts, DollPage, Login, Main, Profile, Settings, Registration} from "./pages/index";
+import {AboutUs, Catalog, Contacts, DollPage, Login, Main, Profile, Orders, Registration} from "./pages/index";
 import {
     ABOUT_US_ROUTE,
     CATALOG_ROUTE,
@@ -6,7 +6,7 @@ import {
     DOLL_ROUTE,
     LOGIN_ROUTE,
     MAIN_ROUTE, PROFILE_ROUTE,
-    REGISTRATION_ROUTE, SETTINGS_ROUTE
+    REGISTRATION_ROUTE, ORDERS_ROUTE
 } from "./utils/consts";
 
 export const publicRoutes = [
@@ -46,7 +46,7 @@ export const authRoutes = [
         Component: Profile
     },
     {
-        path: SETTINGS_ROUTE,
-        Component: Settings
+        path: ORDERS_ROUTE,
+        Component: Orders
     }
 ]

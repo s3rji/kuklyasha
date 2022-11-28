@@ -1,40 +1,11 @@
 import React, {useContext, useEffect, useState} from "react";
-import {InputField, InputPhone, Orders} from "../components/index";
+import {InputField, InputPhone, Settings} from "../components/index";
 import {getUser, updateUser} from "../http/userAPI";
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
-import {getOrders} from "../http/orderApi";
-
-const orders = [
-    {
-        id: 1,
-        data: "05-09-2022",
-        status: "ready",
-        amount: 1000,
-        goods: [],
-        delivery: "15-09-2022"
-    },
-    {
-        id: 2,
-        data: "05-09-2022",
-        status: "delivering",
-        amount: 2000,
-        goods: [],
-        delivery: "20-09-2022"
-    },
-    {
-        id: 3,
-        data: "05-09-2022",
-        status: "done",
-        amount: 1500,
-        goods: [],
-        delivery: "14-09-2022"
-    }
-]
 
 const Profile = observer(() => {
     const {user} = useContext(Context)
-    const {order} = useContext(Context)
 
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
@@ -72,12 +43,6 @@ const Profile = observer(() => {
             data.zipcode && setZipcode(data.zipcode)
         })
     }, [user])
-
-    useEffect(() => {
-        getOrders().then(data => {
-            order.setOrders(data)
-        })
-    }, [])
 
     const saveChanges = () => {
         if (validationFailed()) {
@@ -250,7 +215,7 @@ const Profile = observer(() => {
                     <div className="border-t border-gray-200 mx-auto max-w-7xl"/>
                 </div>
             </div>
-            <Orders orders={order.orders}/>
+            <Settings></Settings>
         </>
     );
 });

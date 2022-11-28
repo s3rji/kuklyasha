@@ -14,5 +14,5 @@ export {default as SearchButton} from './SearchButton';
 export {default as InputField} from './InputField';
 export {default as InputPhone} from './InputPhone';
 export {default as Checkbox} from './Checkbox';
-export {default as Orders} from './Orders';
 export {default as ShowOrder} from './ShowOrder';
+export {default as Settings} from './Settings';

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Checkbox} from "../components/index";
+import {Checkbox} from "./index";
 
 const Settings = () => {
     const [readOnly, setReadOnly] = useState(true)

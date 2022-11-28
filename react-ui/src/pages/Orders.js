@@ -1,20 +1,30 @@
-import React, {useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {EyeIcon} from "@heroicons/react/outline";
-import {ShowOrder} from "./index";
+import {ShowOrder} from "../components/index";
 import status from "../utils/functions"
+import {Context} from "../index";
+import {getOrders} from "../http/orderApi";
+import {observer} from "mobx-react-lite";
 
 
-const Orders = ({orders}) => {
+const Orders = observer(() => {
     const [isShowModal, setIsShowModal] = useState(false)
-    const [order, setOrder] = useState(null)
+    const [activeOrder, setActiveOrder] = useState(null)
+    const {order} = useContext(Context)
+
+    useEffect(() => {
+        getOrders().then(data => {
+            order.setOrders(data)
+        })
+    }, [])
 
     const showOrder = (order) => {
-        setOrder(order)
+        setActiveOrder(order)
         setIsShowModal(true)
     }
 
     return (
-        <div className="mt-10 sm:mt-0 mx-auto max-w-7xl">
+        <div className="mt-10 sm:mt-0 py-12 mx-auto max-w-7xl">
             <div className="md:grid md:grid-cols-3 md:gap-6">
                 <div className="md:col-span-1">
                     <div className="px-4 sm:px-0">
@@ -22,7 +32,7 @@ const Orders = ({orders}) => {
                         <p className="mt-1 text-sm text-gray-600">Здесь вы можете отслеживать статус заказа</p>
                     </div>
                 </div>
-                {orders.length === 0 ?
+                {order.orders.length === 0 ?
                     <p className="mt-1 text-sm text-gray-600">Вы пока не сделали ни одного заказа</p>
                     :
                     <div className="mt-5 md:col-span-2 md:mt-0">
@@ -49,7 +59,7 @@ const Orders = ({orders}) => {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {orders.map(order =>
+                                {order.orders.map(order =>
                                     <tr key={order.id}
                                         className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                         <th scope="row"
@@ -76,16 +86,17 @@ const Orders = ({orders}) => {
                                             </button>
                                         </td>
                                     </tr>
-                                    )}
+                                )}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 }
-                {order && <ShowOrder order={order} show={isShowModal} onClose={() => setIsShowModal(false)}></ShowOrder>}
+                {activeOrder && <ShowOrder order={activeOrder} show={isShowModal}
+                                           onClose={() => setIsShowModal(false)}></ShowOrder>}
             </div>
         </div>
     )
-}
+})
 
 export default Orders
