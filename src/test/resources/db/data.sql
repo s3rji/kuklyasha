@@ -10,11 +10,11 @@ VALUES ('Doll1', 'Pretty Doll', 100.00, 1, '/image1'),
        ('Doll4', 'Pretty Doll', 100.00, 1, '/image4'),
        ('Doll5', 'Pretty Doll', 100.00, 1, '/image5');
 
-INSERT INTO USERS (name, email, password, lastname, phone, country, city, region, street, zipcode)
+INSERT INTO USERS (name, email, password, lastname, phone, country, city, region, street, zipcode, notice_email, notice_phone)
 VALUES ('User', 'user@yandex.ru', '{bcrypt}$2a$10$zAJ7/voOp9SwObfHN4CBLe/9KDnx.b/0TRcU53NzmmxuErVP15rWu', 'Pupkin',
-        '79201112233', 'Россия', 'Москва', 'Москва', 'главная д.5', '123456'),
+        '79201112233', 'Россия', 'Москва', 'Москва', 'главная д.5', '123456', true, true),
        ('Admin', 'admin@gmail.com', 'admin', 'Sidorov', '79251112233', 'Россия', 'Одинцово', 'Московская обл.',
-        'вторая д.10', '123456');
+        'вторая д.10', '123456', true, true);
 
 INSERT INTO USER_ROLES (role, user_id)
 VALUES ('USER', 1),

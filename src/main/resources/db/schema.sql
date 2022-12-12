@@ -29,7 +29,9 @@ CREATE TABLE USERS
     street   VARCHAR,
     zipcode  VARCHAR,
     created  TIMESTAMP DEFAULT now() NOT NULL,
-    enabled  BOOL      DEFAULT TRUE  NOT NULL
+    enabled  BOOL      DEFAULT TRUE  NOT NULL,
+    notice_email  BOOL      DEFAULT FALSE  NOT NULL,
+    notice_phone  BOOL      DEFAULT FALSE  NOT NULL
 );
 
 CREATE TABLE USER_ROLES
