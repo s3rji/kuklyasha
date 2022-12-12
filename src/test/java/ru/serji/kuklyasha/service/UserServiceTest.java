@@ -4,6 +4,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.context.*;
 import org.springframework.dao.*;
+import org.springframework.transaction.*;
 import org.springframework.transaction.annotation.*;
 import ru.serji.kuklyasha.error.*;
 import ru.serji.kuklyasha.model.*;
@@ -73,18 +74,20 @@ class UserServiceTest {
     }
 
     @Test
-    void createInvalidPhone() {
-        User newUser = getNew();
+    @Transactional(propagation = Propagation.NEVER)
+    void updateInvalidPhone() {
+        User newUser = getUpdated();
         newUser.getInfo().setPhone("8999-123-4455");
-        assertThrows(ConstraintViolationException.class, () -> userService.save(newUser));
+        assertThrows(TransactionSystemException.class, () -> userService.save(newUser));
     }
 
     @Test
-    void createInvalidZipcode() {
-        User newUser = getNew();
+    @Transactional(propagation = Propagation.NEVER)
+    void updateInvalidZipcode() {
+        User newUser = getUpdated();
         newUser.getInfo().getAddress().setZipcode("123-456");
-
-        assertThrows(ConstraintViolationException.class, () -> userService.save(newUser));
+        newUser.setName(null);
+        assertThrows(TransactionSystemException.class, () -> userService.save(newUser));
     }
 
     @Test

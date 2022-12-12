@@ -30,16 +30,16 @@ public class UserTestData {
 
     public static final UserInfo userInfo = new UserInfo("Pupkin", USER_PHONE, userAddress);
 
-    public static final User user = new User(USER_ID, "User", USER_EMAIL, "password", userInfo, Role.USER);
+    public static final User user = new User(USER_ID, "User", USER_EMAIL, "password", userInfo, new Notice(true, true), true, LocalDateTime.now(), Collections.singleton(Role.USER));
 
     public static final Address adminAddress = new Address("Россия", "Одинцово", "Московская обл.", "вторая д.10", "123456");
 
     public static final UserInfo adminInfo = new UserInfo("Sidorov", ADMIN_PHONE, adminAddress);
 
-    public static final User admin = new User(ADMIN_ID, "Admin", ADMIN_EMAIL, "admin", adminInfo, Role.ADMIN, Role.USER);
+    public static final User admin = new User(ADMIN_ID, "Admin", ADMIN_EMAIL, "admin", adminInfo, new Notice(true, true), true, LocalDateTime.now(), Set.of(Role.ADMIN, Role.USER));
 
     public static User getNew() {
-        return new User(null, "New", "new@gmail.com", "newPass", getNewUserInfo(), true, LocalDateTime.now(), Collections.singleton(Role.USER));
+        return new User(null, "New", "new@gmail.com", "newPass", Role.USER);
     }
 
     public static UserInfo getNewUserInfo() {
@@ -51,7 +51,7 @@ public class UserTestData {
     }
 
     public static User getUpdated() {
-        return new User(USER_ID, "UpdatedName", USER_EMAIL, "newPass", getNewUserInfo(), true, LocalDateTime.now(), Collections.singleton(Role.ADMIN));
+        return new User(USER_ID, "UpdatedName", USER_EMAIL, "newPass", getNewUserInfo(), new Notice(true, false), true, LocalDateTime.now(), Collections.singleton(Role.ADMIN));
     }
 
     public static String jsonWithPassword(UserTo userTo, String password) {

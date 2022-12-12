@@ -82,7 +82,7 @@ class ProfileControllerTest extends AbstractControllerTest {
     @Test
     void registerInvalid() throws Exception {
         UserTo newTo = new UserTo(null, null, null, null, null, null,
-                null, null, null, null, null);
+                null, null, null, null, null, false, false);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonFromObject(newTo)))
@@ -94,7 +94,7 @@ class ProfileControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = USER_EMAIL)
     void updateInvalid() throws Exception {
         UserTo updatedTo = new UserTo(null, null, "password", null, null, null,
-                null, null, null, null, null);
+                null, null, null, null, null, false, false);
         perform(MockMvcRequestBuilders.put(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonFromObject(updatedTo)))
@@ -119,6 +119,30 @@ class ProfileControllerTest extends AbstractControllerTest {
     void updateDuplicatePhone() throws Exception {
         User updated = getUpdated();
         updated.setEmail(ADMIN_PHONE);
+        UserTo updatedTo = UserUtil.createToFromUser(updated);
+        perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
+                .content(jsonWithPassword(updatedTo, "newPassword")))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @WithUserDetails(value = USER_EMAIL)
+    void updateInvalidPhone() throws Exception {
+        User updated = getUpdated();
+        updated.getInfo().setPhone("8999-123-4455");
+        UserTo updatedTo = UserUtil.createToFromUser(updated);
+        perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
+                .content(jsonWithPassword(updatedTo, "newPassword")))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @WithUserDetails(value = USER_EMAIL)
+    void updateInvalidZipcode() throws Exception {
+        User updated = getUpdated();
+        updated.getInfo().getAddress().setZipcode("123-456");
         UserTo updatedTo = UserUtil.createToFromUser(updated);
         perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(updatedTo, "newPassword")))
