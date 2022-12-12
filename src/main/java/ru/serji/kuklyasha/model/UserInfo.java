@@ -10,6 +10,7 @@ import javax.validation.constraints.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserInfo {
 
     @Column(name = "lastname")
@@ -23,10 +24,4 @@ public class UserInfo {
     @Embedded
     @Valid
     private Address address;
-
-    public UserInfo(String lastname, String phone, Address address) {
-        this.lastname = lastname;
-        this.phone = phone;
-        this.address = address;
-    }
 }

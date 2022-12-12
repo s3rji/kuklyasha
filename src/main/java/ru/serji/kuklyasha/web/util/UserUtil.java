@@ -13,9 +13,7 @@ public class UserUtil {
     public static final PasswordEncoder PASSWORD_ENCODER = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     public static User createNewFromTo(@NonNull UserTo userTo) {
-        Address address = new Address(userTo.getCountry(), userTo.getCity(), userTo.getRegion(), userTo.getStreet(), userTo.getZipcode());
-        UserInfo info = new UserInfo(userTo.getLastname(), userTo.getPhone(), address);
-        return new User(null, userTo.getName(), userTo.getEmail(), userTo.getPassword(), info, Role.USER);
+        return new User(null, userTo.getName(), userTo.getEmail(), userTo.getPassword(), Role.USER);
     }
 
     public static User updateFromTo(@NonNull User user, @NonNull UserTo userTo) {
@@ -47,8 +45,9 @@ public class UserUtil {
                     null,
                     null,
                     null,
-                    null
-            );
+                    null,
+                    user.getNotice().isEmail(),
+                    user.getNotice().isPhone());
         }
 
         return new UserTo(
@@ -62,7 +61,8 @@ public class UserUtil {
                 user.getInfo().getAddress().getCity(),
                 user.getInfo().getAddress().getRegion(),
                 user.getInfo().getAddress().getStreet(),
-                user.getInfo().getAddress().getZipcode()
-        );
+                user.getInfo().getAddress().getZipcode(),
+                user.getNotice().isEmail(),
+                user.getNotice().isPhone());
     }
 }

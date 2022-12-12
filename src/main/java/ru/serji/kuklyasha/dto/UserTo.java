@@ -41,8 +41,12 @@ public class UserTo extends NamedTo implements HasIdAndEmail {
     @Pattern(regexp = "^\\d{6}$")
     String zipcode;
 
+    boolean emailNotice;
+
+    boolean phoneNotice;
+
     public UserTo(Integer id, String name, String email, String password, String lastname, String phone, String country,
-                  String city, String region, String street, String zipcode) {
+                  String city, String region, String street, String zipcode, boolean emailNotice, boolean phoneNotice) {
         super(id, name);
         this.email = email;
         this.password = password;
@@ -53,6 +57,8 @@ public class UserTo extends NamedTo implements HasIdAndEmail {
         this.region = region;
         this.street = street;
         this.zipcode = zipcode;
+        this.emailNotice = emailNotice;
+        this.phoneNotice = phoneNotice;
     }
 
     @Override

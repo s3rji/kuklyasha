@@ -34,6 +34,10 @@ public class User extends NamedEntity implements HasIdAndEmail {
     @Valid
     private UserInfo info;
 
+    @Embedded
+    @Valid
+    private Notice notice;
+
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
     private boolean enabled = true;
 
@@ -52,18 +56,19 @@ public class User extends NamedEntity implements HasIdAndEmail {
     private Set<Role> roles;
 
     public User(User u) {
-        this(u.id, u.name, u.email, u.password, u.info, u.enabled, u.created, u.roles);
+        this(u.id, u.name, u.email, u.password, u.info, u.notice, u.enabled, u.created, u.roles);
     }
 
-    public User(Integer id, String name, String email, String password, UserInfo info, Role role, Role... roles) {
-        this(id, name, email, password, info, true, LocalDateTime.now(), EnumSet.of(role, roles));
+    public User(Integer id, String name, String email, String password, Role role, Role... roles) {
+        this(id, name, email, password, null, new Notice(), true, LocalDateTime.now(), EnumSet.of(role, roles));
     }
 
-    public User(Integer id, String name, String email, String password, UserInfo info, boolean enabled, LocalDateTime created, Collection<Role> roles) {
+    public User(Integer id, String name, String email, String password, UserInfo info, Notice notice, boolean enabled, LocalDateTime created, Collection<Role> roles) {
         super(id, name);
         this.email = email;
         this.password = password;
         this.info = info;
+        this.notice = notice;
         this.enabled = enabled;
         this.created = created;
         setRoles(roles);
