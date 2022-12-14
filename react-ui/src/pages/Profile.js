@@ -16,6 +16,8 @@ const Profile = observer(() => {
     const [region, setRegion] = useState('')
     const [street, setStreet] = useState('')
     const [zipcode, setZipcode] = useState('')
+    const [emailNotice, setEmailNotice] = useState(false)
+    const [phoneNotice, setPhoneNotice] = useState(false)
     const [readOnly, setReadOnly] = useState(true)
 
     const [firstnameErr, setFirstnameErr] = useState('')
@@ -41,15 +43,21 @@ const Profile = observer(() => {
             data.city && setCity(data.city)
             data.street && setStreet(data.street)
             data.zipcode && setZipcode(data.zipcode)
+            setEmailNotice(data.emailNotice)
+            setPhoneNotice(data.phoneNotice)
         })
     }, [user])
 
     const saveChanges = () => {
+        setReadOnly(true)
+        updateProfile()
+    }
+
+    const updateProfile = () => {
         if (validationFailed()) {
             return
         }
 
-        setReadOnly(!readOnly)
         user.user.name = firstName
         user.user.email = email
         user.user.password = "ignored"
@@ -60,8 +68,9 @@ const Profile = observer(() => {
         user.user.region = region
         user.user.street = street
         user.user.zipcode = zipcode
+        user.user.emailNotice = emailNotice
+        user.user.phoneNotice = phoneNotice
         try {
-            console.log(phone)
             updateUser(user.user).then(future => {
             })
         } catch (e) {
@@ -122,7 +131,7 @@ const Profile = observer(() => {
                     <div className="md:col-span-1">
                         <div className="px-4 sm:px-0">
                             <h3 className="text-lg font-medium leading-6 text-gray-900">Личные данные</h3>
-                            <p className="mt-1 text-sm text-gray-600">Используйте постоянный адрес, для доставки ваших
+                            <p className="mt-1 text-sm text-gray-600">Используйте постоянный адрес для доставки ваших
                                 заказов.</p>
                         </div>
                     </div>
@@ -199,7 +208,7 @@ const Profile = observer(() => {
                                 <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                                     <button
                                         type="button"
-                                        onClick={readOnly ? () => setReadOnly(!readOnly) : saveChanges}
+                                        onClick={readOnly ? () => setReadOnly(false) : saveChanges}
                                         className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                     >
                                         {readOnly ? "Изменить" : "Сохранить"}
@@ -215,7 +224,8 @@ const Profile = observer(() => {
                     <div className="border-t border-gray-200 mx-auto max-w-7xl"/>
                 </div>
             </div>
-            <Settings></Settings>
+            <Settings emailNotice={emailNotice} setEmailNotice={setEmailNotice} phoneNotice={phoneNotice}
+                      setPhoneNotice={setPhoneNotice} updateProfile={updateProfile}></Settings>
         </>
     );
 });

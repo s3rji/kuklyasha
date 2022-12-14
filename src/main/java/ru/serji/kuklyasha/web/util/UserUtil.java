@@ -19,10 +19,12 @@ public class UserUtil {
     public static User updateFromTo(@NonNull User user, @NonNull UserTo userTo) {
         Address address = new Address(userTo.getCountry(), userTo.getCity(), userTo.getRegion(), userTo.getStreet(), userTo.getZipcode());
         UserInfo info = new UserInfo(userTo.getLastname(), userTo.getPhone(), address);
+        Notice notice = new Notice(userTo.isEmailNotice(), userTo.isPhoneNotice());
         user.setName(userTo.getName());
         user.setEmail(userTo.getEmail());
         user.setPassword(userTo.getPassword());
         user.setInfo(info);
+        user.setNotice(notice);
         return user;
     }
 

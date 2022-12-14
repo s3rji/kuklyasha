@@ -1,8 +1,13 @@
 import React, {useState} from "react";
 import {Checkbox} from "./index";
 
-const Settings = () => {
+const Settings = ({emailNotice, setEmailNotice, phoneNotice, setPhoneNotice, updateProfile}) => {
     const [readOnly, setReadOnly] = useState(true)
+
+    const saveChanges = () => {
+        setReadOnly(true)
+        updateProfile()
+    }
 
     return (
         <div className="mt-10 sm:mt-0 py-12 mx-auto max-w-7xl">
@@ -20,8 +25,10 @@ const Settings = () => {
                             <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
                                 <fieldset>
                                     <div className="mt-4 space-y-4">
-                                        <Checkbox name="email" label="Имейл" readOnly={readOnly}/>
-                                        <Checkbox name="phone" label="Телефон" readOnly={readOnly}/>
+                                        <Checkbox name="email" label="Имейл" value={emailNotice}
+                                                  setValue={e => setEmailNotice(e.target.checked)} readOnly={readOnly}/>
+                                        <Checkbox name="phone" label="Телефон" value={phoneNotice}
+                                                  setValue={e => setPhoneNotice(e.target.checked)} readOnly={readOnly}/>
                                     </div>
                                 </fieldset>
 
@@ -29,7 +36,7 @@ const Settings = () => {
                             <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                                 <button
                                     type="button"
-                                    onClick={() => setReadOnly(!readOnly)}
+                                    onClick={readOnly ? () => setReadOnly(false) : saveChanges}
                                     className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                 >
                                     {readOnly ? "Изменить" : "Сохранить"}
