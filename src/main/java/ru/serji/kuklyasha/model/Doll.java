@@ -32,7 +32,7 @@ public class Doll extends BaseEntity implements HasIdAndName {
     @Digits(integer = 6, fraction = 2)
     private BigDecimal price;
 
-    @Column(name = "quantity", nullable = false)
+    @Column(name = "quantity", nullable = false, columnDefinition = "integer default 0")
     @NotNull
     @Range(min = 0)
     private Integer quantity;
@@ -40,7 +40,7 @@ public class Doll extends BaseEntity implements HasIdAndName {
     @Column(name = "image")
     private String image;
 
-    @Column(name = "created", nullable = false, updatable = false)
+    @Column(name = "created", nullable = false, columnDefinition = "timestamp default now()", updatable = false)
     @NotNull
     private LocalDateTime created;
 

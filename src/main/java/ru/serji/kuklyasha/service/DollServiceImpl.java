@@ -10,44 +10,44 @@ import java.util.*;
 
 @Service
 public class DollServiceImpl implements DollService {
-    private final DollRepository dollRepository;
+    private final DollRepository repository;
 
     @Autowired
-    public DollServiceImpl(DollRepository dollRepository) {
-        this.dollRepository = dollRepository;
+    public DollServiceImpl(DollRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public Optional<Doll> get(int id) {
-        return dollRepository.findById(id);
+        return repository.findById(id);
     }
 
     @Override
     public List<Doll> getAll() {
-        return dollRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     public Doll save(Doll doll) {
-        return dollRepository.save(doll);
+        return repository.save(doll);
     }
 
     @Override
     public void delete(int id) {
-        dollRepository.deleteExisted(id);
+        repository.deleteExisted(id);
     }
 
     @Override
     public Optional<Doll> getByName(String name) {
-        return dollRepository.findByName(name);
+        return repository.findByName(name);
     }
 
     @Override
     public List<Doll> getLimitByPage(int page, int limit) {
-        return dollRepository.findAll(PageRequest.of(page, limit, Sort.by("name"))).getContent();
+        return repository.findAll(PageRequest.of(page, limit, Sort.by("name"))).getContent();
     }
 
     public int totalCount() {
-        return (int) dollRepository.count();
+        return (int) repository.count();
     }
 }
