@@ -50,7 +50,7 @@ public class OrderController {
     public List<OrderTo> getAllByUser() {
         User user = SecurityUtil.authUser();
         log.info("get all by user {}", user.id());
-        return orderService.getAll(user).stream().map(OrderUtil::createToFromOrder).toList();
+        return orderService.getAll(user).stream().sorted().map(OrderUtil::createToFromOrder).toList();
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
