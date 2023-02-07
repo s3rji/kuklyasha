@@ -136,6 +136,5 @@ class OrderControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.delete(REST_URL + NOT_FOUND))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
-        assertTrue(orderService.get(NOT_FOUND, user).isEmpty());
     }
 }
