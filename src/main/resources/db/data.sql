@@ -1,7 +1,9 @@
 DELETE FROM ORDER_DOLL;
-DELETE FROM DOLL;
-DELETE FROM USERS;
+DELETE FROM CART_ITEM;
 DELETE FROM ORDERS;
+DELETE FROM USER_ROLES;
+DELETE FROM USERS;
+DELETE FROM DOLL;
 
 INSERT INTO DOLL (name, description, price, quantity, image)
 VALUES ('Manyasha', 'Встречайте! Декоративная фарфоровая кукла Плюш&К ручной работы идеально подойдет для интерьера и в качестве подарка! Подарочная кукла изготовлена из экологически чистого фарфора с росписью, а ткани одежды всех кукол, изготовлены из шелка, хлопка, капрона и расшиты вручную. Декоративные интерьерные куклы имеют красивую и прочную упаковку в виде коробки. Ограниченная серия коллекционных кукол ручной работы от марки Плюш&К совместно с Bene! Винтажные и викторианские куклы выполнены в различных цветах! ', 100.00, 1, 'doll-1.JPG'),
@@ -33,3 +35,8 @@ VALUES (1, 1),
        (2, 3),
        (3, 4),
        (3, 5);
+
+INSERT INTO CART_ITEM (doll_id, user_id, quantity)
+VALUES (1, 1, 1),
+       (2, 1, 1),
+       (3, 1, 2);

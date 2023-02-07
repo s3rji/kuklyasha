@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS ORDER_DOLL;
+DROP TABLE IF EXISTS CART_ITEM;
 DROP TABLE IF EXISTS ORDERS;
 DROP TABLE IF EXISTS USER_ROLES;
 DROP TABLE IF EXISTS USERS;
@@ -10,7 +11,7 @@ CREATE TABLE DOLL
     name        VARCHAR UNIQUE          NOT NULL,
     description VARCHAR                 NOT NULL,
     price       NUMERIC(8, 2)           NOT NULL,
-    quantity     INTEGER   DEFAULT 0     NOT NULL,
+    quantity    INTEGER   DEFAULT 0     NOT NULL,
     image       VARCHAR                 NOT NULL,
     created     TIMESTAMP DEFAULT now() NOT NULL
 );
@@ -34,11 +35,22 @@ CREATE TABLE USERS
     notice_phone  BOOL      DEFAULT FALSE  NOT NULL
 );
 
+CREATE TABLE CART_ITEM
+(
+    id       SERIAL PRIMARY KEY,
+    doll_id  INTEGER           NOT NULL,
+    user_id  INTEGER           NOT NULL,
+    quantity INTEGER DEFAULT 1 NOT NULL,
+    FOREIGN KEY (doll_id) REFERENCES doll (id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    CONSTRAINT uk_user_doll UNIQUE (user_id, doll_id)
+);
+
 CREATE TABLE USER_ROLES
 (
     user_id INTEGER NOT NULL,
     role    VARCHAR,
-    CONSTRAINT user_roles_idx UNIQUE (user_id, role),
+    CONSTRAINT uk_user_roles UNIQUE (user_id, role),
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 

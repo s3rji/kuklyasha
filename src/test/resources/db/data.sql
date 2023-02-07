@@ -1,7 +1,9 @@
 DELETE FROM ORDER_DOLL;
-DELETE FROM DOLL;
-DELETE FROM USERS;
+DELETE FROM CART_ITEM;
 DELETE FROM ORDERS;
+DELETE FROM USER_ROLES;
+DELETE FROM USERS;
+DELETE FROM DOLL;
 
 INSERT INTO DOLL (name, description, price, quantity, image)
 VALUES ('Doll1', 'Pretty Doll', 100.00, 1, '/image1'),
@@ -32,3 +34,8 @@ VALUES (1, 1),
        (1, 4),
        (1, 5),
        (2, 1);
+
+INSERT INTO CART_ITEM (doll_id, user_id, quantity)
+VALUES (1, 1, 1),
+       (2, 1, 1),
+       (3, 1, 2);
