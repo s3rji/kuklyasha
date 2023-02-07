@@ -10,40 +10,40 @@ import java.util.*;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+    private final UserRepository repository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserServiceImpl(UserRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public Optional<User> get(int id) {
-        return userRepository.findById(id);
+        return repository.findById(id);
     }
 
     @Override
     public Optional<User> getByEmailIgnoreCase(String email) {
-        return userRepository.findByEmailIgnoreCase(email);
+        return repository.findByEmailIgnoreCase(email);
     }
 
     @Override
     public Optional<User> getByPhone(String phone) {
-        return userRepository.findByPhone(phone);
+        return repository.findByPhone(phone);
     }
 
     @Override
     public List<User> getAll() {
-        return userRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     public User save(User user) {
-        return userRepository.save(user);
+        return repository.save(user);
     }
 
     @Override
     public void delete(int id) {
-        userRepository.deleteExisted(id);
+        repository.deleteExisted(id);
     }
 }
