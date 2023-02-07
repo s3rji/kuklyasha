@@ -2,6 +2,7 @@ package ru.serji.kuklyasha.model;
 
 import lombok.*;
 import org.springframework.data.util.*;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class BaseEntity implements HasId {
+public abstract class BaseEntity implements HasId, Comparable<BaseEntity> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,5 +38,10 @@ public abstract class BaseEntity implements HasId {
     @Override
     public String toString() {
         return getClass().getSimpleName() + ":" + id;
+    }
+
+    @Override
+    public int compareTo(@NonNull BaseEntity baseEntity) {
+        return id - baseEntity.getId();
     }
 }
