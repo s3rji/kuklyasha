@@ -2,6 +2,7 @@ package ru.serji.kuklyasha.service;
 
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
+import ru.serji.kuklyasha.error.*;
 import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.repository.*;
 
@@ -36,6 +37,9 @@ public class CartServiceImpl implements CartService {
             int id = cartItem.id();
             checkNotFoundWithId(get(id, user).orElse(null), id);
         }
+        if (cartItem.getQuantity() > cartItem.getDoll().getQuantity()) {
+           throw new IllegalRequestDataException("not enough doll quantity in stock");
+        }
         return repository.save(cartItem);
     }
 
@@ -47,5 +51,10 @@ public class CartServiceImpl implements CartService {
     @Override
     public Optional<CartItem> getByDoll(Doll doll, User user) {
         return repository.findByDollAndUser(doll, user);
+    }
+
+    @Override
+    public void deleteAll(User user) {
+        checkModification(repository.deleteAllByUser(user));
     }
 }

@@ -20,10 +20,10 @@ public class CartItemTestData {
 
     public static final int NOT_FOUND = 1000;
 
-    public static final CartItem cartItem = new CartItem(CART_ITEM_ID, new Doll(DOLL_ID, "Doll1", "Pretty Doll", new BigDecimal("100.00"), 1, "/image1"), user, 1);
+    public static final CartItem cartItem = new CartItem(CART_ITEM_ID, new Doll(DOLL_ID, "Doll1", "Pretty Doll", new BigDecimal("100.00"), 2, "/image1"), user, 1);
 
     public static final List<CartItem> allCartItems = List.of(
-            new CartItem(CART_ITEM_ID, new Doll(DOLL_ID, "Doll1", "Pretty Doll", new BigDecimal("100.00"), 1, "/image1"), user, 1),
+            new CartItem(CART_ITEM_ID, new Doll(DOLL_ID, "Doll1", "Pretty Doll", new BigDecimal("100.00"), 2, "/image1"), user, 1),
             new CartItem(CART_ITEM_ID + 1, new Doll(DOLL_ID + 1, "Doll2", "Pretty Doll", new BigDecimal("100.00"), 1, "/image2"), user, 1),
             new CartItem(CART_ITEM_ID + 2, new Doll(DOLL_ID + 2, "Doll3", "Pretty Doll", new BigDecimal("100.00"), 1, "/image3"), user, 2)
     );

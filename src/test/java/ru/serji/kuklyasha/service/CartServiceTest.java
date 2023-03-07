@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.context.*;
 import org.springframework.dao.*;
 import org.springframework.transaction.annotation.*;
+import ru.serji.kuklyasha.*;
 import ru.serji.kuklyasha.error.*;
 import ru.serji.kuklyasha.model.*;
 
@@ -71,7 +72,7 @@ class CartServiceTest {
 
     @Test
     void createInvalid() {
-        CartItem newCartItem = new CartItem(null, null, null, 0);
+        CartItem newCartItem = new CartItem(null, DollTestData.doll, null, 0);
         assertThrows(ConstraintViolationException.class, () -> cartService.save(newCartItem, user));
     }
 
