@@ -6,7 +6,7 @@ DELETE FROM USERS;
 DELETE FROM DOLL;
 
 INSERT INTO DOLL (name, description, price, quantity, image)
-VALUES ('Doll1', 'Pretty Doll', 100.00, 1, '/image1'),
+VALUES ('Doll1', 'Pretty Doll', 100.00, 2, '/image1'),
        ('Doll2', 'Pretty Doll', 100.00, 1, '/image2'),
        ('Doll3', 'Pretty Doll', 100.00, 1, '/image3'),
        ('Doll4', 'Pretty Doll', 100.00, 1, '/image4'),
