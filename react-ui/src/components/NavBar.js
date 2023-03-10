@@ -21,7 +21,7 @@ const NavBar = observer(() => {
                             {!user.isAuth && <Identification/>}
                             <Currency/>
                             <SearchButton/>
-                            <CartButton/>
+                            {user.isAuth && <CartButton/>}
                             {user.isAuth && <ProfileDropdown/>}
                         </div>
                     </div>

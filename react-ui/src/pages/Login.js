@@ -6,9 +6,10 @@ import {Context} from "../index";
 import {login} from "../http/userAPI";
 import {CATALOG_ROUTE} from "../utils/consts";
 import {observer} from "mobx-react-lite";
+import {getCart} from "../http/cartApi";
 
 const Login = observer(() => {
-    const {user} = useContext(Context)
+    const {user, cart} = useContext(Context)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [rememberMe, setRememberMe] = useState(false)
@@ -16,9 +17,11 @@ const Login = observer(() => {
 
     const loginUser = async () => {
         try {
-            let data = await login(email, password, rememberMe)
-            user.setUser(data)
+            let userData = await login(email, password, rememberMe)
+            let cartData = await getCart()
+            user.setUser(userData)
             user.setIsAuth(true)
+            cart.setCart(cartData)
             navigate(CATALOG_ROUTE)
         } catch (e) {
             alert(e)

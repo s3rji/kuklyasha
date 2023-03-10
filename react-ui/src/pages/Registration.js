@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react";
+import React, {useContext, useState} from "react";
 import {LockClosedIcon} from "@heroicons/react/solid"
 import {useNavigate} from "react-router-dom";
 import logo from "../assets/main.jpeg";
@@ -14,7 +14,7 @@ const Registration = observer(() => {
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
 
-    const click = async () => {
+    const register = async () => {
         try {
             let data = await registration(name, email, password)
             user.setUser(data)
@@ -93,7 +93,7 @@ const Registration = observer(() => {
                         <div>
                             <button
                                 type="button"
-                                onClick={click}
+                                onClick={register}
                                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
                                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">

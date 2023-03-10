@@ -1,10 +1,12 @@
-import {useEffect, useState} from "react"
+import {useContext, useEffect, useState} from "react"
 import {StarIcon} from "@heroicons/react/solid"
 import {RadioGroup} from "@headlessui/react"
 import {getDoll} from "../http/dollApi";
-import {useParams} from "react-router-dom";
-import {CATALOG_ROUTE, DOLL_ROUTE} from "../utils/consts";
+import {useNavigate, useParams} from "react-router-dom";
+import {CATALOG_ROUTE, DOLL_ROUTE, LOGIN_ROUTE} from "../utils/consts";
 import {observer} from "mobx-react-lite";
+import {addCartItem, getCart} from "../http/cartApi";
+import {Context} from "../index";
 
 const breadcrumbs = [
     {id: 1, name: 'Catalog', href: CATALOG_ROUTE}
@@ -29,8 +31,11 @@ function classNames(...classes) {
 }
 
 const DollPage = observer(() => {
+    const {cart, user} = useContext(Context)
     const [doll, setDoll] = useState({})
     const {id} = useParams()
+    const navigate = useNavigate()
+
     useEffect(() => {
         getDoll(id).then(data => setDoll(data))
     }, [])
@@ -47,6 +52,17 @@ const DollPage = observer(() => {
                 return " отзыва"
             default:
                 return " отзывов"
+        }
+    }
+
+    const addItem = async () => {
+        try {
+            await addCartItem(doll)
+            getCart().then(data => {
+                cart.setCart(data)
+            })
+        } catch (e) {
+            alert(e)
         }
     }
 
@@ -191,13 +207,25 @@ const DollPage = observer(() => {
                                     </div>
                                 </RadioGroup>
                             </div>
-
-                            <button
-                                type="submit"
-                                className="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            >
-                                Добавить в корзину
-                            </button>
+                            {user.isAuth ?
+                                <button
+                                    type="button"
+                                    onClick={addItem}
+                                    disabled={doll.quantity === 0 || !cart.isCartItemWithDollNotExist(doll)}
+                                    className={classNames('mt-10 w-full border border-transparent rounded-md py-3 px-8' +
+                                        'flex items-center justify-center text-base font-medium text-white focus:outline-none ' +
+                                        'focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500', doll.quantity > 0 && cart.isCartItemWithDollNotExist(doll) ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-400')}
+                                >
+                                    {doll.quantity === 0 ? 'Товара нет в наличии' : cart.isCartItemWithDollNotExist(doll) ? 'Добавить в корзину' : 'Товар в корзине'}
+                                </button>
+                                :
+                                <div
+                                    onClick={() => navigate(LOGIN_ROUTE)}
+                                    className="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                >
+                                    Чтобы добавить товар, авторизируйтесь.
+                                </div>
+                            }
                         </form>
                     </div>
 

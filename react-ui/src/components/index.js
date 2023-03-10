@@ -16,3 +16,4 @@ export {default as InputPhone} from './InputPhone';
 export {default as Checkbox} from './Checkbox';
 export {default as ShowOrder} from './ShowOrder';
 export {default as Settings} from './Settings';
+export {default as InfoModal} from './InfoModal';
