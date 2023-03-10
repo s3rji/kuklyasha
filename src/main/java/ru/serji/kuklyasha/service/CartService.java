@@ -15,4 +15,6 @@ public interface CartService {
     void delete(int id, User user);
 
     Optional<CartItem> getByDoll(Doll doll, User user);
+
+    void deleteAll(User user);
 }

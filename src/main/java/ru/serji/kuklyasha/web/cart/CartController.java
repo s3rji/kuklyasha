@@ -80,4 +80,13 @@ public class CartController {
         User user = SecurityUtil.authUser();
         cartService.delete(id, user);
     }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Transactional
+    public void deleteAllByUser() {
+        User user = SecurityUtil.authUser();
+        log.info("delete all cart items for user id = {}", user.id());
+        cartService.deleteAll(user);
+    }
 }

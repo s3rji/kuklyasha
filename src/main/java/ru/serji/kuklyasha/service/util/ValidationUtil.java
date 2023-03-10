@@ -49,6 +49,12 @@ public class ValidationUtil {
         }
     }
 
+    public static void checkModification(int count) {
+        if (count == 0) {
+            throw new IllegalRequestDataException("Entities not found");
+        }
+    }
+
     public static <T> void checkNotFoundWithId(T object, int id) {
         if (object == null) {
             throw new IllegalRequestDataException("Entity with id=" + id + " not found");

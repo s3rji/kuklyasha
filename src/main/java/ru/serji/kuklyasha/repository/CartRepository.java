@@ -15,4 +15,6 @@ public interface CartRepository extends BaseRepository<CartItem> {
     List<CartItem> findAllByUser(User user);
 
     int deleteByIdAndUser(int id, User user);
+
+    int deleteAllByUser(User user);
 }
