@@ -1,5 +1,6 @@
-DELETE FROM ORDER_DOLL;
+DELETE FROM ORDER_ITEM;
 DELETE FROM CART_ITEM;
+DELETE FROM PURCHASED_ITEM;
 DELETE FROM ORDERS;
 DELETE FROM USER_ROLES;
 DELETE FROM USERS;
@@ -24,18 +25,20 @@ VALUES ('USER', 1),
        ('USER', 2);
 
 INSERT INTO ORDERS (user_id, status, status_modified, total)
-VALUES (1, 'NEW', '31.10.2022', 500.00),
+VALUES (1, 'NEW', '31.10.2022', 200.00),
        (1, 'DONE', '31.10.2022', 100.00);
-
-INSERT INTO ORDER_DOLL (order_id, doll_id)
-VALUES (1, 1),
-       (1, 2),
-       (1, 3),
-       (1, 4),
-       (1, 5),
-       (2, 1);
 
 INSERT INTO CART_ITEM (doll_id, user_id, quantity)
 VALUES (1, 1, 1),
        (2, 1, 1),
        (3, 1, 2);
+
+INSERT INTO PURCHASED_ITEM (doll_id, user_id, quantity)
+VALUES (1, 1, 1),
+       (2, 1, 1),
+       (3, 1, 2);
+
+INSERT INTO ORDER_ITEM (order_id, item_id)
+VALUES (1, 1),
+       (1, 2),
+       (2, 3);
