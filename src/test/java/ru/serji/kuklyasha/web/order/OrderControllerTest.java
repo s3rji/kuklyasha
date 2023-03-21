@@ -8,6 +8,7 @@ import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.request.*;
 import ru.serji.kuklyasha.dto.*;
 import ru.serji.kuklyasha.model.Order;
+import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.service.*;
 import ru.serji.kuklyasha.web.*;
 import ru.serji.kuklyasha.web.util.*;
@@ -15,12 +16,14 @@ import ru.serji.kuklyasha.web.util.*;
 import java.util.*;
 import java.util.stream.*;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static ru.serji.kuklyasha.OrderTestData.NOT_FOUND;
+import static ru.serji.kuklyasha.OrderTestData.getNew;
+import static ru.serji.kuklyasha.OrderTestData.jsonFromObject;
 import static ru.serji.kuklyasha.OrderTestData.*;
-import static ru.serji.kuklyasha.UserTestData.USER_EMAIL;
-import static ru.serji.kuklyasha.UserTestData.user;
+import static ru.serji.kuklyasha.UserTestData.*;
 import static ru.serji.kuklyasha.web.util.OrderUtil.*;
 
 class OrderControllerTest extends AbstractControllerTest {
@@ -78,16 +81,31 @@ class OrderControllerTest extends AbstractControllerTest {
         OrderTo created = ORDER_TO_MATCHER.readFromJson(action);
         int newId = created.id();
         newTo.setId(newId);
-        ORDER_TO_MATCHER.assertMatch(created, newTo);
+        Iterator<PurchasedItemTo> createdToIter = created.getItems().iterator();
+        Iterator<PurchasedItemTo> newOrderToIter = newTo.getItems().iterator();
+        while (createdToIter.hasNext() && newOrderToIter.hasNext()) {
+            newOrderToIter.next().setId(createdToIter.next().id());
+        }
 
-        newOrder.setId(newId);
-        ORDER_MATCHER.assertMatch(orderService.get(newId, user).get(), newOrder);
+        ORDER_TO_MATCHER.assertMatch(created, newTo);
     }
 
     @Test
     @WithUserDetails(value = USER_EMAIL)
     void createInvalid() throws Exception {
-        OrderTo newTo = new OrderTo(null, Collections.emptySet(), null, null, null);
+        OrderTo newTo = new OrderTo(null, Collections.emptyList(), null, null, null);
+        perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonFromObject(newTo)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @WithUserDetails(value = USER_EMAIL)
+    void createFailedBecauseNotEnoughQuantity() throws Exception {
+        Order newOrder = getInvalidNew();
+        OrderTo newTo = createToFromOrder(newOrder);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonFromObject(newTo)))
@@ -98,24 +116,23 @@ class OrderControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_EMAIL)
     void update() throws Exception {
-        Order updatedOrder = getUpdated();
-        OrderTo updatedTo = createToFromOrder(updatedOrder);
-        perform(MockMvcRequestBuilders.put(REST_URL + ORDER_ID)
+        StatusTo statusTo = new StatusTo(StatusType.DONE);
+        perform(MockMvcRequestBuilders.patch(REST_URL + ORDER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonFromObject(updatedTo)))
+                .content(JsonUtil.writeValue(statusTo)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        ORDER_MATCHER.assertMatch(orderService.get(ORDER_ID, user).get(), updatedOrder);
+        assertEquals(statusTo.getType(), orderService.get(ORDER_ID, user).get().getStatus().getType());
     }
 
     @Test
     @WithUserDetails(value = USER_EMAIL)
     void updateInvalid() throws Exception {
-        OrderTo updatedTo = new OrderTo(null, Collections.emptySet(), null, null, null);
-        perform(MockMvcRequestBuilders.put(REST_URL + ORDER_ID)
+        StatusTo statusTo = new StatusTo(null);
+        perform(MockMvcRequestBuilders.patch(REST_URL + ORDER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonFromObject(updatedTo)))
+                .content(JsonUtil.writeValue(statusTo)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }

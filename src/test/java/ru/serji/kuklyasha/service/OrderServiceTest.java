@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.context.*;
 import org.springframework.transaction.annotation.*;
+import ru.serji.kuklyasha.*;
 import ru.serji.kuklyasha.error.*;
 import ru.serji.kuklyasha.model.Order;
 import ru.serji.kuklyasha.model.*;
@@ -25,6 +26,9 @@ class OrderServiceTest {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private DollService dollService;
 
     @Test
     void get() {
@@ -62,12 +66,22 @@ class OrderServiceTest {
     @Test
     void create() {
         Order created = orderService.save(getNew(), user);
-        int newId = created.id();
+        int newOrderId = created.id();
         Order newOrder = getNew();
-        newOrder.setId(newId);
+        newOrder.setId(newOrderId);
+        Iterator<PurchasedItem> createdIter = created.getItems().iterator();
+        Iterator<PurchasedItem> newOrderIter = newOrder.getItems().iterator();
+        while (createdIter.hasNext() && newOrderIter.hasNext()) {
+            newOrderIter.next().setId(createdIter.next().id());
+        }
+
         ORDER_MATCHER.assertMatch(created, newOrder);
         USER_MATCHER.assertMatch(created.getUser(), newOrder.getUser());
-        ORDER_MATCHER.assertMatch(orderService.get(newId, user).get(), newOrder);
+        ORDER_MATCHER.assertMatch(orderService.get(newOrderId, user).get(), newOrder);
+
+        int dollQuantityInStock = dollService.get(created.getItems().iterator().next().id()).get().getQuantity();
+        int dollQuantityExpected = DollTestData.doll.getQuantity() - created.getItems().iterator().next().getQuantity();
+        assertEquals(dollQuantityExpected, dollQuantityInStock);
     }
 
     @Test
@@ -78,13 +92,17 @@ class OrderServiceTest {
     }
 
     @Test
+    void createFailedBecauseNotEnoughQuantity() {
+        Order newOrder = getInvalidNew();
+        assertThrows(IllegalRequestDataException.class, () -> orderService.save(newOrder, user));
+    }
+
+    @Test
     void update() {
         Order updated = getUpdated();
         orderService.save(updated, user);
         Order actual = orderService.get(ORDER_ID, user).get();
         ORDER_MATCHER.assertMatch(actual, updated);
-        User actualUser = (User) Hibernate.unproxy(actual.getUser());
-        USER_MATCHER.assertMatch(actualUser, user);
     }
 
     @Test
