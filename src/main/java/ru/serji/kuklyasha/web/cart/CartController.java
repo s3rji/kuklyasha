@@ -37,7 +37,8 @@ public class CartController {
     public List<CartItemTo> getAllByUser() {
         User user = SecurityUtil.authUser();
         log.info("get all by user {}", user.id());
-        return cartService.getAll(user).stream().sorted().map(CartUtil::createToFromCartItem).toList();
+        return cartService.getAll(user).stream()
+                .map(CartUtil::createToFromCartItem).sorted(Comparator.comparingInt(BaseTo::getId)).toList();
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -67,6 +68,7 @@ public class CartController {
     public void update(@Valid @RequestBody CartItemTo cartItemTo, @PathVariable("id") int id) {
         log.info("update cart item = {}", cartItemTo);
         Objects.requireNonNull(cartItemTo, "cart item must not be null");
+        Objects.requireNonNull(cartItemTo.getDoll(), "cartItem.doll must not be null");
         assureIdConsistent(cartItemTo, id);
         User user = SecurityUtil.authUser();
         cartService.save(createCartItemFromTo(cartItemTo, user), user);

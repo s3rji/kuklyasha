@@ -14,7 +14,7 @@ import java.util.*;
 public class OrderTo extends BaseTo {
 
     @NotNull
-    Set<Doll> items;
+    List<PurchasedItemTo> items;
 
     @Valid
     @NotNull
@@ -28,7 +28,7 @@ public class OrderTo extends BaseTo {
     String deliveryDate;
 
 
-    public OrderTo(Integer id, Set<Doll> items, Status status, BigDecimal total, String deliveryDate) {
+    public OrderTo(Integer id, List<PurchasedItemTo> items, Status status, BigDecimal total, String deliveryDate) {
         super(id);
         this.items = items;
         this.status = status;
@@ -36,7 +36,7 @@ public class OrderTo extends BaseTo {
         this.deliveryDate = deliveryDate;
     }
 
-    public Set<Doll> getItems() {
-        return Set.copyOf(items);
+    public List<PurchasedItemTo> getItems() {
+        return List.copyOf(items);
     }
 }

@@ -50,7 +50,8 @@ public class OrderController {
     public List<OrderTo> getAllByUser() {
         User user = SecurityUtil.authUser();
         log.info("get all by user {}", user.id());
-        return orderService.getAll(user).stream().sorted().map(OrderUtil::createToFromOrder).toList();
+        return orderService.getAll(user).stream()
+                .map(OrderUtil::createToFromOrder).sorted(Comparator.comparingInt(BaseTo::getId)).toList();
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -62,23 +63,25 @@ public class OrderController {
         User user = SecurityUtil.authUser();
         Order order = createOrderFromTo(orderTo, user);
         Order created = orderService.save(order, user);
-        orderTo.setId(created.id());
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
-                .buildAndExpand(orderTo.getId()).toUri();
-        return ResponseEntity.created(uriOfNewResource).body(orderTo);
+                .buildAndExpand(created.getId()).toUri();
+        return ResponseEntity.created(uriOfNewResource).body(createToFromOrder(created));
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
-    public void update(@Valid @RequestBody OrderTo orderTo, @PathVariable("id") int id) {
-        log.info("update order = {}", orderTo);
-        Objects.requireNonNull(orderTo, "order must not be null");
-        assureIdConsistent(orderTo, id);
+    public void updateStatus(@Valid @RequestBody StatusTo statusTo, @PathVariable("id") int id) {
+        log.info("update order = {}", id);
+        Objects.requireNonNull(statusTo, "status must not be null");
         User user = SecurityUtil.authUser();
-        orderService.save(createOrderFromTo(orderTo, user), user);
+        orderService.get(id, user).ifPresent(order -> {
+            Status status = new Status(statusTo.getType());
+            order.setStatus(status);
+            orderService.save(order, user);
+        });
     }
 
     @DeleteMapping("/{id}")

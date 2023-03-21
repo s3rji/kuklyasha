@@ -22,14 +22,14 @@ public class Order extends BaseEntity {
     @NotNull
     private User user;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
-            name = "order_doll",
+            name = "order_item",
             joinColumns = @JoinColumn(name = "order_id", nullable = false, updatable = false),
-            inverseJoinColumns = @JoinColumn(name = "doll_id", nullable = false, updatable = false)
+            inverseJoinColumns = @JoinColumn(name = "item_id", nullable = false, updatable = false)
     )
     @NotNull
-    private Set<Doll> items = new HashSet<>();
+    private Set<PurchasedItem> items = new HashSet<>();
 
     @Embedded
     @Valid
@@ -47,7 +47,7 @@ public class Order extends BaseEntity {
     @NotNull
     private LocalDateTime created;
 
-    public Order(Integer id, User user, Set<Doll> items, Status status, BigDecimal total) {
+    public Order(Integer id, User user, Set<PurchasedItem> items, Status status, BigDecimal total) {
         super(id);
         this.user = user;
         setItems(items);
@@ -56,11 +56,11 @@ public class Order extends BaseEntity {
         this.created = LocalDateTime.now();
     }
 
-    public void setItems(Collection<Doll> items) {
+    public void setItems(Collection<PurchasedItem> items) {
         this.items = CollectionUtils.isEmpty(items) ? Collections.emptySet() : Set.copyOf(items);
     }
 
-    public Set<Doll> getItems() {
+    public Set<PurchasedItem> getItems() {
         return Set.copyOf(items);
     }
 }
