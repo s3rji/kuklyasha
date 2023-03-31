@@ -50,9 +50,10 @@ CREATE TABLE CART_ITEM
 CREATE TABLE PURCHASED_ITEM
 (
     id       SERIAL PRIMARY KEY,
-    doll_id  INTEGER NOT NULL,
-    user_id  INTEGER NOT NULL,
-    quantity INTEGER NOT NULL,
+    doll_id  INTEGER       NOT NULL,
+    user_id  INTEGER       NOT NULL,
+    quantity INTEGER       NOT NULL,
+    price    NUMERIC(8, 2) NOT NULL,
     FOREIGN KEY (doll_id) REFERENCES DOLL (id),
     FOREIGN KEY (user_id) REFERENCES USERS (id) ON DELETE CASCADE
 );
