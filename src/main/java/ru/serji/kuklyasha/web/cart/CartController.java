@@ -47,14 +47,7 @@ public class CartController {
         log.info("create cart item from doll = {}", doll);
         Objects.requireNonNull(doll, "doll for cart item must not be null");
         User user = SecurityUtil.authUser();
-        Optional<CartItem> optionalItem = cartService.getByDoll(doll, user);
-        CartItem cartItem;
-        if (optionalItem.isEmpty()) {
-            cartItem = new CartItem(null, doll, user, 1);
-        } else {
-            cartItem = optionalItem.get();
-            cartItem.setQuantity(cartItem.getQuantity() + 1);
-        }
+        CartItem cartItem = new CartItem(null, doll, user, 1);
         CartItem created = cartService.save(cartItem, user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL)

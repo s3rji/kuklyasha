@@ -14,9 +14,8 @@ import ru.serji.kuklyasha.web.*;
 import ru.serji.kuklyasha.web.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.serji.kuklyasha.CartItemTestData.*;
 import static ru.serji.kuklyasha.DollTestData.doll;
 import static ru.serji.kuklyasha.UserTestData.USER_EMAIL;
@@ -58,20 +57,6 @@ class CartControllerTest extends AbstractControllerTest {
 
         CartItemTo created = CART_ITEM_TO_MATCHER.readFromJson(action);
         DollTestData.DOLL_MATCHER.assertMatch(created.getDoll(), doll);
-    }
-
-    @Test
-    @WithUserDetails(value = USER_EMAIL)
-    void addPlusOneDuringCreate() throws Exception {
-        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(DollTestData.jsonFromObject(doll)))
-                .andDo(print())
-                .andExpect(status().isCreated());
-
-        CartItemTo created = CART_ITEM_TO_MATCHER.readFromJson(action);
-        DollTestData.DOLL_MATCHER.assertMatch(created.getDoll(), doll);
-        assertEquals(2, created.getQuantity());
     }
 
     @Test

@@ -4,7 +4,6 @@ import org.hibernate.*;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.context.*;
-import org.springframework.dao.*;
 import org.springframework.transaction.annotation.*;
 import ru.serji.kuklyasha.*;
 import ru.serji.kuklyasha.error.*;
@@ -72,14 +71,14 @@ class CartServiceTest {
 
     @Test
     void createInvalid() {
-        CartItem newCartItem = new CartItem(null, DollTestData.doll, null, 0);
-        assertThrows(ConstraintViolationException.class, () -> cartService.save(newCartItem, user));
+        CartItem newCartItem = new CartItem(null, DollTestData.doll, admin, 0);
+        assertThrows(ConstraintViolationException.class, () -> cartService.save(newCartItem, admin));
     }
 
     @Test
     void createInvalidWithDuplicateDollAndUser() {
         CartItem newCartItem = getInvalidNew();
-        assertThrows(DataIntegrityViolationException.class, () -> cartService.save(newCartItem, user));
+        assertThrows(IllegalRequestDataException.class, () -> cartService.save(newCartItem, user));
     }
 
     @Test

@@ -14,21 +14,23 @@ import static ru.serji.kuklyasha.service.util.ValidationUtil.*;
 @Service
 public class CartServiceImpl implements CartService {
 
-    private final CartRepository repository;
+    private final CartRepository cartRepository;
+    private final DollRepository dollRepository;
 
     @Autowired
-    public CartServiceImpl(CartRepository repository) {
-        this.repository = repository;
+    public CartServiceImpl(CartRepository cartRepository, DollRepository dollRepository) {
+        this.cartRepository = cartRepository;
+        this.dollRepository = dollRepository;
     }
 
     @Override
     public Optional<CartItem> get(int id, User user) {
-        return repository.findByIdAndUser(id, user);
+        return cartRepository.findByIdAndUser(id, user);
     }
 
     @Override
     public List<CartItem> getAll(User user) {
-        return repository.findAllByUser(user);
+        return cartRepository.findAllByUser(user);
     }
 
     @Override
@@ -36,25 +38,39 @@ public class CartServiceImpl implements CartService {
         if (cartItem.getId() != null) {
             int id = cartItem.id();
             checkNotFoundWithId(get(id, user).orElse(null), id);
+        } else {
+            checkValidState(cartItem, user);
         }
-        if (cartItem.getQuantity() > cartItem.getDoll().getQuantity()) {
-           throw new IllegalRequestDataException("not enough doll quantity in stock");
+        return cartRepository.save(cartItem);
+    }
+
+    private void checkValidState(CartItem cartItem, User user) {
+        getByDoll(cartItem.getDoll(), user).ifPresent(ci -> {
+            throw new IllegalRequestDataException("cart item with same doll already exist");
+        });
+
+        Optional<Doll> doll = dollRepository.findById(cartItem.getDoll().id());
+        if (doll.isEmpty()) {
+            throw new IllegalRequestDataException("doll entity with id " + cartItem.getDoll().id() + " not found");
+        } else {
+            if (cartItem.getQuantity() > doll.get().getQuantity()) {
+                throw new IllegalRequestDataException("not enough doll quantity in stock");
+            }
         }
-        return repository.save(cartItem);
     }
 
     @Override
     public void delete(int id, User user) {
-        checkModification(repository.deleteByIdAndUser(id, user), id);
+        checkModification(cartRepository.deleteByIdAndUser(id, user), id);
     }
 
     @Override
     public Optional<CartItem> getByDoll(Doll doll, User user) {
-        return repository.findByDollAndUser(doll, user);
+        return cartRepository.findByDollAndUser(doll, user);
     }
 
     @Override
     public void deleteAll(User user) {
-        checkModification(repository.deleteAllByUser(user));
+        checkModification(cartRepository.deleteAllByUser(user));
     }
 }
