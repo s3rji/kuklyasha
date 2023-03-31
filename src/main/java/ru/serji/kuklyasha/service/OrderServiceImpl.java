@@ -7,6 +7,7 @@ import ru.serji.kuklyasha.error.*;
 import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.repository.*;
 
+import java.math.*;
 import java.util.*;
 
 import static ru.serji.kuklyasha.service.util.ValidationUtil.*;
@@ -36,22 +37,24 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order save(Order order, User user) {
-        if (order.getId() != null) {
-            int id = order.id();
-            checkNotFoundWithId(get(id, user).orElse(null), id);
-        } else {
-            order.getItems().forEach(item -> {
-                dollService.get(item.getDoll().id()).ifPresent(doll -> {
-                    if (item.getQuantity() > doll.getQuantity()) {
-                        throw new IllegalRequestDataException("not enough doll quantity with id = " + doll.id() + " in stock");
-                    }
-                    doll.setQuantity(doll.getQuantity() - item.getQuantity());
-                    dollService.save(doll);
-                });
-            });
-        }
+    public Order update(Order order, User user) {
+        int id = order.id();
+        checkNotFoundWithId(get(id, user).orElse(null), id);
+        return repository.save(order);
+    }
 
+    @Override
+    @Transactional
+    public Order create(Set<PurchasedItem> items, User user) {
+        items.forEach(item -> {
+            if (item.getQuantity() > item.getDoll().getQuantity()) {
+                throw new IllegalRequestDataException("not enough doll quantity with id = " + item.getDoll().id() + " in stock");
+            }
+            item.getDoll().setQuantity(item.getDoll().getQuantity() - item.getQuantity());
+            dollService.save(item.getDoll());
+        });
+        BigDecimal total = items.stream().map(PurchasedItem::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+        Order order = new Order(null, user, items, new Status(StatusType.NEW), total);
         return repository.save(order);
     }
 

@@ -12,10 +12,10 @@ import ru.serji.kuklyasha.service.*;
 import ru.serji.kuklyasha.web.util.*;
 
 import javax.validation.*;
+import javax.validation.constraints.*;
 import java.net.*;
 import java.util.*;
 
-import static ru.serji.kuklyasha.service.util.ValidationUtil.*;
 import static ru.serji.kuklyasha.web.util.OrderUtil.*;
 
 @RestController
@@ -28,10 +28,12 @@ public class OrderController {
     final static String REST_URL = "/api/orders";
 
     private final OrderService orderService;
+    private final DollService dollService;
 
     @Autowired
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, DollService dollService) {
         this.orderService = orderService;
+        this.dollService = dollService;
     }
 
     @GetMapping("/{id}")
@@ -56,18 +58,26 @@ public class OrderController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ResponseEntity<OrderTo> create(@Valid @RequestBody OrderTo orderTo) {
-        log.info("create order = {}", orderTo);
-        Objects.requireNonNull(orderTo, "order must not be null");
-        checkNew(orderTo);
+    public ResponseEntity<OrderTo> create(@RequestBody @NotEmpty(message = "Purchased doll list cannot be empty.")
+                                          List<@Valid PurchasedDoll> dolls) {
+        log.info("create order with dolls = {}", dolls);
+        Objects.requireNonNull(dolls, "dolls must not be null");
         User user = SecurityUtil.authUser();
-        Order order = createOrderFromTo(orderTo, user);
-        Order created = orderService.save(order, user);
+        Set<PurchasedItem> items = mapDollToPurchasedItem(dolls, user);
+        Order created = orderService.create(items, user);
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(createToFromOrder(created));
+    }
+
+    private Set<PurchasedItem> mapDollToPurchasedItem(List<PurchasedDoll> dolls, User user) {
+        Set<PurchasedItem> set = new HashSet<>();
+        dolls.forEach(purchasedDoll -> dollService.get(purchasedDoll.id())
+                .ifPresent(doll -> set.add(new PurchasedItem(null, doll, user, purchasedDoll.getQuantity(), doll.getPrice())))
+        );
+        return set;
     }
 
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -80,7 +90,7 @@ public class OrderController {
         orderService.get(id, user).ifPresent(order -> {
             Status status = new Status(statusTo.getType());
             order.setStatus(status);
-            orderService.save(order, user);
+            orderService.update(order, user);
         });
     }
 

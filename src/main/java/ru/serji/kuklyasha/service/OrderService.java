@@ -10,7 +10,9 @@ public interface OrderService {
 
     List<Order> getAll(User user);
 
-    Order save(Order order, User user);
+    Order update(Order order, User user);
 
     void delete(int id, User user);
+
+    Order create(Set<PurchasedItem> items, User user);
 }
