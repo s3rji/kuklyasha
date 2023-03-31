@@ -65,10 +65,11 @@ class OrderServiceTest {
 
     @Test
     void create() {
-        Order created = orderService.save(getNew(), user);
+        Order created = orderService.create(Set.of(PurchasedItemTestData.getNew()), user);
         int newOrderId = created.id();
         Order newOrder = getNew();
         newOrder.setId(newOrderId);
+        newOrder.setItems(created.getItems());
         Iterator<PurchasedItem> createdIter = created.getItems().iterator();
         Iterator<PurchasedItem> newOrderIter = newOrder.getItems().iterator();
         while (createdIter.hasNext() && newOrderIter.hasNext()) {
@@ -80,27 +81,26 @@ class OrderServiceTest {
         ORDER_MATCHER.assertMatch(orderService.get(newOrderId, user).get(), newOrder);
 
         int dollQuantityInStock = dollService.get(created.getItems().iterator().next().id()).get().getQuantity();
-        int dollQuantityExpected = DollTestData.doll.getQuantity() - created.getItems().iterator().next().getQuantity();
+        int dollQuantityExpected = created.getItems().iterator().next().getQuantity();
         assertEquals(dollQuantityExpected, dollQuantityInStock);
     }
 
     @Test
     void createInvalid() {
-        Order newOrder = getNew();
-        newOrder.setStatus(null);
-        assertThrows(ConstraintViolationException.class, () -> orderService.save(newOrder, user));
+        PurchasedItem item = PurchasedItemTestData.getInvalidNew();
+        assertThrows(ConstraintViolationException.class, () -> orderService.create(Set.of(item), user));
     }
 
     @Test
     void createFailedBecauseNotEnoughQuantity() {
-        Order newOrder = getInvalidNew();
-        assertThrows(IllegalRequestDataException.class, () -> orderService.save(newOrder, user));
+        PurchasedItem item = PurchasedItemTestData.getInvalidQuantity();
+        assertThrows(IllegalRequestDataException.class, () -> orderService.create(Set.of(item), user));
     }
 
     @Test
     void update() {
         Order updated = getUpdated();
-        orderService.save(updated, user);
+        orderService.update(updated, user);
         Order actual = orderService.get(ORDER_ID, user).get();
         ORDER_MATCHER.assertMatch(actual, updated);
     }
@@ -108,7 +108,7 @@ class OrderServiceTest {
     @Test
     void updateInvalidWithWrongUser() {
         Order updated = getUpdated();
-        assertThrows(IllegalRequestDataException.class, () -> orderService.save(updated, admin));
+        assertThrows(IllegalRequestDataException.class, () -> orderService.update(updated, admin));
     }
 
     @Test

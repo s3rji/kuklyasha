@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.serji.kuklyasha.OrderTestData.NOT_FOUND;
-import static ru.serji.kuklyasha.OrderTestData.getNew;
 import static ru.serji.kuklyasha.OrderTestData.jsonFromObject;
 import static ru.serji.kuklyasha.OrderTestData.*;
 import static ru.serji.kuklyasha.UserTestData.*;
@@ -70,16 +69,17 @@ class OrderControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_EMAIL)
     void create() throws Exception {
-        Order newOrder = getNew();
-        OrderTo newTo = createToFromOrder(newOrder);
+        List<PurchasedDoll> dolls = getNewPurchasedDolls();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonFromObject(newTo)))
+                .content(JsonUtil.writeValue(dolls)))
                 .andDo(print())
                 .andExpect(status().isCreated());
 
         OrderTo created = ORDER_TO_MATCHER.readFromJson(action);
         int newId = created.id();
+        Order newOrder = getAfterCreating();
+        OrderTo newTo = createToFromOrder(newOrder);
         newTo.setId(newId);
         Iterator<PurchasedItemTo> createdToIter = created.getItems().iterator();
         Iterator<PurchasedItemTo> newOrderToIter = newTo.getItems().iterator();
@@ -93,10 +93,10 @@ class OrderControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_EMAIL)
     void createInvalid() throws Exception {
-        OrderTo newTo = new OrderTo(null, Collections.emptyList(), null, null, null);
+        List<PurchasedDoll> invalid = List.of(new PurchasedDoll(1, 0));
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonFromObject(newTo)))
+                .content(JsonUtil.writeValue(invalid)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -104,11 +104,10 @@ class OrderControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_EMAIL)
     void createFailedBecauseNotEnoughQuantity() throws Exception {
-        Order newOrder = getInvalidNew();
-        OrderTo newTo = createToFromOrder(newOrder);
+        List<PurchasedDoll> invalid = List.of(new PurchasedDoll(1, 100));
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonFromObject(newTo)))
+                .content(JsonUtil.writeValue(invalid)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
