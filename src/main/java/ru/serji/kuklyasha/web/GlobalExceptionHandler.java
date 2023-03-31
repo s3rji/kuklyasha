@@ -16,6 +16,7 @@ import ru.serji.kuklyasha.error.*;
 import ru.serji.kuklyasha.service.util.*;
 
 import javax.persistence.*;
+import javax.validation.*;
 import java.util.*;
 import java.util.stream.*;
 
@@ -37,6 +38,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<?> entityNotFoundException(WebRequest request, EntityNotFoundException ex) {
         log.error("EntityNotFoundException: {}", ex.getMessage());
+        return createResponseEntity(request, ErrorAttributeOptions.of(MESSAGE), null, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<?> constraintViolationException(WebRequest request, ConstraintViolationException ex) {
+        log.error("ConstraintViolationException: {}", ex.getMessage());
         return createResponseEntity(request, ErrorAttributeOptions.of(MESSAGE), null, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
