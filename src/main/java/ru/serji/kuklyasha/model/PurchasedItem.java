@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.math.*;
 
 @Entity
 @Table(name = "purchased_item")
@@ -31,10 +32,17 @@ public class PurchasedItem extends BaseEntity {
     @Range(min = 1)
     private int quantity;
 
-    public PurchasedItem(Integer id, Doll doll, User user, int quantity) {
+    @Column(name = "price", nullable = false, precision = 8, scale = 2, updatable = false)
+    @NotNull
+    @Range(min = 1, max = 100000)
+    @Digits(integer = 6, fraction = 2)
+    private BigDecimal price;
+
+    public PurchasedItem(Integer id, Doll doll, User user, int quantity, BigDecimal price) {
         super(id);
         this.doll = doll;
         this.user = user;
         this.quantity = quantity;
+        this.price = price;
     }
 }
