@@ -8,6 +8,7 @@ import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.request.*;
 import ru.serji.kuklyasha.*;
 import ru.serji.kuklyasha.dto.*;
+import ru.serji.kuklyasha.dto.cart.*;
 import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.service.*;
 import ru.serji.kuklyasha.web.*;
@@ -16,11 +17,11 @@ import ru.serji.kuklyasha.web.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.serji.kuklyasha.CartItemTestData.NOT_FOUND;
-import static ru.serji.kuklyasha.CartItemTestData.getUpdated;
 import static ru.serji.kuklyasha.CartItemTestData.*;
-import static ru.serji.kuklyasha.DollTestData.*;
-import static ru.serji.kuklyasha.UserTestData.*;
+import static ru.serji.kuklyasha.UserTestData.ADMIN_EMAIL;
+import static ru.serji.kuklyasha.UserTestData.USER_EMAIL;
+import static ru.serji.kuklyasha.UserTestData.admin;
+import static ru.serji.kuklyasha.UserTestData.user;
 
 class CartControllerTest extends AbstractControllerTest {
 
@@ -48,24 +49,38 @@ class CartControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_EMAIL)
     void create() throws Exception {
+        CreatedCartItem cartItem = new CreatedCartItem(DollTestData.DOLL_ID);
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(DollTestData.jsonFromObject(doll)))
+                .content(JsonUtil.writeValue(cartItem)))
                 .andDo(print())
                 .andExpect(status().isCreated());
 
         CartItemTo created = CART_ITEM_TO_MATCHER.readFromJson(action);
-        DollTestData.DOLL_MATCHER.assertMatch(created.getDoll(), doll);
+        int newId = created.id();
+        CartItem expected = getNew();
+        expected.setId(newId);
+        CART_ITEM_MATCHER.assertMatch(cartService.get(newId, admin).get(), expected);
     }
 
     @Test
     @WithUserDetails(value = ADMIN_EMAIL)
-    void createInvalid() throws Exception {
-        Doll invalid = DollTestData.getNew();
-        invalid.setName("");
+    void createInvalidWithNullId() throws Exception {
+        CreatedCartItem invalid = new CreatedCartItem(null);
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(DollTestData.jsonFromObject(invalid)))
+                .content(JsonUtil.writeValue(invalid)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL)
+    void createInvalidWithNonExistentDoll() throws Exception {
+        CreatedCartItem invalid = new CreatedCartItem(DollTestData.NOT_FOUND);
+        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(invalid)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }

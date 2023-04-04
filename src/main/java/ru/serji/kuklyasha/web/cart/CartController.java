@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.*;
 import ru.serji.kuklyasha.dto.*;
+import ru.serji.kuklyasha.dto.cart.*;
+import ru.serji.kuklyasha.error.*;
 import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.service.*;
 import ru.serji.kuklyasha.web.util.*;
@@ -27,10 +29,12 @@ public class CartController {
     final static String REST_URL = "/api/cart";
 
     private final CartService cartService;
+    private final DollService dollService;
 
     @Autowired
-    public CartController(CartService cartService) {
+    public CartController(CartService cartService, DollService dollService) {
         this.cartService = cartService;
+        this.dollService = dollService;
     }
 
     @GetMapping
@@ -43,16 +47,21 @@ public class CartController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ResponseEntity<CartItemTo> create(@Valid @RequestBody Doll doll) {
-        log.info("create cart item from doll = {}", doll);
-        Objects.requireNonNull(doll, "doll for cart item must not be null");
+    public ResponseEntity<CartItemTo> create(@Valid @RequestBody CreatedCartItem cartItemTo) {
+        log.info("create cart item for doll with id = {}", cartItemTo.getDollId());
+        Objects.requireNonNull(cartItemTo, "cart item must not be null");
         User user = SecurityUtil.authUser();
-        CartItem cartItem = new CartItem(null, doll, user, 1);
-        CartItem created = cartService.save(cartItem, user);
-        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL)
-                .buildAndExpand(created.getId()).toUri();
-        return ResponseEntity.created(uriOfNewResource).body(createToFromCartItem(created));
+        Optional<Doll> doll = dollService.get(cartItemTo.getDollId());
+        if (doll.isPresent()) {
+            CartItem cartItem = new CartItem(null, doll.get(), user, 1);
+            CartItem created = cartService.save(cartItem, user);
+            URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path(REST_URL)
+                    .buildAndExpand(created.getId()).toUri();
+            return ResponseEntity.created(uriOfNewResource).body(createToFromCartItem(created));
+        } else {
+            throw new IllegalRequestDataException("Action could not be processed properly due to invalid data provided");
+        }
     }
 
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)

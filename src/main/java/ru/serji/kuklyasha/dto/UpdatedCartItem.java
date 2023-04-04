@@ -9,7 +9,6 @@ import javax.validation.constraints.*;
 @EqualsAndHashCode(callSuper = true)
 public class UpdatedCartItem extends BaseTo {
 
-    @NotNull
     @Range(min = 1)
     int quantity;
 
