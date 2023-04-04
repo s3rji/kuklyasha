@@ -1,4 +1,4 @@
-package ru.serji.kuklyasha.dto;
+package ru.serji.kuklyasha.dto.order;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
