@@ -16,12 +16,11 @@ import ru.serji.kuklyasha.web.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static ru.serji.kuklyasha.CartItemTestData.NOT_FOUND;
+import static ru.serji.kuklyasha.CartItemTestData.getUpdated;
 import static ru.serji.kuklyasha.CartItemTestData.*;
-import static ru.serji.kuklyasha.DollTestData.doll;
-import static ru.serji.kuklyasha.UserTestData.USER_EMAIL;
-import static ru.serji.kuklyasha.UserTestData.ADMIN_EMAIL;
-import static ru.serji.kuklyasha.UserTestData.user;
-import static ru.serji.kuklyasha.web.util.CartUtil.createToFromCartItem;
+import static ru.serji.kuklyasha.DollTestData.*;
+import static ru.serji.kuklyasha.UserTestData.*;
 
 class CartControllerTest extends AbstractControllerTest {
 
@@ -74,24 +73,23 @@ class CartControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_EMAIL)
     void update() throws Exception {
-        CartItem updatedCartItem = getUpdated();
-        CartItemTo updatedTo = createToFromCartItem(updatedCartItem);
-        perform(MockMvcRequestBuilders.put(REST_URL + CART_ITEM_ID)
+        UpdatedCartItem updatedTo = new UpdatedCartItem(1, 2);
+        perform(MockMvcRequestBuilders.patch(REST_URL + CART_ITEM_ID)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonFromObject(updatedTo)))
+                .content(JsonUtil.writeValue(updatedTo)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        CART_ITEM_MATCHER.assertMatch(cartService.get(CART_ITEM_ID, user).get(), updatedCartItem);
+        CART_ITEM_MATCHER.assertMatch(cartService.get(CART_ITEM_ID, user).get(), getUpdated());
     }
 
     @Test
     @WithUserDetails(value = USER_EMAIL)
     void updateInvalid() throws Exception {
-        CartItemTo invalid = new CartItemTo(null, null, 0);
-        perform(MockMvcRequestBuilders.put(REST_URL + CART_ITEM_ID)
+        UpdatedCartItem invalid = new UpdatedCartItem(1, 0);
+        perform(MockMvcRequestBuilders.patch(REST_URL + CART_ITEM_ID)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonFromObject(invalid)))
+                .content(JsonUtil.writeValue(invalid)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }

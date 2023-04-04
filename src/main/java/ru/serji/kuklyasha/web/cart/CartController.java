@@ -55,16 +55,18 @@ public class CartController {
         return ResponseEntity.created(uriOfNewResource).body(createToFromCartItem(created));
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
-    public void update(@Valid @RequestBody CartItemTo cartItemTo, @PathVariable("id") int id) {
+    public void update(@Valid @RequestBody UpdatedCartItem cartItemTo, @PathVariable("id") int id) {
         log.info("update cart item = {}", cartItemTo);
         Objects.requireNonNull(cartItemTo, "cart item must not be null");
-        Objects.requireNonNull(cartItemTo.getDoll(), "cartItem.doll must not be null");
         assureIdConsistent(cartItemTo, id);
         User user = SecurityUtil.authUser();
-        cartService.save(createCartItemFromTo(cartItemTo, user), user);
+        cartService.get(cartItemTo.id(), user).ifPresent(item -> {
+            item.setQuantity(cartItemTo.getQuantity());
+            cartService.save(item, user);
+        });
     }
 
     @DeleteMapping("/{id}")
