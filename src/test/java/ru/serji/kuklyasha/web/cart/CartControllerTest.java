@@ -7,7 +7,6 @@ import org.springframework.security.test.context.support.*;
 import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.request.*;
 import ru.serji.kuklyasha.*;
-import ru.serji.kuklyasha.dto.*;
 import ru.serji.kuklyasha.dto.cart.*;
 import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.service.*;

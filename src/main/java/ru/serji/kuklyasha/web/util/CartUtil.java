@@ -2,7 +2,7 @@ package ru.serji.kuklyasha.web.util;
 
 import lombok.experimental.*;
 import org.springframework.lang.*;
-import ru.serji.kuklyasha.dto.*;
+import ru.serji.kuklyasha.dto.cart.*;
 import ru.serji.kuklyasha.model.*;
 
 @UtilityClass

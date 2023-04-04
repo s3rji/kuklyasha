@@ -1,7 +1,8 @@
-package ru.serji.kuklyasha.dto;
+package ru.serji.kuklyasha.dto.cart;
 
 import lombok.*;
 import org.hibernate.validator.constraints.*;
+import ru.serji.kuklyasha.dto.*;
 
 import javax.validation.constraints.*;
 
