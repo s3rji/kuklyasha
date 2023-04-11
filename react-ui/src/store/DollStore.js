@@ -4,7 +4,7 @@ export default class DollStore {
     constructor() {
         this._dolls = []
         this._page = 0
-        this._limit = 5
+        this._limit = 8
         this._total = 0;
         makeAutoObservable(this)
     }
