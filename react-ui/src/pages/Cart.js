@@ -41,24 +41,15 @@ const Cart = observer(() => {
     const updateItem = async (index, value) => {
         try {
             cart.updateCartItemQuantity(index, value)
-            await updateCartItem(cart.cart[index].id, cart.cart[index])
+            await updateCartItem(cart.cart[index].id, {"id": cart.cart[index].id, "quantity": value})
         } catch (e) {
             alert(e)
         }
     }
 
     const addOrder = async () => {
-        let status = {
-            'type': 'NEW',
-            'modified': Moment(new Date()).format('DD-MM-yyyy HH:mm')
-        }
-
-        let newOrder = {}
-        newOrder.id = null
-        newOrder.items = cart.cart.slice();
-        newOrder.status = status
-        newOrder.total = total
-        let created = await createOrder(newOrder)
+        const purchasedDolls = cart.cart.map(item => ({"id": item.doll.id, "quantity": item.quantity}));
+        let created = await createOrder(purchasedDolls)
         order.orders.push(created)
         await removeAllCartItems()
         cart.setCart([])
@@ -95,7 +86,8 @@ const Cart = observer(() => {
                                                         <div
                                                             className="flex justify-between text-base font-medium text-gray-900">
                                                             <h3>
-                                                                <NavLink to={DOLL_ROUTE + "/" + product.doll.id}>{product.doll.name}</NavLink>
+                                                                <NavLink
+                                                                    to={DOLL_ROUTE + "/" + product.doll.id}>{product.doll.name}</NavLink>
                                                             </h3>
                                                             <p className="ml-4">{product.doll.price} руб.</p>
                                                         </div>

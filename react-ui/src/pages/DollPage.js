@@ -57,7 +57,7 @@ const DollPage = observer(() => {
 
     const addItem = async () => {
         try {
-            await addCartItem(doll)
+            await addCartItem({"dollId" : doll.id})
             getCart().then(data => {
                 cart.setCart(data)
             })

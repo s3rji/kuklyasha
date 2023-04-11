@@ -19,5 +19,5 @@ export const removeAllCartItems = async () => {
 }
 
 export const updateCartItem = async (id, cartItem) => {
-    await $authHost.put('api/cart/' + id, cartItem)
+    await $authHost.patch('api/cart/' + id, cartItem)
 }
