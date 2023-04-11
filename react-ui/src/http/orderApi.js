@@ -5,7 +5,7 @@ export const getOrders = async () => {
     return data
 }
 
-export const createOrder = async (order) => {
-    const {data} = await $authHost.post('api/orders', order)
+export const createOrder = async (purchasedDolls) => {
+    const {data} = await $authHost.post('api/orders', purchasedDolls)
     return data
 }
