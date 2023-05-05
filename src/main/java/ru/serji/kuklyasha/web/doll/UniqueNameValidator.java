@@ -27,7 +27,7 @@ public class UniqueNameValidator implements Validator {
 
     @Override
     public boolean supports(@NonNull Class<?> clazz) {
-        return HasIdAndName.class.isAssignableFrom(clazz);  // Change on interface HasIdAndName
+        return HasIdAndName.class.isAssignableFrom(clazz);
     }
 
     @Override

@@ -22,7 +22,7 @@ public class Doll extends BaseEntity implements HasIdAndName {
     private String name;
 
     @Column(name = "description", nullable = false)
-    @NotBlank()
+    @NotBlank
     @Size(min = 10)
     private String description;
 
