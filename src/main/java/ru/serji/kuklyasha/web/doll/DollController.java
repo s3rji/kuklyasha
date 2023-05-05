@@ -17,6 +17,7 @@ import java.net.*;
 import java.util.*;
 
 import static ru.serji.kuklyasha.service.util.ValidationUtil.*;
+import static ru.serji.kuklyasha.web.util.DollUtil.*;
 
 @RestController
 @RequestMapping(value = DollController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -42,47 +43,50 @@ public class DollController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Doll> get(@PathVariable("id") int id) {
+    public ResponseEntity<DollTo> get(@PathVariable("id") int id) {
         log.info("get doll {}", id);
-        return ResponseEntity.of(dollService.get(id));
+        return dollService.get(id)
+                .map(doll -> ResponseEntity.ok(createToFromDoll(doll)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping
-    public List<Doll> getAll() {
+    public List<DollTo> getAll() {
         log.info("get all dolls");
-        return dollService.getAll();
+        return dollService.getAll().stream()
+                .map(DollUtil::createToFromDoll).sorted(Comparator.comparingInt(BaseTo::getId)).toList();
     }
 
     @GetMapping(params = {"page", "limit"})
     @Transactional(readOnly = true)
     public ResponseEntity<DollPage> getLimitByPage(@RequestParam int page, @RequestParam int limit) {
         log.info("get dolls by page {} and limit {}", page, limit);
-        List<Doll> content = dollService.getLimitByPage(page, limit);
+        List<DollTo> content = dollService.getLimitByPage(page, limit).stream().map(DollUtil::createToFromDoll).toList();
         int total = dollService.totalCount();
-        DollPage body = DollUtil.createDollPage(content, total);
-        return ResponseEntity.of(Optional.of(body));
+        DollPage body = createDollPage(content, total);
+        return ResponseEntity.ok(body);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Doll> create(@Valid @RequestBody Doll doll) {
-        log.info("create doll = {}", doll);
-        Objects.requireNonNull(doll, "doll must not be null");
-        checkNew(doll);
-        Doll created = dollService.save(doll);
+    public ResponseEntity<DollTo> create(@Valid @RequestBody DollTo dollTo) {
+        log.info("create doll = {}", dollTo);
+        Objects.requireNonNull(dollTo, "doll must not be null");
+        checkNew(dollTo);
+        Doll created = dollService.save(createDollFromTo(dollTo));
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
-        return ResponseEntity.created(uriOfNewResource).body(created);
+        return ResponseEntity.created(uriOfNewResource).body(createToFromDoll(created));
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody Doll doll, @PathVariable("id") int id) {
-        log.info("update doll = {}", doll);
-        Objects.requireNonNull(doll, "doll must not be null");
-        assureIdConsistent(doll, id);
-        dollService.save(doll);
+    public void update(@Valid @RequestBody DollTo dollTo, @PathVariable("id") int id) {
+        log.info("update doll = {}", dollTo);
+        Objects.requireNonNull(dollTo, "doll must not be null");
+        assureIdConsistent(dollTo, id);
+        dollService.save(createDollFromTo(dollTo));
     }
 
     @DeleteMapping("/{id}")

@@ -1,5 +1,6 @@
 package ru.serji.kuklyasha;
 
+import ru.serji.kuklyasha.dto.*;
 import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.web.util.*;
 
@@ -8,6 +9,8 @@ import java.util.*;
 
 public class DollTestData {
     public static final MatcherFactory.Matcher<Doll> DOLL_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Doll.class, "created");
+
+    public static final MatcherFactory.Matcher<DollTo> DOLL_TO_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(DollTo.class);
 
     public static final int DOLL_ID = 1;
 
@@ -31,7 +34,7 @@ public class DollTestData {
         return new Doll(DOLL_ID, "UpdatedDoll", "Very Ugly Doll", new BigDecimal("100.00"), 3, "/image1");
     }
 
-    public static String jsonFromObject(Doll doll) {
+    public static String jsonFromObject(BaseTo doll) {
         return JsonUtil.writeValue(doll);
     }
 }

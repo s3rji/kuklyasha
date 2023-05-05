@@ -41,12 +41,10 @@ public class OrderController {
     public ResponseEntity<OrderTo> get(@PathVariable("id") int id) {
         User user = SecurityUtil.authUser();
         log.info("get order {} by user {}", id, user.id());
-        Order order = orderService.get(id, user).orElse(null);
-        if (order == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
 
-        return ResponseEntity.of(Optional.of(createToFromOrder(order)));
+        return orderService.get(id, user)
+                .map(order -> ResponseEntity.ok(createToFromOrder(order)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping

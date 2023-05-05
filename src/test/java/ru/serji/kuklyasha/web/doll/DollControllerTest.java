@@ -17,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.serji.kuklyasha.DollTestData.*;
 import static ru.serji.kuklyasha.web.doll.UniqueNameValidator.*;
+import static ru.serji.kuklyasha.web.util.DollUtil.*;
 
 class DollControllerTest extends AbstractControllerTest {
 
@@ -31,7 +32,7 @@ class DollControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(DOLL_MATCHER.contentJson(doll));
+                .andExpect(DOLL_TO_MATCHER.contentJson(createToFromDoll(doll)));
     }
 
     @Test
@@ -47,7 +48,7 @@ class DollControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(DOLL_MATCHER.contentJson(allDolls));
+                .andExpect(DOLL_TO_MATCHER.contentJson(allDolls.stream().map(DollUtil::createToFromDoll).toList()));
     }
 
     @Test
@@ -60,7 +61,7 @@ class DollControllerTest extends AbstractControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
 
         DollPage actual = JsonUtil.readValue(action.andReturn().getResponse().getContentAsString(), DollPage.class);
-        DOLL_MATCHER.assertMatch(actual.getContent(), allDolls.subList(0, 3));
+        DOLL_TO_MATCHER.assertMatch(actual.getContent(), allDolls.subList(0, 3).stream().map(DollUtil::createToFromDoll).toList());
         assertThat(actual.getTotal()).isEqualTo(allDolls.size());
     }
 
@@ -69,14 +70,14 @@ class DollControllerTest extends AbstractControllerTest {
         Doll newDoll = getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonFromObject(newDoll)))
+                .content(jsonFromObject(createToFromDoll(newDoll))))
                 .andDo(print())
                 .andExpect(status().isCreated());
 
-        Doll created = DOLL_MATCHER.readFromJson(action);
+        DollTo created = DOLL_TO_MATCHER.readFromJson(action);
         int newId = created.id();
         newDoll.setId(newId);
-        DOLL_MATCHER.assertMatch(created, newDoll);
+        DOLL_TO_MATCHER.assertMatch(created, createToFromDoll(newDoll));
         DOLL_MATCHER.assertMatch(dollService.get(newId).get(), newDoll);
     }
 
@@ -86,7 +87,7 @@ class DollControllerTest extends AbstractControllerTest {
         invalid.setName("");
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonFromObject(invalid)))
+                .content(jsonFromObject(createToFromDoll(invalid))))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -97,7 +98,7 @@ class DollControllerTest extends AbstractControllerTest {
         duplicate.setName("Doll2");
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonFromObject(duplicate)))
+                .content(jsonFromObject(createToFromDoll(duplicate))))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(EXCEPTION_DUPLICATE_NAME)));
@@ -108,7 +109,7 @@ class DollControllerTest extends AbstractControllerTest {
         Doll updated = getUpdated();
         perform(MockMvcRequestBuilders.put(REST_URL + DOLL_ID)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonFromObject(updated)))
+                .content(jsonFromObject(createToFromDoll(updated))))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
@@ -121,7 +122,7 @@ class DollControllerTest extends AbstractControllerTest {
         invalid.setName("");
         perform(MockMvcRequestBuilders.put(REST_URL + DOLL_ID)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonFromObject(invalid)))
+                .content(jsonFromObject(createToFromDoll(invalid))))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -132,7 +133,7 @@ class DollControllerTest extends AbstractControllerTest {
         invalid.setName("Doll2");
         perform(MockMvcRequestBuilders.put(REST_URL + DOLL_ID)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonFromObject(invalid)))
+                .content(jsonFromObject(createToFromDoll(invalid))))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(EXCEPTION_DUPLICATE_NAME)));
