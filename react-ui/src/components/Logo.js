@@ -1,11 +1,9 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {MAIN_ROUTE} from "../utils/consts";
 import logo from "../assets/main.jpeg";
 import {NavLink} from "react-router-dom";
-import {Context} from "../index";
 
-const Logo = () => {
-    const {navigation} = useContext(Context)
+const Logo = ({setNavigation}) => {
 
     return (
         <NavLink to={MAIN_ROUTE}>
@@ -14,7 +12,7 @@ const Logo = () => {
                     className="hidden lg:block h-8 w-auto"
                     src={logo}
                     alt="Kuklyasha"
-                    onClick={() => navigation.setSelectedWay(0)}
+                    onClick={setNavigation}
                 />
             </div>
         </NavLink>

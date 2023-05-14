@@ -8,3 +8,6 @@ export {default as Contacts} from "./Contacts";
 export {default as Profile} from "./Profile";
 export {default as Orders} from "./Orders";
 export {default as Cart} from "./Cart";
+export {default as AdminCatalog} from "./admin/AdminCatalog";
+export {default as AdminOrders} from "./admin/AdminOrders";
+export {default as AdminUsers} from "./admin/AdminUsers";

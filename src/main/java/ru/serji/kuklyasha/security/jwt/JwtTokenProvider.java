@@ -51,7 +51,7 @@ public class JwtTokenProvider {
     }
 
     private List<String> getRoleNames(Set<Role> userRoles) {
-        return userRoles.stream().map(Enum::name).toList();
+        return userRoles.stream().map(Enum::name).sorted().toList();
     }
 
     public Authentication getAuthentication(String token, HttpServletRequest request) {

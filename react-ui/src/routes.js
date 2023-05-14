@@ -1,12 +1,32 @@
-import {AboutUs, Catalog, Contacts, DollPage, Login, Main, Profile, Orders, Registration, Cart} from "./pages/index";
+import {
+    AboutUs,
+    AdminCatalog,
+    AdminOrders,
+    AdminUsers,
+    Cart,
+    Catalog,
+    Contacts,
+    DollPage,
+    Login,
+    Main,
+    Orders,
+    Profile,
+    Registration
+} from "./pages/index";
 import {
     ABOUT_US_ROUTE,
+    ADMIN_CATALOG_ROUTE,
+    ADMIN_ORDERS_ROUTE,
+    ADMIN_USERS_ROUTE,
+    CART_ROUTE,
     CATALOG_ROUTE,
     CONTACTS_ROUTE,
     DOLL_ROUTE,
     LOGIN_ROUTE,
-    MAIN_ROUTE, PROFILE_ROUTE,
-    REGISTRATION_ROUTE, ORDERS_ROUTE, CART_ROUTE
+    MAIN_ROUTE,
+    ORDERS_ROUTE,
+    PROFILE_ROUTE,
+    REGISTRATION_ROUTE
 } from "./utils/consts";
 
 export const publicRoutes = [
@@ -52,5 +72,20 @@ export const authRoutes = [
     {
         path: CART_ROUTE,
         Component: Cart
+    }
+]
+
+export const adminRoutes = [
+    {
+        path: ADMIN_CATALOG_ROUTE,
+        Component: AdminCatalog
+    },
+    {
+        path: ADMIN_ORDERS_ROUTE,
+        Component: AdminOrders
+    },
+    {
+        path: ADMIN_USERS_ROUTE,
+        Component: AdminUsers
     }
 ]

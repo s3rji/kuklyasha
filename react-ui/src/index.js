@@ -2,7 +2,7 @@ import React, {createContext} from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import {CartStore, DollStore, NavigationStore, OrderStore, UserStore} from "./store/index";
+import {AdminNavigationStore, CartStore, DollStore, NavigationStore, OrderStore, UserStore} from "./store/index";
 
 export const Context = createContext(null)
 
@@ -12,6 +12,7 @@ root.render(
         user: new UserStore(),
         doll: new DollStore(),
         navigation: new NavigationStore(),
+        adminNavigation: new AdminNavigationStore(),
         order: new OrderStore(),
         cart: new CartStore()
     }}>

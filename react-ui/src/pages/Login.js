@@ -4,7 +4,7 @@ import {NavLink, useNavigate} from "react-router-dom";
 import logo from "../assets/main.jpeg";
 import {Context} from "../index";
 import {login} from "../http/userAPI";
-import {CATALOG_ROUTE} from "../utils/consts";
+import {ADMIN_CATALOG_ROUTE, ADMIN_ROLE, CATALOG_ROUTE} from "../utils/consts";
 import {observer} from "mobx-react-lite";
 import {getCart} from "../http/cartApi";
 
@@ -19,10 +19,11 @@ const Login = observer(() => {
         try {
             let userData = await login(email, password, rememberMe)
             let cartData = await getCart()
-            user.setUser(userData)
+            user.setRoles(userData.roles)
+            user.setActiveRole(userData.roles[0])
             user.setIsAuth(true)
             cart.setCart(cartData)
-            navigate(CATALOG_ROUTE)
+            user.activeRole === ADMIN_ROLE ? navigate(ADMIN_CATALOG_ROUTE) : navigate(CATALOG_ROUTE)
         } catch (e) {
             alert(e)
         }

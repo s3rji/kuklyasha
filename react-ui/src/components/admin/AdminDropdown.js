@@ -1,17 +1,16 @@
 import React, {Fragment, useContext} from 'react';
 import {Menu, Transition} from "@headlessui/react";
 import {NavLink} from "react-router-dom";
-import {Context} from "../index";
+import {Context} from "../../index";
 import {observer} from "mobx-react-lite";
-import {ADMIN_CATALOG_ROUTE, ADMIN_ROLE, CATALOG_ROUTE, ORDERS_ROUTE, PROFILE_ROUTE} from "../utils/consts";
+import {CATALOG_ROUTE} from "../../utils/consts";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-const ProfileDropdown = observer(() => {
+const AdminDropdown = observer(() => {
     const {user} = useContext(Context)
-    const {navigation} = useContext(Context)
 
     const logOut = () => {
         user.logOut()
@@ -41,38 +40,14 @@ const ProfileDropdown = observer(() => {
             >
                 <Menu.Items
                     className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    {user.roles[0] === ADMIN_ROLE &&
-                        <Menu.Item>
-                            {({active}) => (
-                                <NavLink
-                                    to={ADMIN_CATALOG_ROUTE}
-                                    onClick={() => user.setActiveRole(user.roles[0])}
-                                    className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                                >
-                                    Зайти как администратор
-                                </NavLink>
-                            )}
-                        </Menu.Item>
-                    }
                     <Menu.Item>
                         {({active}) => (
                             <NavLink
-                                to={PROFILE_ROUTE}
-                                onClick={() => navigation.setSelectedWay(0)}
+                                to={CATALOG_ROUTE}
+                                onClick={() => user.setActiveRole(user.roles[1])}
                                 className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                             >
-                                Ваш профиль
-                            </NavLink>
-                        )}
-                    </Menu.Item>
-                    <Menu.Item>
-                        {({active}) => (
-                            <NavLink
-                                to={ORDERS_ROUTE}
-                                onClick={() => navigation.setSelectedWay(0)}
-                                className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                            >
-                                Заказы
+                                Зайти как пользователь
                             </NavLink>
                         )}
                     </Menu.Item>
@@ -93,4 +68,4 @@ const ProfileDropdown = observer(() => {
     );
 });
 
-export default ProfileDropdown;
+export default AdminDropdown;
