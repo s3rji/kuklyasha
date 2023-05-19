@@ -20,3 +20,6 @@ export {default as InfoModal} from './InfoModal';
 export {default as AdminNavigation} from './admin/AdminNavigation';
 export {default as AdminBar} from './admin/AdminBar';
 export {default as AdminDropdown} from './admin/AdminDropdown';
+export {default as AdminDollList} from './admin/AdminDollList';
+export {default as AdminDollItem} from './admin/AdminDollItem';
+export {default as EditDoll} from './admin/EditDoll';
