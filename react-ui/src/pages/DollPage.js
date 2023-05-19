@@ -2,7 +2,7 @@ import {useContext, useEffect, useState} from "react"
 import {StarIcon} from "@heroicons/react/solid"
 import {RadioGroup} from "@headlessui/react"
 import {getDoll} from "../http/dollApi";
-import {useNavigate, useParams} from "react-router-dom";
+import {NavLink, useNavigate, useParams} from "react-router-dom";
 import {CATALOG_ROUTE, DOLL_ROUTE, LOGIN_ROUTE} from "../utils/consts";
 import {observer} from "mobx-react-lite";
 import {addCartItem, getCart} from "../http/cartApi";
@@ -75,9 +75,9 @@ const DollPage = observer(() => {
                         {breadcrumbs.map((breadcrumb) => (
                             <li key={breadcrumb.id}>
                                 <div className="flex items-center">
-                                    <a href={breadcrumb.href} className="mr-2 text-sm font-medium text-gray-900">
+                                    <NavLink to={breadcrumb.href} className="mr-2 text-sm font-medium text-gray-900">
                                         {breadcrumb.name}
-                                    </a>
+                                    </NavLink>
                                     <svg
                                         width={16}
                                         height={20}

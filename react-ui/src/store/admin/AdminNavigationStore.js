@@ -7,7 +7,7 @@ export default class AdminNavigationStore {
             {name: 'Заказы', href: '/admin/orders', id: 2},
             {name: 'Пользователи', href: '/admin/users', id: 3},
         ]
-        this._selectedWay = 0
+        this._selectedWay = 1
         makeAutoObservable(this)
     }
 
