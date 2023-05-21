@@ -22,6 +22,15 @@ public class OrderTestData {
 
     public static final int NOT_FOUND = 1000;
 
+    public static final Set<String> gallery = new HashSet<>();
+
+    static {
+        gallery.add("/image1");
+        gallery.add("/image2");
+        gallery.add("/image3");
+        gallery.add("/image4");
+    }
+
     public static final Order order = new Order(ORDER_ID, UserTestData.user, Set.of(item, item2),
             new Status(StatusType.NEW, LocalDateTime.of(2022, 10, 31, 0, 0)), new BigDecimal("200.00"));
 
@@ -45,7 +54,7 @@ public class OrderTestData {
     }
 
     public static Order getAfterCreating() {
-        Doll dollAfterCreatingOrder = new Doll(DOLL_ID, "Doll1", "Pretty Doll", new BigDecimal("100.00"), 1, "/image1");
+        Doll dollAfterCreatingOrder = new Doll(DOLL_ID, "Doll1", "Pretty Doll", new BigDecimal("100.00"), 1, "/image1", gallery);
         PurchasedItem itemAfterCreatingOrder = new PurchasedItem(null, dollAfterCreatingOrder, UserTestData.user, 1, new BigDecimal("100.00"));
         return new Order(null, UserTestData.user, Set.of(itemAfterCreatingOrder),
                 new Status(StatusType.NEW, LocalDateTime.of(2022, 11, 1, 0, 0)), new BigDecimal("100.00"));

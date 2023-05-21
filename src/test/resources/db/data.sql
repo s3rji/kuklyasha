@@ -4,14 +4,21 @@ DELETE FROM PURCHASED_ITEM;
 DELETE FROM ORDERS;
 DELETE FROM USER_ROLES;
 DELETE FROM USERS;
+DELETE FROM GALLERY;
 DELETE FROM DOLL;
 
-INSERT INTO DOLL (name, description, price, quantity, image)
+INSERT INTO DOLL (name, description, price, quantity, poster)
 VALUES ('Doll1', 'Pretty Doll', 100.00, 2, '/image1'),
        ('Doll2', 'Pretty Doll', 100.00, 1, '/image2'),
        ('Doll3', 'Pretty Doll', 100.00, 1, '/image3'),
        ('Doll4', 'Pretty Doll', 100.00, 1, '/image4'),
        ('Doll5', 'Pretty Doll', 100.00, 1, '/image5');
+
+INSERT INTO GALLERY (doll_id, filename)
+VALUES (1, '/image1'),
+       (1, '/image2'),
+       (1, '/image3'),
+       (1, '/image4');
 
 INSERT INTO USERS (name, email, password, lastname, phone, country, city, region, street, zipcode, notice_email, notice_phone)
 VALUES ('User', 'user@yandex.ru', '{bcrypt}$2a$10$zAJ7/voOp9SwObfHN4CBLe/9KDnx.b/0TRcU53NzmmxuErVP15rWu', 'Pupkin',

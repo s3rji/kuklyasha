@@ -16,22 +16,31 @@ public class DollTestData {
 
     public static final int NOT_FOUND = 1000;
 
-    public static final Doll doll = new Doll(DOLL_ID, "Doll1", "Pretty Doll", new BigDecimal("100.00"), 2, "/image1");
+    public static final Set<String> gallery = new HashSet<>();
+
+    static {
+        gallery.add("/image1");
+        gallery.add("/image2");
+        gallery.add("/image3");
+        gallery.add("/image4");
+    }
+
+    public static final Doll doll = new Doll(DOLL_ID, "Doll1", "Pretty Doll", new BigDecimal("100.00"), 2, "/image1", gallery);
 
     public static final List<Doll> allDolls = List.of(
-            new Doll(DOLL_ID, "Doll1", "Pretty Doll", new BigDecimal("100.00"), 2, "/image1"),
-            new Doll(DOLL_ID + 1, "Doll2", "Pretty Doll", new BigDecimal("100.00"), 1, "/image2"),
-            new Doll(DOLL_ID + 2, "Doll3", "Pretty Doll", new BigDecimal("100.00"), 1, "/image3"),
-            new Doll(DOLL_ID + 3, "Doll4", "Pretty Doll", new BigDecimal("100.00"), 1, "/image4"),
-            new Doll(DOLL_ID + 4, "Doll5", "Pretty Doll", new BigDecimal("100.00"), 1, "/image5")
+            new Doll(DOLL_ID, "Doll1", "Pretty Doll", new BigDecimal("100.00"), 2, "/image1", gallery),
+            new Doll(DOLL_ID + 1, "Doll2", "Pretty Doll", new BigDecimal("100.00"), 1, "/image2", new HashSet<>()),
+            new Doll(DOLL_ID + 2, "Doll3", "Pretty Doll", new BigDecimal("100.00"), 1, "/image3", new HashSet<>()),
+            new Doll(DOLL_ID + 3, "Doll4", "Pretty Doll", new BigDecimal("100.00"), 1, "/image4", new HashSet<>()),
+            new Doll(DOLL_ID + 4, "Doll5", "Pretty Doll", new BigDecimal("100.00"), 1, "/image5", new HashSet<>())
     );
 
     public static Doll getNew() {
-        return new Doll(null, "NewDoll", "Very Ugly Doll", new BigDecimal("100.00"), 1, "/image1");
+        return new Doll(null, "NewDoll", "Very Ugly Doll", new BigDecimal("100.00"), 1, "/image1", Set.of("/image2"));
     }
 
     public static Doll getUpdated() {
-        return new Doll(DOLL_ID, "UpdatedDoll", "Very Ugly Doll", new BigDecimal("100.00"), 3, "/image1");
+        return new Doll(DOLL_ID, "UpdatedDoll", "Very Ugly Doll", new BigDecimal("100.00"), 3, "/image1", gallery);
     }
 
     public static String jsonFromObject(BaseTo doll) {

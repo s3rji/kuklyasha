@@ -2,11 +2,13 @@ package ru.serji.kuklyasha.dto;
 
 import lombok.*;
 import org.hibernate.validator.constraints.*;
+import org.springframework.util.*;
 import ru.serji.kuklyasha.model.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.*;
 import java.math.*;
+import java.util.*;
 
 @Value
 @EqualsAndHashCode(callSuper = true)
@@ -29,14 +31,19 @@ public class DollTo extends BaseTo implements HasIdAndName {
     @Range(min = 0)
     Integer quantity;
 
-    String image;
+    @NotNull
+    String poster;
 
-    public DollTo(Integer id, String name, String description, BigDecimal price, Integer quantity, String image) {
+    List<String> gallery;
+
+
+    public DollTo(Integer id, String name, String description, BigDecimal price, Integer quantity, String poster, Collection<String> gallery) {
         super(id);
         this.name = name;
         this.description = description;
         this.price = price;
         this.quantity = quantity;
-        this.image = image;
+        this.poster = poster;
+        this.gallery = CollectionUtils.isEmpty(gallery) ? Collections.emptyList() : List.copyOf(gallery);
     }
 }

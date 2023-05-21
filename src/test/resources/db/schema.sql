@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS PURCHASED_ITEM;
 DROP TABLE IF EXISTS ORDERS;
 DROP TABLE IF EXISTS USER_ROLES;
 DROP TABLE IF EXISTS USERS;
+DROP TABLE IF EXISTS GALLERY;
 DROP TABLE IF EXISTS DOLL;
 
 CREATE TABLE DOLL
@@ -13,27 +14,35 @@ CREATE TABLE DOLL
     description VARCHAR                 NOT NULL,
     price       NUMERIC(8, 2)           NOT NULL,
     quantity    INTEGER   DEFAULT 0     NOT NULL,
-    image       VARCHAR                 NOT NULL,
+    poster      VARCHAR                 NOT NULL,
     created     TIMESTAMP DEFAULT now() NOT NULL
+);
+
+CREATE TABLE GALLERY
+(
+    doll_id  INTEGER,
+    filename VARCHAR UNIQUE,
+    PRIMARY KEY (doll_id, filename),
+    FOREIGN KEY (doll_id) REFERENCES DOLL (id) ON DELETE CASCADE
 );
 
 CREATE TABLE USERS
 (
-    id       SERIAL PRIMARY KEY,
-    name     VARCHAR                 NOT NULL,
-    email    VARCHAR UNIQUE          NOT NULL,
-    password VARCHAR                 NOT NULL,
-    lastname VARCHAR,
-    phone    VARCHAR UNIQUE,
-    country  VARCHAR,
-    city     VARCHAR,
-    region   VARCHAR,
-    street   VARCHAR,
-    zipcode  VARCHAR,
-    created  TIMESTAMP DEFAULT now() NOT NULL,
-    enabled  BOOL      DEFAULT TRUE  NOT NULL,
-    notice_email  BOOL      DEFAULT FALSE  NOT NULL,
-    notice_phone  BOOL      DEFAULT FALSE  NOT NULL
+    id           SERIAL PRIMARY KEY,
+    name         VARCHAR                 NOT NULL,
+    email        VARCHAR UNIQUE          NOT NULL,
+    password     VARCHAR                 NOT NULL,
+    lastname     VARCHAR,
+    phone        VARCHAR UNIQUE,
+    country      VARCHAR,
+    city         VARCHAR,
+    region       VARCHAR,
+    street       VARCHAR,
+    zipcode      VARCHAR,
+    created      TIMESTAMP DEFAULT now() NOT NULL,
+    enabled      BOOL      DEFAULT TRUE  NOT NULL,
+    notice_email BOOL      DEFAULT FALSE NOT NULL,
+    notice_phone BOOL      DEFAULT FALSE NOT NULL
 );
 
 CREATE TABLE CART_ITEM
