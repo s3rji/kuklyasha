@@ -34,12 +34,12 @@ const DollPage = observer(() => {
     const {cart, user} = useContext(Context)
     const [doll, setDoll] = useState({})
     const {id} = useParams()
+    const [selectedColor, setSelectedColor] = useState(colors[0])
     const navigate = useNavigate()
 
     useEffect(() => {
         getDoll(id).then(data => setDoll(data))
     }, [])
-    const [selectedColor, setSelectedColor] = useState(colors[0])
 
     const labelReview = () => {
         const lastDigit = reviews.totalCount % 10;
@@ -105,7 +105,7 @@ const DollPage = observer(() => {
                 <div className="mt-6 max-w-2xl mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-8">
                     <div className="hidden aspect-w-3 aspect-h-4 rounded-lg overflow-hidden lg:block">
                         <img
-                            src={process.env.REACT_APP_IMAGES_URL + doll.image}
+                            src={process.env.REACT_APP_IMAGES_URL + doll.poster}
                             alt={doll.description}
                             className="w-full h-90 object-center object-cover"
                         />
@@ -113,14 +113,14 @@ const DollPage = observer(() => {
                     <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
                         <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
                             <img
-                                src={process.env.REACT_APP_IMAGES_URL + doll.image}
+                                src={process.env.REACT_APP_IMAGES_URL + doll.poster}
                                 alt={doll.description}
                                 className="w-full h-56 object-center object-cover"
                             />
                         </div>
                         <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
                             <img
-                                src={process.env.REACT_APP_IMAGES_URL + doll.image}
+                                src={process.env.REACT_APP_IMAGES_URL + doll.poster}
                                 alt={doll.description}
                                 className="w-full h-56 object-center object-cover"
                             />
@@ -128,7 +128,7 @@ const DollPage = observer(() => {
                     </div>
                     <div className="aspect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4">
                         <img
-                            src={process.env.REACT_APP_IMAGES_URL + doll.image}
+                            src={process.env.REACT_APP_IMAGES_URL + doll.poster}
                             alt={doll.description}
                             className="w-full h-90 object-center object-cover"
                         />

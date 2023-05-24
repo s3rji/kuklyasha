@@ -7,7 +7,7 @@ import {observer} from "mobx-react-lite";
 const Pages = observer(() => {
     const {doll} = useContext(Context)
     const from = doll.page * doll.limit + 1
-    const to = doll.page * doll.limit + doll.dolls.length
+    const to = doll.page * doll.limit + doll.catalog.length
     const totalPages = Math.ceil(doll.total / doll.limit)
     const pages = []
     for (let i = 0; i < totalPages; i++) {

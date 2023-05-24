@@ -1,20 +1,30 @@
 import {makeAutoObservable} from "mobx";
+import {Doll} from "./index";
 
 export default class DollStore {
     constructor() {
-        this._dolls = []
+        this._catalog = []
+        this._selected = new Doll()
         this._page = 0
         this._limit = 8
         this._total = 0;
         makeAutoObservable(this)
     }
 
-    get dolls() {
-        return this._dolls;
+    get catalog() {
+        return this._catalog;
     }
 
-    setDolls(dolls) {
-        this._dolls = dolls;
+    setCatalog(catalog) {
+        this._catalog = catalog;
+    }
+
+    get selected() {
+        return this._selected;
+    }
+
+    setSelected(selected) {
+        this._selected = selected;
     }
 
     get page() {

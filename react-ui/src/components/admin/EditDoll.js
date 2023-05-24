@@ -1,8 +1,37 @@
+import {Fragment, useState, useEffect, useContext} from 'react'
 import {Dialog, Transition} from '@headlessui/react'
-import {Fragment} from 'react'
 import {PhotographIcon} from "@heroicons/react/solid";
+import {observer} from "mobx-react-lite";
+import {Context} from "../../index";
 
-const EditDoll = ({show, onClose, doll}) => {
+const EditDoll = observer(({show, onClose}) => {
+    const {doll} = useContext(Context)
+    const [name, setName] = useState('')
+    const [description, setDescription] = useState('')
+    const [price, setPrice] = useState(0)
+    const [quantity, setQuantity] = useState(0)
+    const [poster, setPoster] = useState('')
+
+    useEffect(() => {
+        setName(doll.selected.name)
+        setDescription(doll.selected.description)
+        setPrice(doll.selected.price)
+        setQuantity(doll.selected.quantity)
+        setPoster(doll.selected.poster)
+        }, [doll.selected])
+
+    const selectFile = e => {
+        setPoster(e.target.files[0])
+    }
+
+    const sendDoll = () => {
+        doll.selected.name = name
+        doll.selected.description = description
+        doll.selected.price = price
+        doll.selected.quantity = quantity
+        doll.selected.poster = poster
+        console.log(doll.selected)
+    }
 
     return (
         <Transition appear show={show} as={Fragment}>
@@ -56,7 +85,8 @@ const EditDoll = ({show, onClose, doll}) => {
                                                                 name="name"
                                                                 id="name"
                                                                 autoComplete="name"
-                                                                value={doll.name}
+                                                                value={name}
+                                                                onChange={e => setName(e.target.value)}
                                                                 className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-none sm:text-sm sm:leading-6"
                                                             />
                                                         </div>
@@ -79,7 +109,8 @@ const EditDoll = ({show, onClose, doll}) => {
                                                                 name="price"
                                                                 id="price"
                                                                 autoComplete="price"
-                                                                value={doll.price}
+                                                                value={price}
+                                                                onChange={e => setPrice(Number.parseInt(e.target.value))}
                                                                 className="block flex-1 border-0 bg-transparent max-w-full py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-none sm:text-sm sm:leading-6"
                                                             />
                                                         </div>
@@ -99,7 +130,8 @@ const EditDoll = ({show, onClose, doll}) => {
                                                                 name="quantity"
                                                                 id="quantity"
                                                                 autoComplete="quantity"
-                                                                value={doll.quantity}
+                                                                value={quantity}
+                                                                onChange={e => setQuantity(Number.parseInt(e.target.value))}
                                                                 className="block flex-1 border-0 bg-transparent max-w-full py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-none sm:text-sm sm:leading-6"
                                                             />
                                                         </div>
@@ -116,7 +148,8 @@ const EditDoll = ({show, onClose, doll}) => {
                                                             id="about"
                                                             name="about"
                                                             rows={3}
-                                                            value={doll.description}
+                                                            value={description}
+                                                            onChange={e => setDescription(e.target.value)}
                                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 focus:outline-none sm:text-sm sm:leading-6"
                                                         />
                                                     </div>
@@ -127,11 +160,11 @@ const EditDoll = ({show, onClose, doll}) => {
                                                            className="block text-sm font-medium leading-6 text-gray-900">
                                                         Фото
                                                     </label>
-                                                    <div className="grid-col-2 py-2">
+                                                    {poster && <div className="grid-col-2 py-2">
                                                         <div
                                                             className="h-24 w-24 col-span-1 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                             <img
-                                                                src={process.env.REACT_APP_IMAGES_URL + doll.image}
+                                                                src={process.env.REACT_APP_IMAGES_URL + poster}
                                                                 alt={doll.name}
                                                                 className="h-full w-full object-cover object-center"
                                                             />
@@ -142,7 +175,7 @@ const EditDoll = ({show, onClose, doll}) => {
                                                         >
                                                             Удалить
                                                         </button>
-                                                    </div>
+                                                    </div>}
                                                     <div
                                                         className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                                                         <div className="text-center">
@@ -155,7 +188,7 @@ const EditDoll = ({show, onClose, doll}) => {
                                                                 >
                                                                     <span>Загрузить файл</span>
                                                                     <input id="file-upload" name="file-upload"
-                                                                           type="file" className="sr-only"/>
+                                                                           type="file" onChange={selectFile} className="sr-only"/>
                                                                 </label>
                                                                 <p className="pl-1">или перетащите</p>
                                                             </div>
@@ -174,7 +207,8 @@ const EditDoll = ({show, onClose, doll}) => {
                                             Отмена
                                         </button>
                                         <button
-                                            type="submit"
+                                            type="button"
+                                            onClick={sendDoll}
                                             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                         >
                                             Сохранить
@@ -190,6 +224,6 @@ const EditDoll = ({show, onClose, doll}) => {
             </Dialog>
         </Transition>
     )
-}
+})
 
 export default EditDoll
