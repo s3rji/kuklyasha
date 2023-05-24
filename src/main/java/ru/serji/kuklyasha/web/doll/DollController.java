@@ -43,6 +43,7 @@ public class DollController {
     }
 
     @GetMapping("/{id}")
+    @Transactional(readOnly = true)
     public ResponseEntity<DollTo> get(@PathVariable("id") int id) {
         log.info("get doll {}", id);
         return dollService.get(id)
