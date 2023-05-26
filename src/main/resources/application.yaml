@@ -18,6 +18,10 @@ spring:
       mode: always
       schema-locations: classpath:/db/schema.sql
       data-locations: classpath:/db/data.sql
+  servlet:
+    multipart:
+      max-file-size: 10485760
+      max-request-size: 104857600
 
 logging:
   level:
@@ -37,6 +41,8 @@ server.servlet:
 upload:
   images:
     path: doll-images
+  content:
+    allowed-types: image/png, image/jpg
 
 jwt:
   token:
