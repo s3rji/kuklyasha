@@ -9,7 +9,7 @@ import org.springframework.security.web.authentication.*;
 import org.springframework.stereotype.*;
 import ru.serji.kuklyasha.model.User;
 import ru.serji.kuklyasha.model.*;
-import ru.serji.kuklyasha.security.error.*;
+import ru.serji.kuklyasha.security.exception.*;
 
 import javax.annotation.*;
 import javax.servlet.http.*;

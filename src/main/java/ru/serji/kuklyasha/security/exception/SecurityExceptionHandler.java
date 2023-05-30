@@ -1,10 +1,7 @@
-package ru.serji.kuklyasha.security.jwt;
+package ru.serji.kuklyasha.security.exception;
 
 import lombok.*;
-import lombok.extern.slf4j.*;
 import org.springframework.http.*;
-import org.springframework.security.core.*;
-import org.springframework.security.web.*;
 import ru.serji.kuklyasha.web.util.*;
 
 import javax.servlet.http.*;
@@ -13,14 +10,11 @@ import java.time.*;
 import java.util.*;
 
 @AllArgsConstructor
-@Slf4j
-public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class SecurityExceptionHandler {
 
     private final HttpStatus status;
 
-    @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException ex) throws IOException {
-        log.error("AuthenticationException: {}", ex.getMessage());
+    protected void handleException(HttpServletRequest request, HttpServletResponse response, RuntimeException ex) throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(status.value());
 
