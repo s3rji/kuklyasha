@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.config.http.*;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.web.authentication.*;
+import ru.serji.kuklyasha.security.exception.*;
 import ru.serji.kuklyasha.security.jwt.*;
 import ru.serji.kuklyasha.web.util.*;
 
@@ -49,6 +50,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthenticationEntryPoint(HttpStatus.UNAUTHORIZED);
     }
 
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new AccessDeniedHandler(HttpStatus.FORBIDDEN);
+    }
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
@@ -66,13 +72,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(IMAGES_ENDPOINT).permitAll()
-                .antMatchers(CATALOG_ENDPOINT).permitAll()
+                .antMatchers(HttpMethod.GET, CATALOG_ENDPOINT).permitAll()
+                .antMatchers(HttpMethod.POST, CATALOG_ENDPOINT).hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, CATALOG_ENDPOINT).hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, CATALOG_ENDPOINT).hasRole("ADMIN")
                 .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
                 .antMatchers(LOGIN_ENDPOINT).anonymous()
                 .antMatchers(HttpMethod.POST, PROFILE_ENDPOINT).anonymous()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint());
+                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint())
+                .and()
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler());
     }
 }
