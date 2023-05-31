@@ -23,3 +23,4 @@ export {default as AdminDropdown} from './admin/AdminDropdown';
 export {default as AdminDollList} from './admin/AdminDollList';
 export {default as AdminDollItem} from './admin/AdminDollItem';
 export {default as EditDoll} from './admin/EditDoll';
+export {default as UploadFile} from './admin/UploadFile';

@@ -1,41 +1,55 @@
-import {Fragment, useState, useEffect, useContext} from 'react'
+import {Fragment, useContext, useEffect, useState} from 'react'
 import {Dialog, Transition} from '@headlessui/react'
-import {PhotographIcon} from "@heroicons/react/solid";
 import {observer} from "mobx-react-lite";
 import {Context} from "../../index";
+import {UploadFile} from "../index";
+import {createDoll, updateDoll} from "../../http/dollApi";
+import {deleteFiles} from "../../http/fileApi";
 
-const EditDoll = observer(({show, onClose}) => {
+const EditDoll = observer(({show, hide}) => {
     const {doll} = useContext(Context)
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [price, setPrice] = useState(0)
     const [quantity, setQuantity] = useState(0)
-    const [poster, setPoster] = useState('')
+    const [gallery, setGallery] = useState([])
 
     useEffect(() => {
         setName(doll.selected.name)
         setDescription(doll.selected.description)
         setPrice(doll.selected.price)
         setQuantity(doll.selected.quantity)
-        setPoster(doll.selected.poster)
-        }, [doll.selected])
+        setGallery(doll.selected.gallery)
+    }, [doll.selected])
 
-    const selectFile = e => {
-        setPoster(e.target.files[0])
-    }
-
-    const sendDoll = () => {
+    const saveChanges = () => {
         doll.selected.name = name
         doll.selected.description = description
         doll.selected.price = price
         doll.selected.quantity = quantity
-        doll.selected.poster = poster
-        console.log(doll.selected)
+        doll.selected.poster = gallery[0]
+        doll.selected.gallery = gallery
+        if (doll.selected.id == null) {
+            createDoll(doll.selected).then(data => {
+                doll.setSelected(data)
+                doll.setTotal(doll.total + 1)
+            }).catch(reason => alert(reason.response.data.message))
+        } else {
+            updateDoll(doll.selected.id, doll.selected).catch(reason => alert(reason.response.data.message))
+        }
+        hide()
+    }
+
+    const closeModal = () => {
+        if (doll.selected.id == null && gallery.length > 0) {
+            deleteFiles(gallery).catch(reason => alert(reason.response.data.message))
+        }
+        hide()
     }
 
     return (
         <Transition appear show={show} as={Fragment}>
-            <Dialog as="div" className="relative z-10" onClose={onClose}>
+            <Dialog as="div" className="relative z-10" onClose={hide}>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -154,69 +168,25 @@ const EditDoll = observer(({show, onClose}) => {
                                                         />
                                                     </div>
                                                 </div>
-
-                                                <div className="col-span-full">
-                                                    <label htmlFor="photo"
-                                                           className="block text-sm font-medium leading-6 text-gray-900">
-                                                        Фото
-                                                    </label>
-                                                    {poster && <div className="grid-col-2 py-2">
-                                                        <div
-                                                            className="h-24 w-24 col-span-1 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                                            <img
-                                                                src={process.env.REACT_APP_IMAGES_URL + poster}
-                                                                alt={doll.name}
-                                                                className="h-full w-full object-cover object-center"
-                                                            />
-                                                        </div>
-                                                        <button
-                                                            type="button"
-                                                            className="col-span-1 w-24 rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 hover:bg-gray-200"
-                                                        >
-                                                            Удалить
-                                                        </button>
-                                                    </div>}
-                                                    <div
-                                                        className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-                                                        <div className="text-center">
-                                                            <PhotographIcon className="mx-auto h-12 w-12 text-gray-300"
-                                                                            aria-hidden="true"/>
-                                                            <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                                                                <label
-                                                                    htmlFor="file-upload"
-                                                                    className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                                                                >
-                                                                    <span>Загрузить файл</span>
-                                                                    <input id="file-upload" name="file-upload"
-                                                                           type="file" onChange={selectFile} className="sr-only"/>
-                                                                </label>
-                                                                <p className="pl-1">или перетащите</p>
-                                                            </div>
-                                                            <p className="text-xs leading-5 text-gray-600">PNG, JPG не
-                                                                более 10MB</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <UploadFile gallery={gallery} setGallery={setGallery}/>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div className="mt-6 flex items-center justify-end gap-x-6">
-                                        <button type="button" onClick={onClose}
+                                        <button type="button" onClick={hide}
                                                 className="text-sm font-semibold leading-6 text-gray-900">
                                             Отмена
                                         </button>
                                         <button
                                             type="button"
-                                            onClick={sendDoll}
+                                            onClick={saveChanges}
                                             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                         >
                                             Сохранить
                                         </button>
                                     </div>
                                 </form>
-
-
                             </Dialog.Panel>
                         </Transition.Child>
                     </div>

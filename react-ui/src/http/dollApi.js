@@ -1,4 +1,4 @@
-import {$host} from "./index";
+import {$authHost, $host} from "./index";
 
 export const getDolls = async () => {
     const {data} = await $host.get("api/dolls")
@@ -13,4 +13,13 @@ export const getDoll = async (id) => {
 export const getDollsByPage = async (page, limit) => {
     const {data} = await $host.get('api/dolls', {params: {page, limit}})
     return data
+}
+
+export const createDoll = async (doll) => {
+    const {data} = await $authHost.post('api/dolls', doll)
+    return data
+}
+
+export const updateDoll = async (id, doll) => {
+    await $authHost.post('api/dolls/' + id, doll)
 }
