@@ -21,7 +21,14 @@ INSERT INTO GALLERY (doll_id, filename)
 VALUES (1, 'doll-1.JPG'),
        (1, 'doll-2.JPG'),
        (1, 'doll-3.JPG'),
-       (1, 'doll-4.JPG');
+       (1, 'doll-4.JPG'),
+       (2, 'doll-2.JPG'),
+       (3, 'doll-3.JPG'),
+       (4, 'doll-4.JPG'),
+       (5, 'doll-5.JPG'),
+       (6, 'doll-6.JPG'),
+       (7, 'doll-7.JPG'),
+       (8, 'doll-8.JPG');
 
 INSERT INTO USERS (name, email, password, lastname, phone, country, city, region, street, zipcode, notice_email, notice_phone)
 VALUES ('User', 'user@yandex.ru', '{noop}password', 'Pupkin', '79201112233', 'Россия', 'Москва', 'Москва', 'главная д.5', '123456', true, true),

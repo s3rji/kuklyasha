@@ -21,7 +21,7 @@ CREATE TABLE DOLL
 CREATE TABLE GALLERY
 (
     doll_id  INTEGER,
-    filename VARCHAR UNIQUE,
+    filename VARCHAR,
     PRIMARY KEY (doll_id, filename),
     FOREIGN KEY (doll_id) REFERENCES DOLL (id) ON DELETE CASCADE
 );
