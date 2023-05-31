@@ -14,14 +14,7 @@ const AdminCatalog = observer(() => {
             doll.setCatalog(data.content)
             doll.setTotal(data.total)
         })
-    }, [doll])
-
-    useEffect(() => {
-        getDollsByPage(doll.page, doll.limit).then(data => {
-            doll.setCatalog(data.content)
-            doll.setTotal(data.total)
-        })
-    }, [doll, doll.page])
+    }, [doll, doll.page, doll.total])
 
     const addNewDoll = () => {
         doll.setSelected(new Doll());
@@ -43,7 +36,7 @@ const AdminCatalog = observer(() => {
                 <AdminDollList></AdminDollList>
                 <Pages></Pages>
             </div>
-            <EditDoll show={isShowModal} onClose={() => setIsShowModal(false)}></EditDoll>
+            <EditDoll show={isShowModal} hide={() => setIsShowModal(false)}></EditDoll>
         </div>
     );
 });
