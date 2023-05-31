@@ -12,13 +12,6 @@ const Catalog = observer(() => {
             doll.setCatalog(data.content)
             doll.setTotal(data.total)
         })
-    }, [doll])
-
-    useEffect(() => {
-        getDollsByPage(doll.page, doll.limit).then(data => {
-            doll.setCatalog(data.content)
-            doll.setTotal(data.total)
-        })
     }, [doll, doll.page])
 
     return (

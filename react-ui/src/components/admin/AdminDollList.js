@@ -22,7 +22,7 @@ const AdminDollList = observer(() => {
                     ))}
                 </div>
             </div>
-            <EditDoll show={isShowModal} onClose={() => setIsShowModal(false)}></EditDoll>
+            <EditDoll show={isShowModal} hide={() => setIsShowModal(false)}></EditDoll>
         </div>
     );
 });
