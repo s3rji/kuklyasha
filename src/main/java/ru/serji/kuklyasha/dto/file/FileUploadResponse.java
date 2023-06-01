@@ -1,4 +1,4 @@
-package ru.serji.kuklyasha.dto;
+package ru.serji.kuklyasha.dto.file;
 
 import lombok.*;
 

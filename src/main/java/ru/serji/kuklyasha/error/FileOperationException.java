@@ -5,8 +5,8 @@ import org.springframework.http.*;
 
 import static org.springframework.boot.web.error.ErrorAttributeOptions.Include.*;
 
-public class FileUploadException extends AppException {
-    public FileUploadException(String msg) {
+public class FileOperationException extends AppException {
+    public FileOperationException(String msg) {
         super(HttpStatus.BAD_REQUEST, msg, ErrorAttributeOptions.of(MESSAGE));
     }
 }

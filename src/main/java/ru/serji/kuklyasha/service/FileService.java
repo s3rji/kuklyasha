@@ -21,7 +21,7 @@ public class FileService {
 
     public String save(MultipartFile multipartFile) {
         if (isNotValidContentType(multipartFile)) {
-            throw new FileUploadException("Allowed " + allowedTypes + " files only");
+            throw new FileOperationException("Allowed " + allowedTypes + " files only");
         }
 
         try (InputStream inputStream = multipartFile.getInputStream()) {
@@ -36,11 +36,28 @@ public class FileService {
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
             return fileName;
         } catch (IOException ioe) {
-            throw new FileUploadException("Could not save file: " + multipartFile.getOriginalFilename());
+            throw new FileOperationException("Could not save file: " + multipartFile.getOriginalFilename());
         }
     }
 
     private boolean isNotValidContentType(MultipartFile multipartFile) {
         return !allowedTypes.contains(multipartFile.getContentType());
+    }
+
+    public void delete(String... files) {
+        List<String> failed = new ArrayList<>();
+        Path path = Paths.get(uploadPath);
+        for (String file : files) {
+            Path filePath = path.resolve(file);
+            try {
+                Files.delete(filePath);
+            } catch (IOException e) {
+                failed.add(file);
+            }
+        }
+
+        if (!failed.isEmpty()) {
+            throw new FileOperationException("Could not delete files: " + failed);
+        }
     }
 }

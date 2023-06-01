@@ -6,8 +6,10 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.*;
 import ru.serji.kuklyasha.config.*;
-import ru.serji.kuklyasha.dto.*;
+import ru.serji.kuklyasha.dto.file.*;
 import ru.serji.kuklyasha.service.*;
+
+import java.util.*;
 
 import static ru.serji.kuklyasha.web.FileController.*;
 
@@ -28,11 +30,25 @@ public class FileController {
 
     @PostMapping("/upload")
     public ResponseEntity<FileUploadResponse> uploadFile(@RequestParam("file") MultipartFile multipartFile) {
-        log.debug("Upload file '{}'", multipartFile);
+        log.debug("Upload file {}", multipartFile);
 
         long size = multipartFile.getSize();
         String fileName = fileService.save(multipartFile);
         FileUploadResponse response = new FileUploadResponse(fileName, size);
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteFiles(@RequestBody FilesDeleteRequest files) {
+        log.debug("Delete files {}", Arrays.toString(files.getFileNames()));
+        fileService.delete(files.getFileNames());
+    }
+
+    @DeleteMapping("/{file-id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteFile(@PathVariable("file-id") String fileId) {
+        log.debug("Delete file with id={}", fileId);
+        fileService.delete(fileId);
     }
 }
