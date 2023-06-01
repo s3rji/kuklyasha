@@ -3,6 +3,7 @@ package ru.serji.kuklyasha.web.doll;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
+import org.springframework.security.test.context.support.*;
 import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.request.*;
 import ru.serji.kuklyasha.dto.*;
@@ -15,7 +16,12 @@ import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static ru.serji.kuklyasha.DollTestData.NOT_FOUND;
+import static ru.serji.kuklyasha.DollTestData.getNew;
+import static ru.serji.kuklyasha.DollTestData.getUpdated;
+import static ru.serji.kuklyasha.DollTestData.jsonFromObject;
 import static ru.serji.kuklyasha.DollTestData.*;
+import static ru.serji.kuklyasha.UserTestData.*;
 import static ru.serji.kuklyasha.web.doll.UniqueNameValidator.*;
 import static ru.serji.kuklyasha.web.util.DollUtil.*;
 
@@ -66,6 +72,7 @@ class DollControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @WithUserDetails(value = ADMIN_EMAIL)
     void create() throws Exception {
         Doll newDoll = getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
@@ -82,6 +89,7 @@ class DollControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @WithUserDetails(value = ADMIN_EMAIL)
     void createInvalid() throws Exception {
         Doll invalid = getNew();
         invalid.setName("");
@@ -93,6 +101,7 @@ class DollControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @WithUserDetails(value = ADMIN_EMAIL)
     void createDuplicate() throws Exception {
         Doll duplicate = getNew();
         duplicate.setName("Doll2");
@@ -105,6 +114,7 @@ class DollControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @WithUserDetails(value = ADMIN_EMAIL)
     void update() throws Exception {
         Doll updated = getUpdated();
         perform(MockMvcRequestBuilders.put(REST_URL + DOLL_ID)
@@ -117,6 +127,7 @@ class DollControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @WithUserDetails(value = ADMIN_EMAIL)
     void updateInvalid() throws Exception {
         Doll invalid = getUpdated();
         invalid.setName("");
@@ -128,6 +139,7 @@ class DollControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @WithUserDetails(value = ADMIN_EMAIL)
     void updateDuplicate() throws Exception {
         Doll invalid = getUpdated();
         invalid.setName("Doll2");
