@@ -12,7 +12,7 @@ public class DollUtil {
 
     public static DollTo createToFromDoll(@NonNull Doll doll) {
         return new DollTo(doll.getId(), doll.getName(), doll.getDescription(), doll.getPrice(),
-                doll.getQuantity(), doll.getPoster(), doll.getGallery());
+                doll.getQuantity(), doll.getPoster(), doll.getGallery().stream().sorted().toList());
     }
 
     public static Doll createDollFromTo(@NonNull DollTo dollTo) {
