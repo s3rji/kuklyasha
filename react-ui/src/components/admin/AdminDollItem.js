@@ -23,7 +23,7 @@ const AdminDollItem = ({doll, showDoll}) => {
                 <div className="col-span-1 mt-5 relative left-3">
                     <button
                         onClick={() => showDoll(doll)}
-                        className="bg-zinc-500 border border-transparent rounded-md py-2 px-6 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="bg-sky-500 border border-transparent rounded-md py-2 px-6 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                         Изменить
                     </button>
