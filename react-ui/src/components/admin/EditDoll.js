@@ -1,4 +1,4 @@
-import {Fragment, useContext, useEffect, useState} from 'react'
+import React, {Fragment, useContext, useEffect, useState} from 'react'
 import {Dialog, Transition} from '@headlessui/react'
 import {observer} from "mobx-react-lite";
 import {Context} from "../../index";
@@ -14,42 +14,103 @@ const EditDoll = observer(({show, hide}) => {
     const [quantity, setQuantity] = useState(0)
     const [gallery, setGallery] = useState([])
 
-    useEffect(() => {
+    const [nameErr, setNameErr] = useState('')
+    const [descriptionErr, setDescriptionErr] = useState('')
+    const [priceErr, setPriceErr] = useState('')
+    const [quantityErr, setQuantityErr] = useState('')
+    const [posterErr, setPosterErr] = useState('')
+
+    const resetFields = () => {
         setName(doll.selected.name)
         setDescription(doll.selected.description)
         setPrice(doll.selected.price)
         setQuantity(doll.selected.quantity)
-        setGallery(doll.selected.gallery)
+        setGallery([...doll.selected.gallery])
+        setNameErr('')
+        setDescriptionErr('')
+        setPriceErr('')
+        setQuantityErr('')
+        setPosterErr('')
+    }
+
+    useEffect(() => {
+        resetFields()
     }, [doll.selected])
 
     const saveChanges = () => {
+        if (validationFailed()) {
+            return
+        }
+
         doll.selected.name = name
         doll.selected.description = description
         doll.selected.price = price
         doll.selected.quantity = quantity
         doll.selected.poster = gallery[0]
+        const deletedPictures = doll.selected.gallery.filter(value => !gallery.includes(value))
         doll.selected.gallery = gallery
-        if (doll.selected.id == null) {
-            createDoll(doll.selected).then(data => {
-                doll.setSelected(data)
-                doll.setTotal(doll.total + 1)
-            }).catch(reason => alert(reason.response.data.message))
+
+        if (doll.selected.id === null) {
+            createDoll(doll.selected)
+                .then(data => {
+                    doll.setSelected(data)
+                    doll.setTotal(doll.total + 1)
+                }).catch(error => alert(error.response.data.message))
         } else {
-            updateDoll(doll.selected.id, doll.selected).catch(reason => alert(reason.response.data.message))
+            updateDoll(doll.selected.id, doll.selected)
+                .catch(error => alert(error.response.data.message))
+
+            if (deletedPictures.length > 0) {
+                deleteFiles({"fileNames": deletedPictures})
+                    .catch(error => console.log(error))
+            }
         }
         hide()
     }
 
-    const closeModal = () => {
-        if (doll.selected.id == null && gallery.length > 0) {
-            deleteFiles(gallery).catch(reason => alert(reason.response.data.message))
+    const validationFailed = () => {
+        setNameErr('')
+        setDescriptionErr('')
+        setPriceErr('')
+        setQuantityErr('')
+        setPosterErr('')
+        let hasErrors = false
+        if (name.length < 2 || name.length > 128) {
+            setNameErr('От 2 до 128 символов')
+            hasErrors = true
         }
+        if (description.length < 10) {
+            setDescriptionErr('Не менее 10 символов')
+            hasErrors = true
+        }
+        if (price < 1 || price > 100000) {
+            setPriceErr('В диапазоне от 1 до 100\'000')
+            hasErrors = true
+        }
+        if (quantity < 0) {
+            setQuantityErr('Не может быть отрицательным')
+            hasErrors = true
+        }
+        if (gallery.length < 1) {
+            setPosterErr('Загрузите минимум одно фото')
+            hasErrors = true
+        }
+        return hasErrors
+    }
+
+    const closeModal = () => {
         hide()
+        const newPictures = gallery.filter(value => !doll.selected.gallery.includes(value))
+        if (newPictures.length > 0) {
+            deleteFiles({"fileNames": newPictures})
+                .catch(reason => console.log(reason))
+        }
+        resetFields()
     }
 
     return (
         <Transition appear show={show} as={Fragment}>
-            <Dialog as="div" className="relative z-10" onClose={hide}>
+            <Dialog as="div" className="relative z-10" onClose={closeModal}>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -85,9 +146,9 @@ const EditDoll = observer(({show, hide}) => {
                                                 Введите информацию о товаре.
                                             </p>
 
-                                            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                                                <div className="sm:col-span-4">
-                                                    <label htmlFor="username"
+                                            <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-7">
+                                                <div className="sm:col-span-3">
+                                                    <label htmlFor="name"
                                                            className="block text-sm font-medium leading-6 text-gray-900">
                                                         Наименование
                                                     </label>
@@ -104,10 +165,14 @@ const EditDoll = observer(({show, hide}) => {
                                                                 className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-none sm:text-sm sm:leading-6"
                                                             />
                                                         </div>
+                                                        <span
+                                                            className="mt-2 p-2 text-sm text-red-600 dark:text-red-500 ">
+                                                            {nameErr}
+                                                        </span>
                                                     </div>
                                                 </div>
 
-                                                <div className="sm:col-span-1">
+                                                <div className="sm:col-span-2">
                                                     <label htmlFor="price"
                                                            className="block text-sm font-medium leading-6 text-gray-900">
                                                         Цена
@@ -125,13 +190,17 @@ const EditDoll = observer(({show, hide}) => {
                                                                 autoComplete="price"
                                                                 value={price}
                                                                 onChange={e => setPrice(Number.parseInt(e.target.value))}
-                                                                className="block flex-1 border-0 bg-transparent max-w-full py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-none sm:text-sm sm:leading-6"
+                                                                className="block flex-1 border-0 bg-transparent max-w-10 py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-none sm:text-sm sm:leading-6"
                                                             />
                                                         </div>
+                                                        <span
+                                                            className="mt-2 p-2 text-sm text-red-600 dark:text-red-500 ">
+                                                            {priceErr}
+                                                        </span>
                                                     </div>
                                                 </div>
 
-                                                <div className="sm:col-span-1">
+                                                <div className="sm:col-span-2">
                                                     <label htmlFor="quantity"
                                                            className="block text-sm font-medium leading-6 text-gray-900">
                                                         Количество
@@ -149,6 +218,10 @@ const EditDoll = observer(({show, hide}) => {
                                                                 className="block flex-1 border-0 bg-transparent max-w-full py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-none sm:text-sm sm:leading-6"
                                                             />
                                                         </div>
+                                                        <span
+                                                            className="mt-2 p-2 text-sm text-red-600 dark:text-red-500 ">
+                                                            {quantityErr}
+                                                        </span>
                                                     </div>
                                                 </div>
 
@@ -167,14 +240,23 @@ const EditDoll = observer(({show, hide}) => {
                                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 focus:outline-none sm:text-sm sm:leading-6"
                                                         />
                                                     </div>
+                                                    <span className="mt-2 p-2 text-sm text-red-600 dark:text-red-500 ">
+                                                            {descriptionErr}
+                                                    </span>
                                                 </div>
-                                                <UploadFile gallery={gallery} setGallery={setGallery}/>
+                                                <div className="col-span-full">
+                                                    <UploadFile gallery={gallery} setGallery={setGallery}
+                                                                doll={doll.selected}/>
+                                                    <span className="mt-2 p-2 text-sm text-red-600 dark:text-red-500 ">
+                                                            {posterErr}
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div className="mt-6 flex items-center justify-end gap-x-6">
-                                        <button type="button" onClick={hide}
+                                        <button type="button" onClick={closeModal}
                                                 className="text-sm font-semibold leading-6 text-gray-900">
                                             Отмена
                                         </button>

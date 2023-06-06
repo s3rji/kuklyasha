@@ -21,5 +21,5 @@ export const createDoll = async (doll) => {
 }
 
 export const updateDoll = async (id, doll) => {
-    await $authHost.post('api/dolls/' + id, doll)
+    await $authHost.put('api/dolls/' + id, doll)
 }
