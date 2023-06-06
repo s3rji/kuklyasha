@@ -19,9 +19,9 @@ VALUES ('Manyasha', 'Встречайте! Декоративная фарфор
 
 INSERT INTO GALLERY (doll_id, filename)
 VALUES (1, 'doll-1.JPG'),
-       (1, 'doll-2.JPG'),
-       (1, 'doll-3.JPG'),
-       (1, 'doll-4.JPG'),
+       (1, 'doll-10.JPG'),
+       (1, 'doll-11.JPG'),
+       (1, 'doll-16.JPG'),
        (2, 'doll-2.JPG'),
        (3, 'doll-3.JPG'),
        (4, 'doll-4.JPG'),
