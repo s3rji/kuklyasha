@@ -27,7 +27,7 @@ public class FileControllerTest extends AbstractControllerTest {
     void save() throws Exception {
         MockMultipartFile file = new MockMultipartFile("file", FILE_NAME, MediaType.TEXT_PLAIN_VALUE, "this is a test".getBytes());
         Mockito.doReturn(FILE_NAME).when(fileService).save(file);
-        perform(multipart(FileController.REST_URL + "/upload").file(file))
+        perform(multipart(FileController.REST_URL).file(file))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -37,7 +37,7 @@ public class FileControllerTest extends AbstractControllerTest {
     @Test
     void saveFailed() throws Exception {
         Mockito.doReturn(FILE_NAME).when(fileService).save(multipartFile);
-        perform(multipart(FileController.REST_URL + "/upload").file(multipartFile))
+        perform(multipart(FileController.REST_URL).file(multipartFile))
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
     }

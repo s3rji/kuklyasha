@@ -28,7 +28,7 @@ public class FileController {
         this.fileService = fileService;
     }
 
-    @PostMapping("/upload")
+    @PostMapping
     public ResponseEntity<FileUploadResponse> uploadFile(@RequestParam("file") MultipartFile multipartFile) {
         log.debug("Upload file {}", multipartFile);
 
