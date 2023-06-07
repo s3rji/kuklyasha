@@ -5,6 +5,7 @@ import {Context} from "../../index";
 import {UploadFile} from "../index";
 import {createDoll, updateDoll} from "../../http/dollApi";
 import {deleteFiles} from "../../http/fileApi";
+import {Doll} from "../../store";
 
 const EditDoll = observer(({show, hide}) => {
     const {doll} = useContext(Context)
@@ -52,12 +53,13 @@ const EditDoll = observer(({show, hide}) => {
 
         if (doll.selected.id === null) {
             createDoll(doll.selected)
-                .then(data => {
-                    doll.setSelected(data)
+                .then(() => {
+                    doll.setSelected(new Doll())
                     doll.setTotal(doll.total + 1)
                 }).catch(error => alert(error.response.data.message))
         } else {
             updateDoll(doll.selected.id, doll.selected)
+                .then(() => doll.setSelected(new Doll()))
                 .catch(error => alert(error.response.data.message))
 
             if (deletedPictures.length > 0) {

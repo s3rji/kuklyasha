@@ -14,7 +14,7 @@ const AdminCatalog = observer(() => {
             doll.setCatalog(data.content)
             doll.setTotal(data.total)
         })
-    }, [doll, doll.page, doll.total])
+    }, [doll, doll.page, doll.total, doll.selected])
 
     const addNewDoll = () => {
         doll.setSelected(new Doll());
