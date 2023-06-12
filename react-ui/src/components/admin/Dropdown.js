@@ -4,10 +4,7 @@ import {NavLink} from "react-router-dom";
 import {Context} from "../../index";
 import {observer} from "mobx-react-lite";
 import {CATALOG_ROUTE} from "../../utils/consts";
-
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
+import {classNames} from "../../utils/functions";
 
 const Dropdown = observer(() => {
     const {user} = useContext(Context)

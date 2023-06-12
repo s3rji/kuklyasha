@@ -7,6 +7,7 @@ import {CATALOG_ROUTE, DOLL_ROUTE, LOGIN_ROUTE} from "../utils/consts";
 import {observer} from "mobx-react-lite";
 import {addCartItem, getCart} from "../http/cartApi";
 import {Context} from "../index";
+import {classNames} from "../utils/functions";
 
 const breadcrumbs = [
     {id: 1, name: 'Catalog', href: CATALOG_ROUTE}
@@ -25,10 +26,6 @@ const highlights = [
 const details = 'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.'
 const reviews = {href: '#', average: 4, totalCount: 117}
 
-
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
 
 const DollPage = observer(() => {
     const {cart, user} = useContext(Context)

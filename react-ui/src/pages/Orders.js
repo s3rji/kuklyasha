@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import {EyeIcon} from "@heroicons/react/outline";
 import {ShowOrder} from "../components/index";
-import status from "../utils/functions"
+import {status, statusAsColor} from "../utils/functions"
 import {Context} from "../index";
 import {getOrders} from "../http/orderApi";
 import {observer} from "mobx-react-lite";
@@ -68,7 +68,8 @@ const Orders = observer(() => {
                                         </th>
                                         <td className="py-4 px-6 text-zinc-700">
                                             <div className="flex items-center">
-                                                <div className="h-2.5 w-2.5 rounded-full bg-green-400 mr-2"></div>
+                                                <div
+                                                    className={"h-2.5 w-2.5 rounded-full mr-2 bg-" + statusAsColor(order.status.type)}></div>
                                                 {status(order.status.type)}
                                             </div>
                                         </td>

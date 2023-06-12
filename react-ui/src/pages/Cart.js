@@ -8,10 +8,8 @@ import {NavLink, useNavigate} from "react-router-dom";
 import {createOrder} from "../http/orderApi";
 import {MinusSmIcon, PlusSmIcon} from "@heroicons/react/solid";
 import {InfoModal} from "../components/index";
+import {classNames} from "../utils/functions";
 
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
 
 const Cart = observer(() => {
     const {cart, order} = useContext(Context)

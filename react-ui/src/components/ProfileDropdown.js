@@ -4,10 +4,8 @@ import {NavLink} from "react-router-dom";
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
 import {ADMIN_CATALOG_ROUTE, ADMIN_ROLE, CATALOG_ROUTE, ORDERS_ROUTE, PROFILE_ROUTE} from "../utils/consts";
+import {classNames} from "../utils/functions";
 
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
 
 const ProfileDropdown = observer(() => {
     const {user} = useContext(Context)

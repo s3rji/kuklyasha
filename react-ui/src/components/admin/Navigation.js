@@ -2,10 +2,8 @@ import React, {useContext} from 'react';
 import {observer} from "mobx-react-lite";
 import {Context} from "../../index";
 import {NavLink} from "react-router-dom";
+import {classNames} from "../../utils/functions";
 
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
 
 const Navigation = observer(() => {
     const {adminNavigation} = useContext(Context)
