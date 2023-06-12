@@ -1,9 +1,9 @@
 import {useContext, useState} from "react";
 import {Context} from "../../index";
 import {observer} from "mobx-react-lite";
-import {AdminDollItem, EditDoll} from "../index";
+import {AdminDollItem, EditDoll} from "./index";
 
-const AdminDollList = observer(() => {
+const DollList = observer(() => {
     const {doll} = useContext(Context)
     const [isShowModal, setIsShowModal] = useState(false)
 
@@ -27,4 +27,4 @@ const AdminDollList = observer(() => {
     );
 });
 
-export default AdminDollList;
+export default DollList;

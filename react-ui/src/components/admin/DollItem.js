@@ -2,7 +2,7 @@ import React from "react";
 import {useNavigate} from "react-router-dom";
 import {DOLL_ROUTE} from "../../utils/consts";
 
-const AdminDollItem = ({doll, showDoll}) => {
+const DollItem = ({doll, showDoll}) => {
     const navigate = useNavigate()
 
     return (
@@ -33,4 +33,4 @@ const AdminDollItem = ({doll, showDoll}) => {
     );
 };
 
-export default AdminDollItem;
+export default DollItem;

@@ -7,7 +7,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-const AdminNavigation = observer(() => {
+const Navigation = observer(() => {
     const {adminNavigation} = useContext(Context)
 
     return (
@@ -32,5 +32,5 @@ const AdminNavigation = observer(() => {
     );
 });
 
-export default AdminNavigation;
+export default Navigation;
 

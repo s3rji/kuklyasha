@@ -2,10 +2,10 @@ import React, {Fragment, useContext, useEffect, useState} from 'react'
 import {Dialog, Transition} from '@headlessui/react'
 import {observer} from "mobx-react-lite";
 import {Context} from "../../index";
-import {UploadFile} from "../index";
+import {UploadFile} from "./index";
 import {createDoll, updateDoll} from "../../http/dollApi";
 import {deleteFiles} from "../../http/fileApi";
-import {Doll} from "../../store";
+import {Doll} from "../../store/admin";
 
 const EditDoll = observer(({show, hide}) => {
     const {doll} = useContext(Context)

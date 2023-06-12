@@ -1,8 +1,5 @@
 import {
     AboutUs,
-    AdminCatalog,
-    AdminOrders,
-    AdminUsers,
     Cart,
     Catalog,
     Contacts,
@@ -13,6 +10,11 @@ import {
     Profile,
     Registration
 } from "./pages/index";
+import {
+    AdminCatalog,
+    AdminOrders,
+    AdminUsers,
+} from "./pages/admin/index";
 import {
     ABOUT_US_ROUTE,
     ADMIN_CATALOG_ROUTE,

@@ -1,9 +1,10 @@
 import {observer} from "mobx-react-lite";
-import {AdminNavigation, Logo, AdminDropdown} from "../index";
+import {Logo} from "../index";
+import {AdminNavigation, AdminDropdown} from "./index";
 import {useContext} from "react";
 import {Context} from "../../index";
 
-const AdminBar = observer(() => {
+const NavBar = observer(() => {
     const {adminNavigation} = useContext(Context)
 
     return (
@@ -27,4 +28,4 @@ const AdminBar = observer(() => {
     );
 });
 
-export default AdminBar;
+export default NavBar;

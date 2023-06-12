@@ -2,10 +2,11 @@ import React, {useContext, useEffect, useState} from 'react';
 import {observer} from "mobx-react-lite";
 import {Context} from "../../index";
 import {getDollsByPage} from "../../http/dollApi";
-import {AdminDollList, EditDoll, Pages} from "../../components/index";
-import {Doll} from "../../store";
+import {Pages} from "../../components/index";
+import {AdminDollList, EditDoll} from "../../components/admin/index";
+import {Doll} from "../../store/admin";
 
-const AdminCatalog = observer(() => {
+const Catalog = observer(() => {
     const {doll} = useContext(Context)
     const [isShowModal, setIsShowModal] = useState(false)
 
@@ -41,4 +42,4 @@ const AdminCatalog = observer(() => {
     );
 });
 
-export default AdminCatalog;
+export default Catalog;

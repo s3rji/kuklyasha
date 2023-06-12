@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AdminUsers = () => {
+const Users = () => {
     return (
         <div>
 
@@ -8,4 +8,4 @@ const AdminUsers = () => {
     );
 };
 
-export default AdminUsers;
+export default Users;

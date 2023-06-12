@@ -9,7 +9,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-const AdminDropdown = observer(() => {
+const Dropdown = observer(() => {
     const {user} = useContext(Context)
 
     const logOut = () => {
@@ -68,4 +68,4 @@ const AdminDropdown = observer(() => {
     );
 });
 
-export default AdminDropdown;
+export default Dropdown;

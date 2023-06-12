@@ -1,6 +1,6 @@
 import {makeAutoObservable} from "mobx";
 
-export default class AdminNavigationStore {
+export default class NavigationStore {
     constructor() {
         this._ways = [
             {name: 'Каталог', href: '/admin/catalog', id: 1},

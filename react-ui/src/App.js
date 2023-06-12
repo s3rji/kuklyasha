@@ -1,4 +1,5 @@
-import {AdminBar, AppRouter, Loading, NavBar} from "./components/index"
+import {AppRouter, Loading, NavBar} from "./components/index"
+import {AdminBar} from "./components/admin/index"
 import {BrowserRouter} from "react-router-dom";
 import {observer} from "mobx-react-lite";
 import {useContext, useEffect, useState} from "react";

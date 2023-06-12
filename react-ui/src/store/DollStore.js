@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {Doll} from "./index";
+import {Doll} from "./admin/index";
 
 export default class DollStore {
     constructor() {
