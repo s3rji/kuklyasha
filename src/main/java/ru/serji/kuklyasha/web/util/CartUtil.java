@@ -9,10 +9,10 @@ import ru.serji.kuklyasha.model.*;
 public class CartUtil {
 
     public static CartItemTo createToFromCartItem(@NonNull CartItem cartItem) {
-        return new CartItemTo(cartItem.getId(), cartItem.getDoll(), cartItem.getQuantity());
+        return new CartItemTo(cartItem.getId(), DollUtil.createToFromDoll(cartItem.getDoll()), cartItem.getQuantity());
     }
 
     public static CartItem createCartItemFromTo(@NonNull CartItemTo cartItemTo, @NonNull User user) {
-        return new CartItem(cartItemTo.getId(), cartItemTo.getDoll(), user, cartItemTo.getQuantity());
+        return new CartItem(cartItemTo.getId(), DollUtil.createDollFromTo(cartItemTo.getDoll()), user, cartItemTo.getQuantity());
     }
 }
