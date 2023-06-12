@@ -74,7 +74,7 @@ const Cart = observer(() => {
                                                 <div
                                                     className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                     <img
-                                                        src={process.env.REACT_APP_IMAGES_URL + product.doll.image}
+                                                        src={process.env.REACT_APP_IMAGES_URL + product.doll.poster}
                                                         alt={product.doll.description}
                                                         className="h-full w-full object-cover object-center"
                                                         onClick={() => navigate(DOLL_ROUTE + "/" + product.doll.id)}
