@@ -3,7 +3,6 @@ package ru.serji.kuklyasha.dto.order;
 import lombok.*;
 import org.hibernate.validator.constraints.*;
 import ru.serji.kuklyasha.dto.*;
-import ru.serji.kuklyasha.model.*;
 
 import javax.validation.constraints.*;
 import java.math.*;
@@ -13,7 +12,7 @@ import java.math.*;
 public class PurchasedItemTo extends BaseTo {
 
     @NotNull
-    Doll doll;
+    DollTo doll;
 
     @NotNull
     @Range(min = 1)
@@ -24,7 +23,7 @@ public class PurchasedItemTo extends BaseTo {
     @Digits(integer = 6, fraction = 2)
     BigDecimal price;
 
-    public PurchasedItemTo(Integer id, Doll doll, int quantity, BigDecimal price) {
+    public PurchasedItemTo(Integer id, DollTo doll, int quantity, BigDecimal price) {
         super(id);
         this.doll = doll;
         this.quantity = quantity;

@@ -19,7 +19,7 @@ public class OrderUtil {
         String deliveryDate = order.getCreated().format(FORMATTER) + " - " + order.getCreated().plusDays(4).format(FORMATTER);
         List<PurchasedItemTo> items = order.getItems()
                 .stream()
-                .map(item -> new PurchasedItemTo(item.getId(), item.getDoll(), item.getQuantity(), item.getPrice()))
+                .map(item -> new PurchasedItemTo(item.getId(), DollUtil.createToFromDoll(item.getDoll()), item.getQuantity(), item.getPrice()))
                 .sorted(Comparator.comparingInt(BaseTo::getId))
                 .collect(Collectors.toList());
         return new OrderTo(order.getId(), items, order.getStatus(), order.getTotal(), deliveryDate);
