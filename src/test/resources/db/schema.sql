@@ -82,6 +82,7 @@ CREATE TABLE ORDERS
     status          VARCHAR                 NOT NULL,
     status_modified TIMESTAMP DEFAULT now() NOT NULL,
     total           NUMERIC(10, 2)          NOT NULL,
+    delivery_date   DATE      DEFAULT now() + INTERVAL '4 day' NOT NULL,
     created         TIMESTAMP DEFAULT now() NOT NULL,
     FOREIGN KEY (user_id) REFERENCES USERS (id) ON DELETE CASCADE
 );
