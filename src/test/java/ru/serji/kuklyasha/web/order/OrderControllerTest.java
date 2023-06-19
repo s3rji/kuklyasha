@@ -141,7 +141,7 @@ class OrderControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.delete(REST_URL + ORDER_ID))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        ORDER_MATCHER.assertMatch(orderService.getAll(user), order1);
+        ORDER_MATCHER.assertMatch(orderService.getAllByUser(user), order1);
         assertTrue(orderService.get(ORDER_ID, user).isEmpty());
     }
 

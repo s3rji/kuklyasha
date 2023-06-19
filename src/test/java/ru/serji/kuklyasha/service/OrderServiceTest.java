@@ -49,8 +49,14 @@ class OrderServiceTest {
     }
 
     @Test
+    void getAll() {
+        List<Order> actual = orderService.getAllFetchUser();
+        ORDER_MATCHER.assertMatch(actual, order, order1);
+    }
+
+    @Test
     void getAllByUser() {
-        List<Order> actual = orderService.getAll(user);
+        List<Order> actual = orderService.getAllByUser(user);
         ORDER_MATCHER.assertMatch(actual, order, order1);
         actual.forEach(order -> {
             User actualUser = (User) Hibernate.unproxy(order.getUser());
@@ -60,7 +66,7 @@ class OrderServiceTest {
 
     @Test
     void notFoundAllByUser() {
-        assertTrue(orderService.getAll(admin).isEmpty());
+        assertTrue(orderService.getAllByUser(admin).isEmpty());
     }
 
     @Test
