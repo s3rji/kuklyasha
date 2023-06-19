@@ -8,7 +8,9 @@ public interface OrderService {
 
     Optional<Order> get(int id, User user);
 
-    List<Order> getAll(User user);
+    List<Order> getAllFetchUser();
+
+    List<Order> getAllByUser(User user);
 
     Order update(Order order, User user);
 

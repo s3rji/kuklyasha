@@ -43,6 +43,10 @@ public class Order extends BaseEntity {
     @Digits(integer = 8, fraction = 2)
     private BigDecimal total;
 
+    @Column(name = "delivery_date", nullable = false)
+    @NotNull
+    private LocalDate deliveryDate;
+
     @Column(name = "created", nullable = false, updatable = false)
     @NotNull
     private LocalDateTime created;
@@ -54,6 +58,17 @@ public class Order extends BaseEntity {
         this.status = status;
         this.total = total;
         this.created = LocalDateTime.now();
+        this.deliveryDate = created.toLocalDate().plusDays(4);
+    }
+
+    public Order(Integer id, User user, Set<PurchasedItem> items, Status status, BigDecimal total, LocalDate deliveryDate) {
+        super(id);
+        this.user = user;
+        setItems(items);
+        this.status = status;
+        this.total = total;
+        this.created = LocalDateTime.now();
+        this.deliveryDate = deliveryDate;
     }
 
     public void setItems(Collection<PurchasedItem> items) {

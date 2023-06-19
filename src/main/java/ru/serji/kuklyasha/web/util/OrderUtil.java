@@ -8,7 +8,6 @@ import ru.serji.kuklyasha.model.*;
 
 import java.time.format.*;
 import java.util.*;
-import java.util.stream.*;
 
 @UtilityClass
 public class OrderUtil {
@@ -16,12 +15,23 @@ public class OrderUtil {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     public static OrderTo createToFromOrder(@NonNull Order order) {
-        String deliveryDate = order.getCreated().format(FORMATTER) + " - " + order.getCreated().plusDays(4).format(FORMATTER);
+        String deliveryDate = order.getDeliveryDate().format(FORMATTER);
         List<PurchasedItemTo> items = order.getItems()
                 .stream()
                 .map(item -> new PurchasedItemTo(item.getId(), DollUtil.createToFromDoll(item.getDoll()), item.getQuantity(), item.getPrice()))
                 .sorted(Comparator.comparingInt(BaseTo::getId))
-                .collect(Collectors.toList());
+                .toList();
         return new OrderTo(order.getId(), items, order.getStatus(), order.getTotal(), deliveryDate);
+    }
+
+    public static AdminOrderTo createAdminToFromOrder(@NonNull Order order) {
+        String deliveryDate = order.getDeliveryDate().format(FORMATTER);
+        UserTo user = UserUtil.createToFromUser(order.getUser());
+        List<PurchasedItemTo> items = order.getItems()
+                .stream()
+                .map(item -> new PurchasedItemTo(item.getId(), DollUtil.createToFromDoll(item.getDoll()), item.getQuantity(), item.getPrice()))
+                .sorted(Comparator.comparingInt(BaseTo::getId))
+                .toList();
+        return new AdminOrderTo(order.getId(), user, items, order.getStatus(), order.getTotal(), deliveryDate);
     }
 }

@@ -51,7 +51,7 @@ public class OrderController {
     public List<OrderTo> getAllByUser() {
         User user = SecurityUtil.authUser();
         log.info("get all by user {}", user.id());
-        return orderService.getAll(user).stream()
+        return orderService.getAllByUser(user).stream()
                 .map(OrderUtil::createToFromOrder).sorted(Comparator.comparingInt(BaseTo::getId)).toList();
     }
 
