@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
 import org.springframework.transaction.annotation.*;
 import org.springframework.web.bind.annotation.*;
+import ru.serji.kuklyasha.config.*;
 import ru.serji.kuklyasha.dto.*;
 import ru.serji.kuklyasha.dto.order.*;
 import ru.serji.kuklyasha.service.*;
@@ -16,7 +17,7 @@ import java.util.*;
 @RequestMapping(value = AdminController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Log4j2
 @Transactional(readOnly = true)
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = ReactAppProperties.HOST_NAME)
 public class AdminController {
     final static String REST_URL = "/api/admin";
 
