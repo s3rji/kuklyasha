@@ -29,16 +29,21 @@ public class AdminOrderTo extends BaseTo {
     @Digits(integer = 8, fraction = 2)
     BigDecimal total;
 
+    @NotNull
     String deliveryDate;
 
+    @NotNull
+    String created;
 
-    public AdminOrderTo(Integer id, UserTo user, List<PurchasedItemTo> items, Status status, BigDecimal total, String deliveryDate) {
+
+    public AdminOrderTo(Integer id, UserTo user, List<PurchasedItemTo> items, Status status, BigDecimal total, String deliveryDate, String created) {
         super(id);
         this.user = user;
         this.items = items;
         this.status = status;
         this.total = total;
         this.deliveryDate = deliveryDate;
+        this.created = created;
     }
 
     public List<PurchasedItemTo> getItems() {

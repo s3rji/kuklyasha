@@ -18,7 +18,7 @@ public class OrderTestData {
 
     public static final MatcherFactory.Matcher<OrderTo> ORDER_TO_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(OrderTo.class, "items.doll.created", "status.modified");
 
-    public static final MatcherFactory.Matcher<AdminOrderTo> ADMIN_ORDER_TO_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(AdminOrderTo.class, "user.password", "items.doll.created", "status.modified");
+    public static final MatcherFactory.Matcher<AdminOrderTo> ADMIN_ORDER_TO_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(AdminOrderTo.class, "user.password", "items.doll.created", "status.modified", "created");
 
     public static final int ORDER_ID = 1;
 
