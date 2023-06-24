@@ -40,7 +40,7 @@ const ShowOrder = ({show, onClose, order}) => {
                                         {"Заказ № " + order.id}
                                     </Dialog.Title>
                                     <div
-                                        className={"text-lg font-medium leading-6 text-" + statusAsColor(order.status.type)}>
+                                        className="text-lg font-medium leading-6 text-indigo-700">
                                         {status(order.status.type)}
                                     </div>
                                 </div>

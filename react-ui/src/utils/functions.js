@@ -16,15 +16,15 @@ export function status(status) {
 export function statusAsColor(status) {
     switch (status) {
         case "NEW":
-            return "gray-500"
+            return "bg-gray-500"
         case "CONFIRMED":
-            return "cyan-400"
+            return "bg-cyan-400"
         case "DELIVERY":
-            return "amber-400"
+            return "bg-amber-400"
         case "DONE":
-            return "green-400"
+            return "bg-green-400"
         default:
-            return "red-500"
+            return "bg-red-500"
     }
 }
 

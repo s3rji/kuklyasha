@@ -69,7 +69,7 @@ const Orders = observer(() => {
                                         <td className="py-4 px-6 text-zinc-700">
                                             <div className="flex items-center">
                                                 <div
-                                                    className={"h-2.5 w-2.5 rounded-full mr-2 bg-" + statusAsColor(order.status.type)}></div>
+                                                    className={"h-2.5 w-2.5 rounded-full mr-2 " + statusAsColor(order.status.type)}></div>
                                                 {status(order.status.type)}
                                             </div>
                                         </td>
