@@ -1,6 +1,7 @@
 package ru.serji.kuklyasha.service;
 
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 import ru.serji.kuklyasha.error.*;
@@ -35,8 +36,15 @@ public class OrderServiceImpl implements OrderService {
         return repository.findAllByUser(user);
     }
 
+    @Override
     public List<Order> getAllFetchUser() {
         return repository.findAllFetchUser();
+    }
+
+    @Override
+    public List<Order> getLimitFetchUserAndSort(int page, int limit, String sort, String direction) {
+        Sort sortOption = Sort.by(Sort.Direction.fromString(direction), sort).and(Sort.by("id"));
+        return repository.findAllFetchUser(PageRequest.of(page, limit, sortOption));
     }
 
     @Override

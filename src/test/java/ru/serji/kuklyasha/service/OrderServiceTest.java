@@ -65,6 +65,16 @@ class OrderServiceTest {
     }
 
     @Test
+    void getLimitFetchUserAndSort() {
+        List<Order> actual = orderService.getLimitFetchUserAndSort(0, 2, "user", "desc");
+        ORDER_MATCHER.assertMatch(actual, order, order1);
+        actual.forEach(order -> {
+            User actualUser = (User) Hibernate.unproxy(order.getUser());
+            USER_MATCHER.assertMatch(actualUser, user);
+        });
+    }
+
+    @Test
     void notFoundAllByUser() {
         assertTrue(orderService.getAllByUser(admin).isEmpty());
     }

@@ -35,4 +35,13 @@ public class AdminController {
         return orderService.getAllFetchUser().stream()
                 .map(OrderUtil::createAdminToFromOrder).sorted(Comparator.comparingInt(BaseTo::getId)).toList();
     }
+
+    @GetMapping(value = "/orders", params = {"page", "limit", "sort", "direction"})
+    public List<AdminOrderTo> getLimitByPageAndSort(@RequestParam int page, @RequestParam int limit, @RequestParam String sort, @RequestParam String direction) {
+        log.info("get limit orders by page with user");
+        return orderService.getLimitFetchUserAndSort(page, limit, sort, direction)
+                .stream()
+                .map(OrderUtil::createAdminToFromOrder)
+                .toList();
+    }
 }

@@ -10,6 +10,8 @@ public interface OrderService {
 
     List<Order> getAllFetchUser();
 
+    List<Order> getLimitFetchUserAndSort(int page, int limit, String sort, String direction);
+
     List<Order> getAllByUser(User user);
 
     Order update(Order order, User user);

@@ -36,4 +36,18 @@ public class AdminControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL)
+    void getLimitFetchUserAndSort() throws Exception {
+        perform(MockMvcRequestBuilders.get(ORDERS_URL)
+                .param("page", "0")
+                .param("limit", "2")
+                .param("sort", "user")
+                .param("direction", "desc"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(ADMIN_ORDER_TO_MATCHER.contentJson(Stream.of(order, order1).map(OrderUtil::createAdminToFromOrder).toList()));
+    }
 }
