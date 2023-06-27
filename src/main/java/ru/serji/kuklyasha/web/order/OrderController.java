@@ -8,12 +8,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.*;
 import ru.serji.kuklyasha.dto.*;
 import ru.serji.kuklyasha.dto.order.*;
+import ru.serji.kuklyasha.error.*;
 import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.service.*;
 import ru.serji.kuklyasha.web.util.*;
 
 import javax.validation.*;
 import javax.validation.constraints.*;
+import java.math.*;
 import java.net.*;
 import java.util.*;
 
@@ -62,8 +64,9 @@ public class OrderController {
         log.info("create order with dolls = {}", dolls);
         Objects.requireNonNull(dolls, "dolls must not be null");
         User user = SecurityUtil.authUser();
-        Set<PurchasedItem> items = mapDollToPurchasedItem(dolls, user);
-        Order created = orderService.create(items, user);
+        Order newOrder = new Order(null, user, new Status(StatusType.NEW));
+        addPurchasedItemsAndSetTotal(newOrder, dolls);
+        Order created = orderService.create(newOrder);
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -71,12 +74,17 @@ public class OrderController {
         return ResponseEntity.created(uriOfNewResource).body(createToFromOrder(created));
     }
 
-    private Set<PurchasedItem> mapDollToPurchasedItem(List<PurchasedDoll> dolls, User user) {
-        Set<PurchasedItem> set = new HashSet<>();
-        dolls.forEach(purchasedDoll -> dollService.get(purchasedDoll.id())
-                .ifPresent(doll -> set.add(new PurchasedItem(null, doll, user, purchasedDoll.getQuantity(), doll.getPrice())))
+    private void addPurchasedItemsAndSetTotal(Order order, List<PurchasedDoll> dolls) {
+        dolls.forEach(purchasedDoll -> dollService.get(purchasedDoll.id()).ifPresent(doll -> {
+                    if (purchasedDoll.getQuantity() > doll.getQuantity()) {
+                        throw new IllegalRequestDataException("not enough doll quantity with id = " + doll.id() + " in stock");
+                    }
+                    doll.setQuantity(doll.getQuantity() - purchasedDoll.getQuantity());
+                    order.addItem(new PurchasedItem(null, order, doll, order.getUser(), purchasedDoll.getQuantity(), doll.getPrice()));
+                })
         );
-        return set;
+        BigDecimal total = order.getItems().stream().map(PurchasedItem::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+        order.setTotal(total);
     }
 
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)

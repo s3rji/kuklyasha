@@ -18,5 +18,5 @@ public interface OrderService {
 
     void delete(int id, User user);
 
-    Order create(Set<PurchasedItem> items, User user);
+    Order create(Order order);
 }

@@ -4,11 +4,9 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
-import ru.serji.kuklyasha.error.*;
 import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.repository.*;
 
-import java.math.*;
 import java.util.*;
 
 import static ru.serji.kuklyasha.service.util.ValidationUtil.*;
@@ -18,12 +16,9 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository repository;
 
-    private final DollService dollService;
-
     @Autowired
-    public OrderServiceImpl(OrderRepository repository, DollService dollService) {
+    public OrderServiceImpl(OrderRepository repository) {
         this.repository = repository;
-        this.dollService = dollService;
     }
 
     @Override
@@ -57,16 +52,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order create(Set<PurchasedItem> items, User user) {
-        items.forEach(item -> {
-            if (item.getQuantity() > item.getDoll().getQuantity()) {
-                throw new IllegalRequestDataException("not enough doll quantity with id = " + item.getDoll().id() + " in stock");
-            }
-            item.getDoll().setQuantity(item.getDoll().getQuantity() - item.getQuantity());
-            dollService.save(item.getDoll());
-        });
-        BigDecimal total = items.stream().map(PurchasedItem::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
-        Order order = new Order(null, user, items, new Status(StatusType.NEW), total);
+    public Order create(Order order) {
         return repository.save(order);
     }
 
