@@ -17,6 +17,11 @@ import java.math.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PurchasedItem extends BaseEntity {
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "order_id", nullable = false, updatable = false)
+    @NotNull
+    private Order order;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "doll_id", nullable = false, updatable = false)
     @NotNull
@@ -38,8 +43,9 @@ public class PurchasedItem extends BaseEntity {
     @Digits(integer = 6, fraction = 2)
     private BigDecimal price;
 
-    public PurchasedItem(Integer id, Doll doll, User user, int quantity, BigDecimal price) {
+    public PurchasedItem(Integer id, Order order, Doll doll, User user, int quantity, BigDecimal price) {
         super(id);
+        this.order = order;
         this.doll = doll;
         this.user = user;
         this.quantity = quantity;

@@ -22,12 +22,7 @@ public class Order extends BaseEntity {
     @NotNull
     private User user;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(
-            name = "order_item",
-            joinColumns = @JoinColumn(name = "order_id", nullable = false, updatable = false),
-            inverseJoinColumns = @JoinColumn(name = "item_id", nullable = false, updatable = false)
-    )
+    @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @NotNull
     private Set<PurchasedItem> items = new HashSet<>();
 
@@ -38,6 +33,7 @@ public class Order extends BaseEntity {
     private Status status;
 
     @Column(name = "total", nullable = false, updatable = false, precision = 10, scale = 2)
+    @Setter
     @NotNull
     @Range(min = 1, max = 10000000)
     @Digits(integer = 8, fraction = 2)
@@ -50,6 +46,15 @@ public class Order extends BaseEntity {
     @Column(name = "created", nullable = false, updatable = false)
     @NotNull
     private LocalDateTime created;
+
+    public Order(Integer id, User user, Status status) {
+        super(id);
+        this.user = user;
+        this.status = status;
+        this.total = new BigDecimal(0);
+        this.created = LocalDateTime.now();
+        this.deliveryDate = created.toLocalDate().plusDays(4);
+    }
 
     public Order(Integer id, User user, Set<PurchasedItem> items, Status status, BigDecimal total) {
         super(id);
@@ -77,5 +82,9 @@ public class Order extends BaseEntity {
 
     public Set<PurchasedItem> getItems() {
         return Set.copyOf(items);
+    }
+
+    public void addItem(PurchasedItem item) {
+        items.add(item);
     }
 }
