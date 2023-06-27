@@ -10,11 +10,12 @@ import java.util.*;
 
 import static ru.serji.kuklyasha.DollTestData.*;
 import static ru.serji.kuklyasha.PurchasedItemTestData.*;
+import static ru.serji.kuklyasha.UserTestData.*;
 
 public class OrderTestData {
 
     public static final MatcherFactory.Matcher<Order> ORDER_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Order.class,
-            "user", "items.user", "items.doll.created", "status.modified", "created");
+            "user", "items.user", "items.order", "items.doll.created", "status.modified", "created");
 
     public static final MatcherFactory.Matcher<OrderTo> ORDER_TO_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(OrderTo.class, "items.doll.created", "status.modified");
 
@@ -40,8 +41,11 @@ public class OrderTestData {
             new Status(StatusType.DONE, LocalDateTime.now()), new BigDecimal("100.00"));
 
     public static Order getNew() {
-        return new Order(null, UserTestData.user, Set.of(PurchasedItemTestData.getNew()),
-                new Status(StatusType.NEW, LocalDateTime.now()), new BigDecimal("100.00"));
+        Order newOrder = new Order(null, UserTestData.user, new Status(StatusType.NEW, LocalDateTime.now()));
+        PurchasedItem newItem = new PurchasedItem(null, newOrder, new Doll(DOLL_ID, "Doll1", "Pretty Doll", new BigDecimal("100.00"), 2, "/image1", Set.of("/image2")), user, 1, new BigDecimal("100.00"));
+        newOrder.addItem(newItem);
+        newOrder.setTotal(new BigDecimal("100.00"));
+        return newOrder;
     }
 
     public static List<PurchasedDoll> getNewPurchasedDolls() {
@@ -51,18 +55,16 @@ public class OrderTestData {
     }
 
     public static Order getAfterCreating() {
+        Order newOrder = new Order(null, UserTestData.user, new Status(StatusType.NEW, LocalDateTime.now()));
         Doll dollAfterCreatingOrder = new Doll(DOLL_ID, "Doll1", "Pretty Doll", new BigDecimal("100.00"), 1, "/image1", gallery);
-        PurchasedItem itemAfterCreatingOrder = new PurchasedItem(null, dollAfterCreatingOrder, UserTestData.user, 1, new BigDecimal("100.00"));
-        return new Order(null, UserTestData.user, Set.of(itemAfterCreatingOrder),
-                new Status(StatusType.NEW, LocalDateTime.now()), new BigDecimal("100.00"));
+        PurchasedItem itemAfterCreatingOrder = new PurchasedItem(null, newOrder, dollAfterCreatingOrder, UserTestData.user, 1, new BigDecimal("100.00"));
+        newOrder.addItem(itemAfterCreatingOrder);
+        newOrder.setTotal(new BigDecimal("100.00"));
+        return newOrder;
     }
 
     public static Order getUpdated() {
         return new Order(ORDER_ID, UserTestData.user, Set.of(item, item2),
                 new Status(StatusType.DONE, LocalDateTime.now()), new BigDecimal("200.00"));
-    }
-
-    public static String jsonFromObject(OrderTo orderTo) {
-        return JsonUtil.writeValue(orderTo);
     }
 }

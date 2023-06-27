@@ -31,6 +31,9 @@ class OrderControllerTest extends AbstractControllerTest {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private DollService dollService;
+
     @Test
     @WithUserDetails(value = USER_EMAIL)
     void get() throws Exception {
@@ -87,6 +90,10 @@ class OrderControllerTest extends AbstractControllerTest {
         }
 
         ORDER_TO_MATCHER.assertMatch(created, newTo);
+
+        int dollQuantityInStock = dollService.get(created.getItems().iterator().next().id()).get().getQuantity();
+        int dollQuantityExpected = created.getItems().iterator().next().getDoll().getQuantity();
+        assertEquals(dollQuantityExpected, dollQuantityInStock);
     }
 
     @Test

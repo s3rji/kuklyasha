@@ -5,7 +5,6 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.boot.test.context.*;
 import org.springframework.transaction.annotation.*;
-import ru.serji.kuklyasha.*;
 import ru.serji.kuklyasha.error.*;
 import ru.serji.kuklyasha.model.Order;
 import ru.serji.kuklyasha.model.*;
@@ -26,9 +25,6 @@ class OrderServiceTest {
 
     @Autowired
     private OrderService orderService;
-
-    @Autowired
-    private DollService dollService;
 
     @Test
     void get() {
@@ -81,11 +77,10 @@ class OrderServiceTest {
 
     @Test
     void create() {
-        Order created = orderService.create(Set.of(PurchasedItemTestData.getNew()), user);
+        Order created = orderService.create(getNew());
         int newOrderId = created.id();
         Order newOrder = getNew();
         newOrder.setId(newOrderId);
-        newOrder.setItems(created.getItems());
         Iterator<PurchasedItem> createdIter = created.getItems().iterator();
         Iterator<PurchasedItem> newOrderIter = newOrder.getItems().iterator();
         while (createdIter.hasNext() && newOrderIter.hasNext()) {
@@ -95,22 +90,12 @@ class OrderServiceTest {
         ORDER_MATCHER.assertMatch(created, newOrder);
         USER_MATCHER.assertMatch(created.getUser(), newOrder.getUser());
         ORDER_MATCHER.assertMatch(orderService.get(newOrderId, user).get(), newOrder);
-
-        int dollQuantityInStock = dollService.get(created.getItems().iterator().next().id()).get().getQuantity();
-        int dollQuantityExpected = created.getItems().iterator().next().getQuantity();
-        assertEquals(dollQuantityExpected, dollQuantityInStock);
     }
 
     @Test
     void createInvalid() {
-        PurchasedItem item = PurchasedItemTestData.getInvalidNew();
-        assertThrows(ConstraintViolationException.class, () -> orderService.create(Set.of(item), user));
-    }
-
-    @Test
-    void createFailedBecauseNotEnoughQuantity() {
-        PurchasedItem item = PurchasedItemTestData.getInvalidQuantity();
-        assertThrows(IllegalRequestDataException.class, () -> orderService.create(Set.of(item), user));
+        Order invalid = new Order(null, null, null);
+        assertThrows(ConstraintViolationException.class, () -> orderService.create(invalid));
     }
 
     @Test
