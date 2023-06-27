@@ -1,4 +1,3 @@
-DELETE FROM ORDER_ITEM;
 DELETE FROM CART_ITEM;
 DELETE FROM PURCHASED_ITEM;
 DELETE FROM ORDERS;
@@ -49,12 +48,7 @@ VALUES (1, 1, 1),
        (2, 1, 1),
        (3, 1, 2);
 
-INSERT INTO PURCHASED_ITEM (doll_id, user_id, quantity, price)
-VALUES (1, 1, 1, 100.00),
-       (2, 1, 1, 100.00),
-       (3, 1, 2, 100.00);
-
-INSERT INTO ORDER_ITEM (order_id, item_id)
-VALUES (1, 1),
-       (1, 2),
-       (2, 3);
+INSERT INTO PURCHASED_ITEM (order_id, doll_id, user_id, quantity, price)
+VALUES (1, 1, 1, 1, 100.00),
+       (1, 2, 1, 1, 100.00),
+       (2, 3, 1, 2, 100.00);
