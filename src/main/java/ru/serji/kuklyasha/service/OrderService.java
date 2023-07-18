@@ -12,6 +12,8 @@ public interface OrderService {
 
     List<Order> getLimitFetchUserAndSort(int page, int limit, String sort, String direction);
 
+    List<Order> getLimitByFilterFetchUserAndSort(int page, int limit, String sort, String direction, String field, String filter);
+
     List<Order> getAllByUser(User user);
 
     Order update(Order order, User user);

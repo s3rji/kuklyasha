@@ -36,4 +36,13 @@ public class OrderUtil {
                 .toList();
         return new AdminOrderTo(order.getId(), user, items, order.getStatus(), order.getTotal(), deliveryDate, created);
     }
+
+    public static boolean isNotValidSortField(String sort, String direction) {
+        return (!sort.equals("id") && !sort.equals("user.name") && !sort.equals("status"))
+                || (!direction.equals("asc") && !direction.equals("desc"));
+    }
+
+    public static boolean isNotValidFilterField(String field) {
+        return !field.equals("id") && !field.equals("user.name") && !field.equals("status");
+    }
 }

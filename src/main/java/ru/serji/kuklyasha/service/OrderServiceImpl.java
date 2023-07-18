@@ -14,21 +14,16 @@ import static ru.serji.kuklyasha.service.util.ValidationUtil.*;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    private final OrderRepository repository;
+    private final CustomOrderRepository repository;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository repository) {
+    public OrderServiceImpl(CustomOrderRepository repository) {
         this.repository = repository;
     }
 
     @Override
     public Optional<Order> get(int id, User user) {
         return repository.findByIdAndUser(id, user);
-    }
-
-    @Override
-    public List<Order> getAllByUser(User user) {
-        return repository.findAllByUser(user);
     }
 
     @Override
@@ -40,6 +35,16 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> getLimitFetchUserAndSort(int page, int limit, String sort, String direction) {
         Sort sortOption = Sort.by(Sort.Direction.fromString(direction), sort).and(Sort.by("id"));
         return repository.findAllFetchUser(PageRequest.of(page, limit, sortOption));
+    }
+
+    @Override
+    public List<Order> getLimitByFilterFetchUserAndSort(int page, int limit, String sort, String direction, String field, String filter) {
+        return repository.findAllByFilterFetchUser(page, limit, sort, direction, field, filter);
+    }
+
+    @Override
+    public List<Order> getAllByUser(User user) {
+        return repository.findAllByUser(user);
     }
 
     @Override
