@@ -32,7 +32,8 @@ VALUES ('USER', 1),
 
 INSERT INTO ORDERS (user_id, status, total)
 VALUES (1, 'NEW', 200.00),
-       (1, 'DONE', 100.00);
+       (1, 'DONE', 100.00),
+       (2, 'DONE', 100.00);
 
 INSERT INTO CART_ITEM (doll_id, user_id, quantity)
 VALUES (1, 1, 1),
@@ -42,4 +43,5 @@ VALUES (1, 1, 1),
 INSERT INTO PURCHASED_ITEM (order_id, doll_id, user_id, quantity, price)
 VALUES (1, 1, 1, 1, 100.00),
        (1, 2, 1, 1, 100.00),
-       (2, 3, 1, 2, 100.00);
+       (2, 3, 1, 2, 100.00),
+       (3, 3, 2, 2, 100.00);
