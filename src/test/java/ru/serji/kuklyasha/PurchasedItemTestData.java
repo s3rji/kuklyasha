@@ -27,4 +27,6 @@ public class PurchasedItemTestData {
     public static final PurchasedItem item2 = new PurchasedItem(PURCHASED_ITEM_ID + 1, order, new Doll(DOLL_ID + 1, "Doll2", "Pretty Doll", new BigDecimal("100.00"), 1, "/image2", new HashSet<>()), user, 1, new BigDecimal("100.00"));
 
     public static final PurchasedItem item3 = new PurchasedItem(PURCHASED_ITEM_ID + 2, order1, new Doll(DOLL_ID + 2, "Doll3", "Pretty Doll", new BigDecimal("100.00"), 1, "/image3", new HashSet<>()), user, 2, new BigDecimal("100.00"));
+
+    public static final PurchasedItem item4 = new PurchasedItem(PURCHASED_ITEM_ID + 3, order2, new Doll(DOLL_ID + 2, "Doll3", "Pretty Doll", new BigDecimal("100.00"), 1, "/image3", new HashSet<>()), admin, 2, new BigDecimal("100.00"));
 }

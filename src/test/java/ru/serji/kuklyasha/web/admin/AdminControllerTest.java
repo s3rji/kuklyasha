@@ -26,7 +26,7 @@ public class AdminControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(ADMIN_ORDER_TO_MATCHER.contentJson(Stream.of(order, order1).map(OrderUtil::createAdminToFromOrder).toList()));
+                .andExpect(ADMIN_ORDER_TO_MATCHER.contentJson(Stream.of(order, order1, order2).map(OrderUtil::createAdminToFromOrder).toList()));
     }
 
     @Test
@@ -42,12 +42,54 @@ public class AdminControllerTest extends AbstractControllerTest {
     void getLimitFetchUserAndSort() throws Exception {
         perform(MockMvcRequestBuilders.get(ORDERS_URL)
                 .param("page", "0")
-                .param("limit", "2")
-                .param("sort", "user")
-                .param("direction", "desc"))
+                .param("limit", "5")
+                .param("sort", "user.name")
+                .param("direction", "asc"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(ADMIN_ORDER_TO_MATCHER.contentJson(Stream.of(order2, order, order1).map(OrderUtil::createAdminToFromOrder).toList()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL)
+    void failedLimitFetchUserAndSort() throws Exception {
+        perform(MockMvcRequestBuilders.get(ORDERS_URL)
+                .param("page", "0")
+                .param("limit", "5")
+                .param("sort", "delivery")
+                .param("direction", "asc"))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL)
+    void getLimitByFilterUsername() throws Exception {
+        perform(MockMvcRequestBuilders.get(ORDERS_URL)
+                .param("page", "0")
+                .param("limit", "5")
+                .param("sort", "id")
+                .param("direction", "asc")
+                .param("field", "user.name")
+                .param("filter", "uSe"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(ADMIN_ORDER_TO_MATCHER.contentJson(Stream.of(order, order1).map(OrderUtil::createAdminToFromOrder).toList()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL)
+    void failedLimitByFilterUsername() throws Exception {
+        perform(MockMvcRequestBuilders.get(ORDERS_URL)
+                .param("page", "0")
+                .param("limit", "5")
+                .param("sort", "id")
+                .param("direction", "asc")
+                .param("field", "delivery")
+                .param("filter", "10.05.2022"))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 }

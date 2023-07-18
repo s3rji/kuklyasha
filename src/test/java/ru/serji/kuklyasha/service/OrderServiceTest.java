@@ -47,7 +47,7 @@ class OrderServiceTest {
     @Test
     void getAll() {
         List<Order> actual = orderService.getAllFetchUser();
-        ORDER_MATCHER.assertMatch(actual, order, order1);
+        ORDER_MATCHER.assertMatch(actual, order, order1, order2);
     }
 
     @Test
@@ -61,18 +61,57 @@ class OrderServiceTest {
     }
 
     @Test
-    void getLimitFetchUserAndSort() {
-        List<Order> actual = orderService.getLimitFetchUserAndSort(0, 2, "user", "desc");
-        ORDER_MATCHER.assertMatch(actual, order, order1);
-        actual.forEach(order -> {
-            User actualUser = (User) Hibernate.unproxy(order.getUser());
-            USER_MATCHER.assertMatch(actualUser, user);
-        });
+    void getLimitFetchUserAndSortByIdAsc() {
+        List<Order> actual = orderService.getLimitFetchUserAndSort(0, 5, "id", "asc");
+        ORDER_MATCHER.assertMatch(actual, order, order1, order2);
     }
 
     @Test
-    void notFoundAllByUser() {
-        assertTrue(orderService.getAllByUser(admin).isEmpty());
+    void getLimitFetchUserAndSortByIdDesc() {
+        List<Order> actual = orderService.getLimitFetchUserAndSort(0, 5, "id", "desc");
+        ORDER_MATCHER.assertMatch(actual, order2, order1, order);
+    }
+
+    @Test
+    void getLimitFetchUserAndSortByUserAsc() {
+        List<Order> actual = orderService.getLimitFetchUserAndSort(0, 5, "user", "asc");
+        ORDER_MATCHER.assertMatch(actual, order, order1, order2);
+    }
+
+    @Test
+    void getLimitFetchUserAndSortByUserDesc() {
+        List<Order> actual = orderService.getLimitFetchUserAndSort(0, 5, "user", "desc");
+        ORDER_MATCHER.assertMatch(actual, order2, order, order1);
+    }
+
+    @Test
+    void getLimitFetchUserAndSortByUserNameAsc() {
+        List<Order> actual = orderService.getLimitFetchUserAndSort(0, 5, "user.name", "asc");
+        ORDER_MATCHER.assertMatch(actual, order2, order, order1);
+    }
+
+    @Test
+    void getLimitByFilterId() {
+        List<Order> actual = orderService.getLimitByFilterFetchUserAndSort(0, 5, "id", "asc", "id", "2");
+        ORDER_MATCHER.assertMatch(actual, order1);
+    }
+
+    @Test
+    void getLimitByFilterUser() {
+        List<Order> actual = orderService.getLimitByFilterFetchUserAndSort(0, 5, "id", "desc", "user.name", "uSe");
+        ORDER_MATCHER.assertMatch(actual, order1, order);
+    }
+
+    @Test
+    void getLimitByFilterUserPageTwo() {
+        List<Order> actual = orderService.getLimitByFilterFetchUserAndSort(1, 1, "id", "desc", "user.name", "uSe");
+        ORDER_MATCHER.assertMatch(actual, order);
+    }
+
+    @Test
+    void getLimitByFilterStatus() {
+        List<Order> actual = orderService.getLimitByFilterFetchUserAndSort(0, 5, "user.name", "asc", "status", "done");
+        ORDER_MATCHER.assertMatch(actual, order2, order1);
     }
 
     @Test

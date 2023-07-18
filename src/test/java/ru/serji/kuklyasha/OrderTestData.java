@@ -2,7 +2,6 @@ package ru.serji.kuklyasha;
 
 import ru.serji.kuklyasha.dto.order.*;
 import ru.serji.kuklyasha.model.*;
-import ru.serji.kuklyasha.web.util.*;
 
 import java.math.*;
 import java.time.*;
@@ -38,6 +37,9 @@ public class OrderTestData {
             new Status(StatusType.NEW, LocalDateTime.now()), new BigDecimal("200.00"));
 
     public static final Order order1 = new Order(ORDER_ID + 1, UserTestData.user, Set.of(item3),
+            new Status(StatusType.DONE, LocalDateTime.now()), new BigDecimal("100.00"));
+
+    public static final Order order2 = new Order(ORDER_ID + 2, UserTestData.admin, Set.of(item4),
             new Status(StatusType.DONE, LocalDateTime.now()), new BigDecimal("100.00"));
 
     public static Order getNew() {
