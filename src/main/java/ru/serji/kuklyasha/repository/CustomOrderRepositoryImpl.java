@@ -93,4 +93,9 @@ public class CustomOrderRepositoryImpl implements CustomOrderRepository {
     public Order save(Order order) {
         return repository.save(order);
     }
+
+    @Override
+    public int count() {
+        return (int) repository.count();
+    }
 }

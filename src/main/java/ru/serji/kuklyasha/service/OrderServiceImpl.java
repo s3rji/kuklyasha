@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
+import ru.serji.kuklyasha.error.*;
 import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.repository.*;
 
@@ -39,7 +40,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getLimitByFilterFetchUserAndSort(int page, int limit, String sort, String direction, String field, String filter) {
-        return repository.findAllByFilterFetchUser(page, limit, sort, direction, field, filter);
+        try {
+            return repository.findAllByFilterFetchUser(page, limit, sort, direction, field, filter);
+        } catch (RuntimeException ex) {
+            throw new IllegalRequestDataException("Illegal input param 'filter' for chosen field");
+        }
     }
 
     @Override
@@ -64,5 +69,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void delete(int id, User user) {
         checkModification(repository.deleteByIdAndUser(id, user), id);
+    }
+
+    @Override
+    public int totalCount() {
+        return repository.count();
     }
 }

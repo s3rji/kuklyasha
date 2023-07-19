@@ -21,4 +21,6 @@ public interface OrderService {
     void delete(int id, User user);
 
     Order create(Order order);
+
+    int totalCount();
 }

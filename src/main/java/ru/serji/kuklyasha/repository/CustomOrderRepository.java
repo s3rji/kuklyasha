@@ -20,4 +20,6 @@ public interface CustomOrderRepository {
     int deleteByIdAndUser(int id, User user);
 
     Order save(Order order);
+
+    int count();
 }
