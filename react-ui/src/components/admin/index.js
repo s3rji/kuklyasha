@@ -5,3 +5,5 @@ export {default as AdminDollList} from './DollList';
 export {default as AdminDollItem} from './DollItem';
 export {default as EditDoll} from './EditDoll';
 export {default as UploadFile} from './UploadFile';
+export {default as OrdersFilterBar} from './OrdersFilterBar';
+export {default as OrdersPages} from './OrdersPages';
