@@ -18,11 +18,11 @@ const Pages = observer(() => {
         <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-500 sm:px-6">
             <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                 <div>
-                    <div className="text-sm text-gray-700">
+                    {doll.total !== 0 && <div className="text-sm text-gray-700">
                         Показано с <span className="font-medium">{from}</span> по <span
                         className="font-medium">{to}</span> из {' '}
                         <span className="font-medium">{doll.total}</span> позиций
-                    </div>
+                    </div>}
                 </div>
                 <div>
                     <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
