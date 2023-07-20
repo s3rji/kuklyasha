@@ -13,7 +13,7 @@ public interface CustomOrderRepository {
 
     List<Order> findAllFetchUser(Pageable pageable);
 
-    List<Order> findAllByFilterFetchUser(int page, int limit, String sort, String direction, String field, String filter);
+    FilteredOrderPage findAllByFilterFetchUser(int page, int limit, String sort, String direction, String field, String filter);
 
     List<Order> findAllByUser(User user);
 

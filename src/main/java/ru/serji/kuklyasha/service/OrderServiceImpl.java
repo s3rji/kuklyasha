@@ -39,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getLimitByFilterFetchUserAndSort(int page, int limit, String sort, String direction, String field, String filter) {
+    public FilteredOrderPage getLimitByFilterFetchUserAndSort(int page, int limit, String sort, String direction, String field, String filter) {
         try {
             return repository.findAllByFilterFetchUser(page, limit, sort, direction, field, filter);
         } catch (RuntimeException ex) {

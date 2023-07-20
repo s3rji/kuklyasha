@@ -41,7 +41,7 @@ public class CustomOrderRepositoryImpl implements CustomOrderRepository {
     }
 
     @Override
-    public List<Order> findAllByFilterFetchUser(int page, int limit, String sort, String direction, String field, String filter) {
+    public FilteredOrderPage findAllByFilterFetchUser(int page, int limit, String sort, String direction, String field, String filter) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Order> criteriaQuery = cb.createQuery(Order.class);
         Root<Order> root = criteriaQuery.from(Order.class);
@@ -74,9 +74,10 @@ public class CustomOrderRepositoryImpl implements CustomOrderRepository {
         }
 
         TypedQuery<Order> typedQuery = entityManager.createQuery(select);
+        int total = typedQuery.getResultList().size();
         typedQuery.setFirstResult(page * limit);
         typedQuery.setMaxResults(limit);
-        return typedQuery.getResultList();
+        return new FilteredOrderPage(typedQuery.getResultList(), total);
     }
 
     @Override
