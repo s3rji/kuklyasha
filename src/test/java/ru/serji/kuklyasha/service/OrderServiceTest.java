@@ -92,26 +92,42 @@ class OrderServiceTest {
 
     @Test
     void getLimitByFilterId() {
-        List<Order> actual = orderService.getLimitByFilterFetchUserAndSort(0, 5, "id", "asc", "id", "2");
+        List<Order> actual = orderService.getLimitByFilterFetchUserAndSort(0, 5, "id", "asc", "id", "2")
+                .getContent();
         ORDER_MATCHER.assertMatch(actual, order1);
     }
 
     @Test
     void getLimitByFilterUser() {
-        List<Order> actual = orderService.getLimitByFilterFetchUserAndSort(0, 5, "id", "desc", "user.name", "uSe");
+        List<Order> actual = orderService.getLimitByFilterFetchUserAndSort(0, 5, "id", "desc", "user.name", "uSe")
+                .getContent();
         ORDER_MATCHER.assertMatch(actual, order1, order);
     }
 
     @Test
     void getLimitByFilterUserPageTwo() {
-        List<Order> actual = orderService.getLimitByFilterFetchUserAndSort(1, 1, "id", "desc", "user.name", "uSe");
+        List<Order> actual = orderService.getLimitByFilterFetchUserAndSort(1, 1, "id", "desc", "user.name", "uSe")
+                .getContent();
         ORDER_MATCHER.assertMatch(actual, order);
     }
 
     @Test
     void getLimitByFilterStatus() {
-        List<Order> actual = orderService.getLimitByFilterFetchUserAndSort(0, 5, "user.name", "asc", "status", "done");
+        List<Order> actual = orderService.getLimitByFilterFetchUserAndSort(0, 5, "user.name", "asc", "status", "done")
+                .getContent();
         ORDER_MATCHER.assertMatch(actual, order2, order1);
+    }
+
+    @Test
+    void failedGetLimitByFilterStatus() {
+        assertThrows(IllegalRequestDataException.class,
+                () -> orderService.getLimitByFilterFetchUserAndSort(0, 5, "user.name", "asc", "status", "complete"));
+    }
+
+    @Test
+    void failedGetLimitByFilterId() {
+        assertThrows(IllegalRequestDataException.class,
+                () -> orderService.getLimitByFilterFetchUserAndSort(0, 5, "user.name", "asc", "id", "one"));
     }
 
     @Test

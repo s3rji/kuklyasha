@@ -3,7 +3,9 @@ package ru.serji.kuklyasha.web.admin;
 import org.junit.jupiter.api.*;
 import org.springframework.http.*;
 import org.springframework.security.test.context.support.*;
+import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.request.*;
+import ru.serji.kuklyasha.dto.order.*;
 import ru.serji.kuklyasha.web.*;
 import ru.serji.kuklyasha.web.util.*;
 
@@ -40,15 +42,17 @@ public class AdminControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_EMAIL)
     void getLimitFetchUserAndSort() throws Exception {
-        perform(MockMvcRequestBuilders.get(ORDERS_URL)
+        ResultActions action = perform(MockMvcRequestBuilders.get(ORDERS_URL)
                 .param("page", "0")
                 .param("limit", "5")
                 .param("sort", "user.name")
                 .param("direction", "asc"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(ADMIN_ORDER_TO_MATCHER.contentJson(Stream.of(order2, order, order1).map(OrderUtil::createAdminToFromOrder).toList()));
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+
+        AdminOrderPage actual = JsonUtil.readValue(action.andReturn().getResponse().getContentAsString(), AdminOrderPage.class);
+        ADMIN_ORDER_TO_MATCHER.assertMatch(actual.getContent(), Stream.of(order2, order, order1).map(OrderUtil::createAdminToFromOrder).toList());
     }
 
     @Test
@@ -66,7 +70,7 @@ public class AdminControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_EMAIL)
     void getLimitByFilterUsername() throws Exception {
-        perform(MockMvcRequestBuilders.get(ORDERS_URL)
+        ResultActions action = perform(MockMvcRequestBuilders.get(ORDERS_URL)
                 .param("page", "0")
                 .param("limit", "5")
                 .param("sort", "id")
@@ -75,8 +79,10 @@ public class AdminControllerTest extends AbstractControllerTest {
                 .param("filter", "uSe"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(ADMIN_ORDER_TO_MATCHER.contentJson(Stream.of(order, order1).map(OrderUtil::createAdminToFromOrder).toList()));
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+
+        AdminOrderPage actual = JsonUtil.readValue(action.andReturn().getResponse().getContentAsString(), AdminOrderPage.class);
+        ADMIN_ORDER_TO_MATCHER.assertMatch(actual.getContent(), Stream.of(order, order1).map(OrderUtil::createAdminToFromOrder).toList());
     }
 
     @Test
