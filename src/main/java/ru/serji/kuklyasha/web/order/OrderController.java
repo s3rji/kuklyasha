@@ -44,7 +44,7 @@ public class OrderController {
         User user = SecurityUtil.authUser();
         log.info("get order {} by user {}", id, user.id());
 
-        return orderService.get(id, user)
+        return orderService.getByIdAndUser(id, user)
                 .map(order -> ResponseEntity.ok(createToFromOrder(order)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -85,20 +85,6 @@ public class OrderController {
         );
         BigDecimal total = order.getItems().stream().map(PurchasedItem::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
         order.setTotal(total);
-    }
-
-    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Transactional
-    public void updateStatus(@Valid @RequestBody StatusTo statusTo, @PathVariable("id") int id) {
-        log.info("update order = {}", id);
-        Objects.requireNonNull(statusTo, "status must not be null");
-        User user = SecurityUtil.authUser();
-        orderService.get(id, user).ifPresent(order -> {
-            Status status = new Status(statusTo.getType());
-            order.setStatus(status);
-            orderService.update(order, user);
-        });
     }
 
     @DeleteMapping("/{id}")
