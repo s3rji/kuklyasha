@@ -6,7 +6,9 @@ import java.util.*;
 
 public interface OrderService {
 
-    Optional<Order> get(int id, User user);
+    Optional<Order> getById(int id);
+
+    Optional<Order> getByIdAndUser(int id, User user);
 
     List<Order> getAllFetchUser();
 
@@ -16,7 +18,7 @@ public interface OrderService {
 
     List<Order> getAllByUser(User user);
 
-    Order update(Order order, User user);
+    Order update(Order order);
 
     void delete(int id, User user);
 

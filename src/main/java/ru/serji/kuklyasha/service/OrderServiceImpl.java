@@ -23,7 +23,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Optional<Order> get(int id, User user) {
+    public Optional<Order> getById(int id) {
+        return repository.findById(id);
+    }
+
+    @Override
+    public Optional<Order> getByIdAndUser(int id, User user) {
         return repository.findByIdAndUser(id, user);
     }
 
@@ -54,9 +59,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order update(Order order, User user) {
+    public Order update(Order order) {
         int id = order.id();
-        checkNotFoundWithId(get(id, user).orElse(null), id);
+        checkNotFoundWithId(getById(id).orElse(null), id);
         return repository.save(order);
     }
 

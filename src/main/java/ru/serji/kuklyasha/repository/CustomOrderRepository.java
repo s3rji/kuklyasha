@@ -7,6 +7,8 @@ import java.util.*;
 
 public interface CustomOrderRepository {
 
+    Optional<Order> findById(int id);
+
     Optional<Order> findByIdAndUser(int id, User user);
 
     List<Order> findAllFetchUser();

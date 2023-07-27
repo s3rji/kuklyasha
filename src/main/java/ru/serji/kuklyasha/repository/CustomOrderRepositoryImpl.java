@@ -26,6 +26,11 @@ public class CustomOrderRepositoryImpl implements CustomOrderRepository {
     }
 
     @Override
+    public Optional<Order> findById(int id) {
+        return repository.findById(id);
+    }
+
+    @Override
     public Optional<Order> findByIdAndUser(int id, User user) {
         return repository.findByIdAndUser(id, user);
     }
