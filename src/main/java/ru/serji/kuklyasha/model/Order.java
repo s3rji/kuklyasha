@@ -40,6 +40,7 @@ public class Order extends BaseEntity {
     private BigDecimal total;
 
     @Column(name = "delivery_date", nullable = false)
+    @Setter
     @NotNull
     private LocalDate deliveryDate;
 
