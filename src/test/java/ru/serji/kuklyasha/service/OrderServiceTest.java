@@ -27,21 +27,27 @@ class OrderServiceTest {
     private OrderService orderService;
 
     @Test
-    void get() {
-        Order actual = orderService.get(ORDER_ID, user).get();
+    void getByIdAndUser() {
+        Order actual = orderService.getByIdAndUser(ORDER_ID, user).get();
         ORDER_MATCHER.assertMatch(actual, order);
         User actualUser = (User) Hibernate.unproxy(actual.getUser());
         USER_MATCHER.assertMatch(actualUser, user);
     }
 
     @Test
+    void getById() {
+        Order actual = orderService.getById(ORDER_ID).get();
+        ORDER_MATCHER.assertMatch(actual, order);
+    }
+
+    @Test
     void notFound() {
-        assertTrue(orderService.get(NOT_FOUND, user).isEmpty());
+        assertTrue(orderService.getByIdAndUser(NOT_FOUND, user).isEmpty());
     }
 
     @Test
     void notFoundWithWrongUser() {
-        assertTrue(orderService.get(ORDER_ID, admin).isEmpty());
+        assertTrue(orderService.getByIdAndUser(ORDER_ID, admin).isEmpty());
     }
 
     @Test
@@ -144,7 +150,7 @@ class OrderServiceTest {
 
         ORDER_MATCHER.assertMatch(created, newOrder);
         USER_MATCHER.assertMatch(created.getUser(), newOrder.getUser());
-        ORDER_MATCHER.assertMatch(orderService.get(newOrderId, user).get(), newOrder);
+        ORDER_MATCHER.assertMatch(orderService.getByIdAndUser(newOrderId, user).get(), newOrder);
     }
 
     @Test
@@ -156,22 +162,16 @@ class OrderServiceTest {
     @Test
     void update() {
         Order updated = getUpdated();
-        orderService.update(updated, user);
-        Order actual = orderService.get(ORDER_ID, user).get();
+        orderService.update(updated);
+        Order actual = orderService.getById(ORDER_ID).get();
         ORDER_MATCHER.assertMatch(actual, updated);
-    }
-
-    @Test
-    void updateInvalidWithWrongUser() {
-        Order updated = getUpdated();
-        assertThrows(IllegalRequestDataException.class, () -> orderService.update(updated, admin));
     }
 
     @Test
     void delete() {
         orderService.delete(ORDER_ID, user);
         assertThrows(IllegalRequestDataException.class, () -> orderService.delete(ORDER_ID, user));
-        assertTrue(orderService.get(ORDER_ID, user).isEmpty());
+        assertTrue(orderService.getByIdAndUser(ORDER_ID, user).isEmpty());
     }
 
     @Test

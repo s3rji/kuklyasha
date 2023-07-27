@@ -8,7 +8,6 @@ import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.request.*;
 import ru.serji.kuklyasha.dto.order.*;
 import ru.serji.kuklyasha.model.Order;
-import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.service.*;
 import ru.serji.kuklyasha.web.*;
 import ru.serji.kuklyasha.web.util.*;
@@ -120,36 +119,12 @@ class OrderControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = USER_EMAIL)
-    void update() throws Exception {
-        StatusTo statusTo = new StatusTo(StatusType.DONE);
-        perform(MockMvcRequestBuilders.patch(REST_URL + ORDER_ID)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(statusTo)))
-                .andDo(print())
-                .andExpect(status().isNoContent());
-
-        assertEquals(statusTo.getType(), orderService.get(ORDER_ID, user).get().getStatus().getType());
-    }
-
-    @Test
-    @WithUserDetails(value = USER_EMAIL)
-    void updateInvalid() throws Exception {
-        StatusTo statusTo = new StatusTo(null);
-        perform(MockMvcRequestBuilders.patch(REST_URL + ORDER_ID)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(statusTo)))
-                .andDo(print())
-                .andExpect(status().isUnprocessableEntity());
-    }
-
-    @Test
-    @WithUserDetails(value = USER_EMAIL)
     void delete() throws Exception {
         perform(MockMvcRequestBuilders.delete(REST_URL + ORDER_ID))
                 .andDo(print())
                 .andExpect(status().isNoContent());
         ORDER_MATCHER.assertMatch(orderService.getAllByUser(user), order1);
-        assertTrue(orderService.get(ORDER_ID, user).isEmpty());
+        assertTrue(orderService.getByIdAndUser(ORDER_ID, user).isEmpty());
     }
 
     @Test

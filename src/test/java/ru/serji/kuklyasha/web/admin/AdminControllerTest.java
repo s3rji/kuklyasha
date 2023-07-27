@@ -1,16 +1,21 @@
 package ru.serji.kuklyasha.web.admin;
 
 import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
 import org.springframework.security.test.context.support.*;
 import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.request.*;
 import ru.serji.kuklyasha.dto.order.*;
+import ru.serji.kuklyasha.model.Order;
+import ru.serji.kuklyasha.model.*;
+import ru.serji.kuklyasha.service.*;
 import ru.serji.kuklyasha.web.*;
 import ru.serji.kuklyasha.web.util.*;
 
 import java.util.stream.*;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.serji.kuklyasha.OrderTestData.*;
@@ -20,6 +25,9 @@ public class AdminControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = AdminController.REST_URL + "/";
     private static final String ORDERS_URL = REST_URL + "orders";
+
+    @Autowired
+    private OrderService orderService;
 
     @Test
     @WithUserDetails(value = ADMIN_EMAIL)
@@ -95,6 +103,31 @@ public class AdminControllerTest extends AbstractControllerTest {
                 .param("direction", "asc")
                 .param("field", "delivery")
                 .param("filter", "10.05.2022"))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL)
+    void update() throws Exception {
+        OrderChangeTo orderChange = new OrderChangeTo(ORDER_ID, StatusType.DONE, "27.07.2023");
+        Order expected = OrderUtil.updateOrderFromOrderChange(orderService.getById(ORDER_ID).get(), orderChange);
+        perform(MockMvcRequestBuilders.patch(ORDERS_URL + "/" + ORDER_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(orderChange)))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+        assertEquals(expected, orderService.getById(ORDER_ID).get());
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL)
+    void updateInvalid() throws Exception {
+        OrderChangeTo orderChange = new OrderChangeTo(ORDER_ID, null, null);
+        perform(MockMvcRequestBuilders.patch(ORDERS_URL + "/" + ORDER_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(orderChange)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
