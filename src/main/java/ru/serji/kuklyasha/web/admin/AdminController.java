@@ -12,8 +12,10 @@ import ru.serji.kuklyasha.error.*;
 import ru.serji.kuklyasha.service.*;
 import ru.serji.kuklyasha.web.util.*;
 
+import javax.validation.*;
 import java.util.*;
 
+import static ru.serji.kuklyasha.service.util.ValidationUtil.*;
 import static ru.serji.kuklyasha.web.util.OrderUtil.*;
 
 @RestController
@@ -72,5 +74,16 @@ public class AdminController {
                 orderService.getLimitByFilterFetchUserAndSort(page, limit, sort, direction, field, filter)
         );
         return ResponseEntity.ok(orderPage);
+    }
+
+    @PatchMapping(value = "/orders/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Transactional
+    public void update(@Valid @RequestBody OrderChangeTo orderChange, @PathVariable("id") int id) {
+        log.info("update order with id = {}", id);
+        Objects.requireNonNull(orderChange, "order must not be null");
+        assureIdConsistent(orderChange, id);
+        orderService.getById(id)
+                .ifPresent(order -> orderService.update(updateOrderFromOrderChange(order, orderChange)));
     }
 }
