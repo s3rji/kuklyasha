@@ -7,6 +7,7 @@ import ru.serji.kuklyasha.dto.*;
 import ru.serji.kuklyasha.dto.order.*;
 import ru.serji.kuklyasha.model.*;
 
+import java.time.*;
 import java.time.format.*;
 import java.util.*;
 
@@ -24,6 +25,13 @@ public class OrderUtil {
                 .sorted(Comparator.comparingInt(BaseTo::getId))
                 .toList();
         return new OrderTo(order.getId(), items, order.getStatus(), order.getTotal(), deliveryDate);
+    }
+
+    public static Order updateOrderFromOrderChange(Order order, OrderChangeTo orderChange) {
+        Status status = new Status(orderChange.getType());
+        order.setStatus(status);
+        order.setDeliveryDate(LocalDate.parse(orderChange.getDeliveryDate(), DATE_FORMATTER));
+        return order;
     }
 
     public static AdminOrderTo createAdminToFromOrder(@NonNull Order order) {
