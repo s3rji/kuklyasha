@@ -1,13 +1,15 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {status, statusAsColor} from "../../utils/functions";
 import {EyeIcon} from "@heroicons/react/outline";
 import {getLimitWithUserAndSort} from "../../http/orderApi";
 import {Context} from "../../index";
 import {observer} from "mobx-react-lite";
-import {OrdersFilterBar, OrdersPages} from "../../components/admin/index";
+import {OrdersFilterBar, OrdersPages, EditOrder} from "../../components/admin/index";
 
 const Orders = observer(() => {
     const {order} = useContext(Context)
+    const [isShowModal, setIsShowModal] = useState(false)
+    const [activeOrder, setActiveOrder] = useState(null)
 
     useEffect(() => {
         getLimitWithUserAndSort(order.page, order.limit, order.sort, order.sortDirection).then(data => {
@@ -15,6 +17,11 @@ const Orders = observer(() => {
             order.setTotal(data.total)
         })
     }, [order, order.sort, order.filter])
+
+    const showOrder = (order) => {
+        setActiveOrder(order)
+        setIsShowModal(true)
+    }
 
     return (
         <div className="mt-5 md:col-span-2 md:mt-10 px-8">
@@ -84,8 +91,7 @@ const Orders = observer(() => {
                                 {order.created}
                             </td>
                             <td className="py-4 px-6 text-zinc-700 indent-5">
-                                <button type="button" onClick={() => {
-                                }}
+                                <button type="button" onClick={() => showOrder(order)}
                                         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     <EyeIcon className="h-3 w-3" aria-hidden="true"/>
                                     <span className="sr-only">Просмотр</span>
@@ -97,9 +103,11 @@ const Orders = observer(() => {
                 </table>
             </div>
             <OrdersPages/>
+            {activeOrder && <EditOrder order={activeOrder} show={isShowModal}
+                                       onClose={() => setIsShowModal(false)}></EditOrder>}
         </div>
 
-    );
-});
+    )
+})
 
 export default Orders;

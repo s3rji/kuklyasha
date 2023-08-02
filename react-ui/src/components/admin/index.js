@@ -7,3 +7,4 @@ export {default as EditDoll} from './EditDoll';
 export {default as UploadFile} from './UploadFile';
 export {default as OrdersFilterBar} from './OrdersFilterBar';
 export {default as OrdersPages} from './OrdersPages';
+export {default as EditOrder} from './EditOrder';

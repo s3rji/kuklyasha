@@ -20,6 +20,10 @@ export const getLimitWithUserByFilter = async (page, limit, sort, direction, fie
     return data
 }
 
+export const updateOrder = async (id, orderChange) => {
+    await $authHost.patch('api/admin/orders/' + id, orderChange)
+}
+
 export const createOrder = async (purchasedDolls) => {
     const {data} = await $authHost.post('api/orders', purchasedDolls)
     return data
