@@ -1,6 +1,6 @@
 import {Dialog, Transition} from '@headlessui/react'
 import {Fragment} from 'react'
-import status, {statusAsColor} from "../utils/functions"
+import status from "../utils/functions"
 
 const ShowOrder = ({show, onClose, order}) => {
 
