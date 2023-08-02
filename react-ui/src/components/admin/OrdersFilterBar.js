@@ -30,11 +30,13 @@ const OrdersFilterBar = () => {
     const {order} = useContext(Context)
     const [activeSort, setActiveSort] = useState(0)
     const [activeFilter, setActiveFilter] = useState(0)
+    const [activeStatus, setActiveStatus] = useState('')
     const [search, setSearch] = useState('')
 
     const chooseSort = (option, index) => {
         sortOptions[activeSort].current = false
         setActiveSort(index)
+        setActiveStatus('')
         option.current = true
         order.setPage(0)
         setSearch('')
@@ -45,6 +47,7 @@ const OrdersFilterBar = () => {
     const chooseFilter = (filter, index) => {
         filters[activeFilter].current = false
         setActiveFilter(index)
+        setActiveStatus('')
         filter.current = true
         setSearch('')
         order.setPage(0)
@@ -67,6 +70,7 @@ const OrdersFilterBar = () => {
     const applyStatusFilter = (statusType) => {
         order.setSearch(statusType)
         order.setPage(0)
+        setActiveStatus(statusType)
         getLimitWithUserByFilter(order.page, order.limit, order.sort, order.sortDirection, order.filter, order.search)
             .then(data => {
                 order.setOrders(data.content)
@@ -101,7 +105,7 @@ const OrdersFilterBar = () => {
                                         {({active}) => (
                                             <NavLink
                                                 to="#"
-                                                className={classNames('text-gray-500',
+                                                className={classNames(status.type === activeStatus ? 'font-medium text-gray-900' : 'text-gray-500',
                                                     active ? 'bg-gray-100' : '',
                                                     'block px-4 py-2 text-sm'
                                                 )}
@@ -228,7 +232,7 @@ const OrdersFilterBar = () => {
                 </Transition>
             </Menu>
         </div>
-    );
-};
+    )
+}
 
 export default OrdersFilterBar;
