@@ -1,13 +1,13 @@
 export function status(status) {
     switch (status) {
         case "NEW":
-            return "новый"
+            return "Новый"
         case "CONFIRMED":
-            return "подтвержден"
+            return "Подтвержден"
         case "DELIVERY":
-            return "доставка"
+            return "Доставка"
         case "DONE":
-            return "выполнен"
+            return "Выполнен"
         default:
             return ""
     }
