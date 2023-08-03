@@ -27,10 +27,12 @@ public class AdminController {
     final static String REST_URL = "/api/admin";
 
     private final OrderService orderService;
+    private final UserService userService;
 
     @Autowired
-    public AdminController(OrderService orderService) {
+    public AdminController(OrderService orderService, UserService userService) {
         this.orderService = orderService;
+        this.userService = userService;
     }
 
 
@@ -42,7 +44,7 @@ public class AdminController {
     }
 
     @GetMapping(value = "/orders", params = {"page", "limit", "sort", "direction"})
-    public ResponseEntity<AdminOrderPage> getLimitByPageAndSort(@RequestParam int page, @RequestParam int limit, @RequestParam String sort, @RequestParam String direction) {
+    public ResponseEntity<AdminOrderPage> getLimitOrdersByPageAndSort(@RequestParam int page, @RequestParam int limit, @RequestParam String sort, @RequestParam String direction) {
         log.info("get limit orders by page {} and limit {} with user", page, limit);
         if (OrderUtil.isNotValidSortField(sort, direction)) {
             throw new IllegalRequestDataException("Sort must be: 'id', 'user.name' or 'status'. Direction must be: 'asc' or 'desc'");
@@ -57,7 +59,7 @@ public class AdminController {
     }
 
     @GetMapping(value = "/orders", params = {"page", "limit", "sort", "direction", "field", "filter"})
-    public ResponseEntity<AdminOrderPage> getLimitByFilterAndSort(
+    public ResponseEntity<AdminOrderPage> getLimitOrdersByFilterAndSort(
             @RequestParam int page, @RequestParam int limit,
             @RequestParam String sort, @RequestParam String direction,
             @RequestParam String field, @RequestParam String filter
@@ -79,11 +81,23 @@ public class AdminController {
     @PatchMapping(value = "/orders/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
-    public void update(@Valid @RequestBody OrderChangeTo orderChange, @PathVariable("id") int id) {
+    public void updateOrder(@Valid @RequestBody OrderChangeTo orderChange, @PathVariable("id") int id) {
         log.info("update order with id = {}", id);
-        Objects.requireNonNull(orderChange, "order must not be null");
+        Objects.requireNonNull(orderChange, "order change must not be null");
         assureIdConsistent(orderChange, id);
         orderService.getById(id)
                 .ifPresent(order -> orderService.update(updateOrderFromOrderChange(order, orderChange)));
+    }
+
+    @PatchMapping(value = "/users/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateUser(@RequestBody UserChangeTo userChange, @PathVariable("id") int id) {
+        log.info("update user with id = {}", id);
+        Objects.requireNonNull(userChange, "user change must not be null");
+        assureIdConsistent(userChange, id);
+        userService.get(id).ifPresent(user -> {
+            user.setEnabled(userChange.isEnabled());
+            userService.save(user);
+        });
     }
 }
