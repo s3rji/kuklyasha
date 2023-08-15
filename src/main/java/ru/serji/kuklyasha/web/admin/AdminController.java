@@ -89,6 +89,13 @@ public class AdminController {
                 .ifPresent(order -> orderService.update(updateOrderFromOrderChange(order, orderChange)));
     }
 
+    @GetMapping("/users")
+    public List<UserTo> getAllUsers() {
+        log.info("get all users");
+        return userService.getAll().stream()
+                .map(UserUtil::createToFromUser).sorted(Comparator.comparingInt(BaseTo::getId)).toList();
+    }
+
     @PatchMapping(value = "/users/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateUser(@RequestBody UserChangeTo userChange, @PathVariable("id") int id) {
