@@ -98,13 +98,11 @@ public class AdminController {
 
     @PatchMapping(value = "/users/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Transactional
     public void updateUser(@RequestBody UserChangeTo userChange, @PathVariable("id") int id) {
         log.info("update user with id = {}", id);
         Objects.requireNonNull(userChange, "user change must not be null");
         assureIdConsistent(userChange, id);
-        userService.get(id).ifPresent(user -> {
-            user.setEnabled(userChange.isEnabled());
-            userService.save(user);
-        });
+        userService.get(id).ifPresent(user -> user.setEnabled(userChange.isEnabled()));
     }
 }
