@@ -41,7 +41,7 @@ public class AdminControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = ADMIN_EMAIL)
-    void getAll() throws Exception {
+    void getAllOrders() throws Exception {
         perform(MockMvcRequestBuilders.get(ORDERS_URL))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -51,7 +51,7 @@ public class AdminControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = USER_EMAIL)
-    void getAllForbidden() throws Exception {
+    void getAllOrdersForbidden() throws Exception {
         perform(MockMvcRequestBuilders.get(ORDERS_URL))
                 .andDo(print())
                 .andExpect(status().isForbidden());
@@ -142,6 +142,16 @@ public class AdminControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(orderChange)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL)
+    void getAllUsers() throws Exception {
+        perform(MockMvcRequestBuilders.get(USERS_URL))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(USER_TO_MATCHER.contentJson(Stream.of(user, admin).map(UserUtil::createToFromUser).toList()));
     }
 
     @Test

@@ -82,7 +82,7 @@ class ProfileControllerTest extends AbstractControllerTest {
     @Test
     void registerInvalid() throws Exception {
         UserTo newTo = new UserTo(null, null, null, null, null, null,
-                null, null, null, null, null, false, false);
+                null, null, null, null, null, false, false, true);
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonFromObject(newTo)))
@@ -94,7 +94,7 @@ class ProfileControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = USER_EMAIL)
     void updateInvalid() throws Exception {
         UserTo updatedTo = new UserTo(null, null, "password", null, null, null,
-                null, null, null, null, null, false, false);
+                null, null, null, null, null, false, false, true);
         perform(MockMvcRequestBuilders.put(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonFromObject(updatedTo)))
