@@ -49,7 +49,8 @@ public class UserUtil {
                     null,
                     null,
                     user.getNotice().isEmail(),
-                    user.getNotice().isPhone());
+                    user.getNotice().isPhone(),
+                    user.isEnabled());
         }
 
         return new UserTo(
@@ -65,6 +66,7 @@ public class UserUtil {
                 user.getInfo().getAddress().getStreet(),
                 user.getInfo().getAddress().getZipcode(),
                 user.getNotice().isEmail(),
-                user.getNotice().isPhone());
+                user.getNotice().isPhone(),
+                user.isEnabled());
     }
 }

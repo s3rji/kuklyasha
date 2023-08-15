@@ -45,8 +45,10 @@ public class UserTo extends NamedTo implements HasIdAndEmail {
 
     boolean phoneNotice;
 
+    boolean enabled;
+
     public UserTo(Integer id, String name, String email, String password, String lastname, String phone, String country,
-                  String city, String region, String street, String zipcode, boolean emailNotice, boolean phoneNotice) {
+                  String city, String region, String street, String zipcode, boolean emailNotice, boolean phoneNotice, boolean enabled) {
         super(id, name);
         this.email = email;
         this.password = password;
@@ -59,6 +61,7 @@ public class UserTo extends NamedTo implements HasIdAndEmail {
         this.zipcode = zipcode;
         this.emailNotice = emailNotice;
         this.phoneNotice = phoneNotice;
+        this.enabled = enabled;
     }
 
     @Override
