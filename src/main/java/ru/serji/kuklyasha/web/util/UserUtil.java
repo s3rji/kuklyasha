@@ -7,6 +7,8 @@ import org.springframework.security.crypto.password.*;
 import ru.serji.kuklyasha.dto.*;
 import ru.serji.kuklyasha.model.*;
 
+import java.util.*;
+
 @UtilityClass
 public class UserUtil {
 
@@ -68,5 +70,9 @@ public class UserUtil {
                 user.getNotice().isEmail(),
                 user.getNotice().isPhone(),
                 user.isEnabled());
+    }
+
+    public static UserPage createUserPage(List<UserTo> content, int total) {
+        return new UserPage(content, total);
     }
 }

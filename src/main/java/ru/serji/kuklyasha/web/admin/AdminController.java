@@ -17,6 +17,7 @@ import java.util.*;
 
 import static ru.serji.kuklyasha.service.util.ValidationUtil.*;
 import static ru.serji.kuklyasha.web.util.OrderUtil.*;
+import static ru.serji.kuklyasha.web.util.UserUtil.*;
 
 @RestController
 @RequestMapping(value = AdminController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -94,6 +95,15 @@ public class AdminController {
         log.info("get all users");
         return userService.getAll().stream()
                 .map(UserUtil::createToFromUser).sorted(Comparator.comparingInt(BaseTo::getId)).toList();
+    }
+
+    @GetMapping(value = "/users", params = {"page", "limit"})
+    public ResponseEntity<UserPage> getLimitUsersByPage(@RequestParam int page, @RequestParam int limit) {
+        log.info("get limit orders by page {} and limit {}", page, limit);
+        List<UserTo> content = userService.getLimitByPage(page, limit).stream().map(UserUtil::createToFromUser).toList();
+        int total = userService.totalCount();
+        UserPage body = createUserPage(content, total);
+        return ResponseEntity.ok(body);
     }
 
     @PatchMapping(value = "/users/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
