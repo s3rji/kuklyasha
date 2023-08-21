@@ -20,6 +20,7 @@ import java.time.*;
 import java.util.*;
 import java.util.stream.*;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -152,6 +153,21 @@ public class AdminControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(USER_TO_MATCHER.contentJson(Stream.of(user, admin).map(UserUtil::createToFromUser).toList()));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL)
+    void getLimitByPage() throws Exception {
+        ResultActions action = perform(MockMvcRequestBuilders.get(USERS_URL)
+                .param("page", "0")
+                .param("limit", "2"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+
+        UserPage actual = JsonUtil.readValue(action.andReturn().getResponse().getContentAsString(), UserPage.class);
+        USER_TO_MATCHER.assertMatch(actual.getContent(), Stream.of(user, admin).map(UserUtil::createToFromUser).toList());
+        assertThat(actual.getTotal()).isEqualTo(List.of(user, admin).size());
     }
 
     @Test
