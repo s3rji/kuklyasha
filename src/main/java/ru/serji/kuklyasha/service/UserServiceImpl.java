@@ -1,6 +1,7 @@
 package ru.serji.kuklyasha.service;
 
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.*;
 import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.repository.*;
@@ -38,6 +39,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getLimitByPage(int page, int limit) {
+        return repository.findAll(PageRequest.of(page, limit, Sort.by("id"))).getContent();
+    }
+
+    @Override
     public User save(User user) {
         return repository.save(user);
     }
@@ -45,5 +51,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(int id) {
         repository.deleteExisted(id);
+    }
+
+    @Override
+    public int totalCount() {
+        return (int) repository.count();
     }
 }

@@ -13,7 +13,11 @@ public interface UserService {
 
     List<User> getAll();
 
+    List<User> getLimitByPage(int page, int limit);
+
     User save(User user);
 
     void delete(int id);
+
+    int totalCount();
 }
