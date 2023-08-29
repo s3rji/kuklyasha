@@ -13,16 +13,30 @@ export const login = async (email, password, rememberMe) => {
 }
 
 export const check = async () => {
-    const {data} = await $authHost.get('api/auth' )
+    const {data} = await $authHost.get('api/auth')
     localStorage.setItem('token', data.token)
     return jwt_decode(data.token)
 }
 
 export const getUser = async () => {
-    const {data} = await $authHost.get('api/profile' )
+    const {data} = await $authHost.get('api/profile')
     return data
 }
 
-export const updateUser = async (user) => {
+export const updateProfile = async (user) => {
     await $authHost.put('api/profile', user)
+}
+
+export const getAllUsers = async () => {
+    const {data} = await $authHost.get('api/admin/users')
+    return data;
+}
+
+export const getUsersByPage = async (page, limit) => {
+    const {data} = await $authHost.get('api/admin/users', {params: {page, limit}})
+    return data
+}
+
+export const updateUser = async (id, changeUser) => {
+    await $authHost.patch('api/admin/users/' + id, changeUser)
 }
