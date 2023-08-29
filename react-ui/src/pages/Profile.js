@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import {InputField, InputPhone, Settings} from "../components/index";
-import {getUser, updateUser} from "../http/userAPI";
+import {getUser, updateProfile} from "../http/userAPI";
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
 
@@ -50,10 +50,10 @@ const Profile = observer(() => {
 
     const saveChanges = () => {
         setReadOnly(true)
-        updateProfile()
+        updateUserProfile()
     }
 
-    const updateProfile = () => {
+    const updateUserProfile = () => {
         if (validationFailed()) {
             return
         }
@@ -71,7 +71,7 @@ const Profile = observer(() => {
         user.user.emailNotice = emailNotice
         user.user.phoneNotice = phoneNotice
         try {
-            updateUser(user.user).then(future => {
+            updateProfile(user.user).then(future => {
             })
         } catch (e) {
             alert(e.response.data.message)
@@ -225,7 +225,7 @@ const Profile = observer(() => {
                 </div>
             </div>
             <Settings emailNotice={emailNotice} setEmailNotice={setEmailNotice} phoneNotice={phoneNotice}
-                      setPhoneNotice={setPhoneNotice} updateProfile={updateProfile}></Settings>
+                      setPhoneNotice={setPhoneNotice} updateProfile={updateUserProfile}></Settings>
         </>
     );
 });
