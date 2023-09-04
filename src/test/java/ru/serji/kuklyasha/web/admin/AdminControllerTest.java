@@ -172,6 +172,16 @@ public class AdminControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = ADMIN_EMAIL)
+    void getUser() throws Exception {
+        perform(MockMvcRequestBuilders.get(USERS_URL + "/" + USER_ID))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(USER_TO_MATCHER.contentJson(UserUtil.createToFromUser(user)));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL)
     void updateUser() throws Exception {
         UserChangeTo userChange = new UserChangeTo(USER_ID, false);
         User expected = new User(user);

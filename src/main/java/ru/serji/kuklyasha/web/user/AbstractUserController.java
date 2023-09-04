@@ -25,11 +25,6 @@ public abstract class AbstractUserController {
         binder.addValidators(validator);
     }
 
-    public ResponseEntity<User> get(int id) {
-        log.info("get {}", id);
-        return ResponseEntity.of(userService.get(id));
-    }
-
     public void delete(int id) {
         log.info("delete {}", id);
         userService.delete(id);

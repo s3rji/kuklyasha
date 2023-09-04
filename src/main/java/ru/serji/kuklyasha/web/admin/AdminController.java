@@ -90,6 +90,14 @@ public class AdminController {
                 .ifPresent(order -> orderService.update(updateOrderFromOrderChange(order, orderChange)));
     }
 
+    @GetMapping("/users/{id}")
+    public ResponseEntity<UserTo> getUser(@PathVariable("id") int id) {
+        log.info("get user with id = {}", id);
+        return userService.get(id)
+                .map(user -> ResponseEntity.ok(createToFromUser(user)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @GetMapping("/users")
     public List<UserTo> getAllUsers() {
         log.info("get all users");
