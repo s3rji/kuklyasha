@@ -9,6 +9,7 @@ import org.springframework.security.core.annotation.*;
 import org.springframework.web.bind.annotation.*;
 import ru.serji.kuklyasha.dto.*;
 import ru.serji.kuklyasha.model.*;
+import ru.serji.kuklyasha.security.exception.*;
 import ru.serji.kuklyasha.security.jwt.*;
 
 import javax.validation.*;
@@ -35,8 +36,11 @@ public class AuthController {
         log.debug("Authenticating '{}'", request.getEmail());
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         User user = ((AuthUser) authentication.getPrincipal()).getUser();
-        String token = jwtTokenProvider.createToken(user);
+        if (!user.isEnabled()) {
+            throw new JwtAuthenticationException("User is disabled. Try to contact with administrator.");
+        }
 
+        String token = jwtTokenProvider.createToken(user);
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, token)
                 .body(new AuthResponse(user.getEmail(), token));

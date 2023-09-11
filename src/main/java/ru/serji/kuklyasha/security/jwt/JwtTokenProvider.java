@@ -56,7 +56,7 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token, HttpServletRequest request) {
         String email = getEmailFromToken(token);
-        UserDetails userDetails = this.userDetailsService.loadUserByUsername(email);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         return authenticationToken;
