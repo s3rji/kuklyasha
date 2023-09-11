@@ -2,7 +2,7 @@ import React, {createContext} from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import {CartStore, DollStore, NavigationStore, OrderStore, UserStore} from "./store/index";
+import {CartStore, DollStore, NavigationStore, OrderStore, UsersListStore, UserStore} from "./store/index";
 import {AdminNavigationStore} from "./store/admin/index";
 
 export const Context = createContext(null)
@@ -15,7 +15,8 @@ root.render(
         navigation: new NavigationStore(),
         adminNavigation: new AdminNavigationStore(),
         order: new OrderStore(),
-        cart: new CartStore()
+        cart: new CartStore(),
+        usersList: new UsersListStore()
     }}>
         <React.StrictMode>
             <App/>
