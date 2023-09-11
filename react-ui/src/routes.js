@@ -14,6 +14,7 @@ import {
     AdminCatalog,
     AdminOrders,
     AdminUsers,
+    AdminUserProfile
 } from "./pages/admin/index";
 import {
     ABOUT_US_ROUTE,
@@ -89,5 +90,9 @@ export const adminRoutes = [
     {
         path: ADMIN_USERS_ROUTE,
         Component: AdminUsers
+    },
+    {
+        path: ADMIN_USERS_ROUTE + "/:id",
+        Component: AdminUserProfile
     }
 ]
