@@ -36,10 +36,17 @@ public class AdminController {
         this.userService = userService;
     }
 
+    @GetMapping("/orders/{id}")
+    public ResponseEntity<AdminOrderTo> getOrder(@PathVariable("id") int id) {
+        log.info("get order with id = {} fetching user", id);
+        return orderService.getById(id)
+                .map(order -> ResponseEntity.ok(createAdminToFromOrder(order)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
     @GetMapping("/orders")
     public List<AdminOrderTo> getAllOrders() {
-        log.info("get all orders with user");
+        log.info("get all orders fetching user");
         return orderService.getAllFetchUser().stream()
                 .map(OrderUtil::createAdminToFromOrder).sorted(Comparator.comparingInt(BaseTo::getId)).toList();
     }
@@ -96,6 +103,17 @@ public class AdminController {
         return userService.get(id)
                 .map(user -> ResponseEntity.ok(createToFromUser(user)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/users/{id}/orders")
+    public List<AdminOrderTo> getUserOrders(@PathVariable("id") int id) {
+        log.info("get user orders with id = {}", id);
+        return userService.get(id)
+                .stream()
+                .map(orderService::getAllByUser)
+                .flatMap(Collection::stream)
+                .map(OrderUtil::createAdminToFromOrder)
+                .toList();
     }
 
     @GetMapping("/users")

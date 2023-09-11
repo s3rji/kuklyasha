@@ -42,6 +42,16 @@ public class AdminControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = ADMIN_EMAIL)
+    void getOrder() throws Exception {
+        perform(MockMvcRequestBuilders.get(ORDERS_URL + "/" + ORDER_ID))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(ADMIN_ORDER_TO_MATCHER.contentJson(OrderUtil.createAdminToFromOrder(order)));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL)
     void getAllOrders() throws Exception {
         perform(MockMvcRequestBuilders.get(ORDERS_URL))
                 .andDo(print())
@@ -178,6 +188,16 @@ public class AdminControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(USER_TO_MATCHER.contentJson(UserUtil.createToFromUser(user)));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_EMAIL)
+    void getUserOrders() throws Exception {
+        perform(MockMvcRequestBuilders.get(USERS_URL + "/" + USER_ID + "/orders"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(ADMIN_ORDER_TO_MATCHER.contentJson(Stream.of(order, order1).map(OrderUtil::createAdminToFromOrder).toList()));
     }
 
     @Test
