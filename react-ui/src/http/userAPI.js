@@ -27,6 +27,16 @@ export const updateProfile = async (user) => {
     await $authHost.put('api/profile', user)
 }
 
+export const getUserById = async (id) => {
+    const {data} = await $authHost.get('api/admin/users/' + id)
+    return data
+}
+
+export const getUserOrders = async (id) => {
+    const {data} = await $authHost.get('api/admin/users/' + id + '/orders')
+    return data
+}
+
 export const getAllUsers = async () => {
     const {data} = await $authHost.get('api/admin/users')
     return data;

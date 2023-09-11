@@ -1,12 +1,22 @@
 import {$authHost} from "./index";
 
 export const getOrders = async () => {
-    const {data} = await $authHost.get('api/orders' )
+    const {data} = await $authHost.get('api/orders')
+    return data
+}
+
+export const createOrder = async (purchasedDolls) => {
+    const {data} = await $authHost.post('api/orders', purchasedDolls)
+    return data
+}
+
+export const getOrder = async (id) => {
+    const {data} = await $authHost.get('api/admin/orders/' + id)
     return data
 }
 
 export const getOrdersWithUser = async () => {
-    const {data} = await $authHost.get('api/admin/orders' )
+    const {data} = await $authHost.get('api/admin/orders')
     return data
 }
 
@@ -22,9 +32,4 @@ export const getLimitWithUserByFilter = async (page, limit, sort, direction, fie
 
 export const updateOrder = async (id, orderChange) => {
     await $authHost.patch('api/admin/orders/' + id, orderChange)
-}
-
-export const createOrder = async (purchasedDolls) => {
-    const {data} = await $authHost.post('api/orders', purchasedDolls)
-    return data
 }
