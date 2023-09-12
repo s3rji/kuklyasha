@@ -72,6 +72,16 @@ class AuthControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    void loginInvalidWhenUserIsDisabled() throws Exception {
+        AuthRequest authRequest = new AuthRequest(DISABLED_EMAIL, "123456", false);
+        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL + "/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(authRequest)))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     void checkAuthInvalid() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL)
                 .header(HttpHeaders.AUTHORIZATION, "wrongToken"))
