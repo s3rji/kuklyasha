@@ -53,7 +53,7 @@ class UserServiceTest {
     @Test
     void getAll() {
         List<User> actual = userService.getAll();
-        USER_MATCHER.assertMatch(actual, user, admin);
+        USER_MATCHER.assertMatch(actual, user, admin, disabled);
     }
 
     @Test
