@@ -15,8 +15,6 @@ import ru.serji.kuklyasha.service.*;
 import ru.serji.kuklyasha.web.*;
 import ru.serji.kuklyasha.web.util.*;
 
-import java.math.*;
-import java.time.*;
 import java.util.*;
 import java.util.stream.*;
 
@@ -25,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.serji.kuklyasha.OrderTestData.*;
-import static ru.serji.kuklyasha.PurchasedItemTestData.*;
 import static ru.serji.kuklyasha.UserTestData.*;
 
 public class AdminControllerTest extends AbstractControllerTest {
@@ -131,9 +128,8 @@ public class AdminControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_EMAIL)
     void updateOrder() throws Exception {
-        OrderChangeTo orderChange = new OrderChangeTo(ORDER_ID, StatusType.DONE, "27.07.2023");
-        Order expected = new Order(ORDER_ID, UserTestData.user, Set.of(item, item2),
-                new Status(StatusType.NEW, LocalDateTime.now()), new BigDecimal("200.00"));
+        OrderChangeTo orderChange = new OrderChangeTo(OrderTestData.ORDER_ID, StatusType.DONE, "27.07.2023");
+        Order expected = new Order(order);
         OrderUtil.updateOrderFromOrderChange(expected, orderChange);
         perform(MockMvcRequestBuilders.patch(ORDERS_URL + "/" + ORDER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -162,7 +158,7 @@ public class AdminControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(USER_TO_MATCHER.contentJson(Stream.of(user, admin).map(UserUtil::createToFromUser).toList()));
+                .andExpect(USER_TO_MATCHER.contentJson(Stream.of(user, admin, disabled).map(UserUtil::createToFromUser).toList()));
     }
 
     @Test
@@ -177,7 +173,7 @@ public class AdminControllerTest extends AbstractControllerTest {
 
         UserPage actual = JsonUtil.readValue(action.andReturn().getResponse().getContentAsString(), UserPage.class);
         USER_TO_MATCHER.assertMatch(actual.getContent(), Stream.of(user, admin).map(UserUtil::createToFromUser).toList());
-        assertThat(actual.getTotal()).isEqualTo(List.of(user, admin).size());
+        assertThat(actual.getTotal()).isEqualTo(List.of(user, admin, disabled).size());
     }
 
     @Test
