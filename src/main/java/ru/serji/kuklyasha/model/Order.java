@@ -77,6 +77,16 @@ public class Order extends BaseEntity {
         this.deliveryDate = deliveryDate;
     }
 
+    public Order(Order order) {
+        super(order.id);
+        this.user = order.user;
+        setItems(order.items);
+        this.status = order.status;
+        this.total = order.total;
+        this.created = order.created;
+        this.deliveryDate = order.deliveryDate;
+    }
+
     public void setItems(Collection<PurchasedItem> items) {
         this.items = CollectionUtils.isEmpty(items) ? Collections.emptySet() : Set.copyOf(items);
     }
