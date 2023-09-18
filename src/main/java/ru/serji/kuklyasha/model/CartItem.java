@@ -7,7 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Entity
-@Table(name = "cart_item", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "doll_id"}, name = "uk_user_doll"))
+@Table(name = "cart_items", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "doll_id"}, name = "uk_user_doll"))
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CartItem extends BaseEntity {

@@ -11,7 +11,7 @@ import javax.validation.constraints.*;
 import java.math.*;
 
 @Entity
-@Table(name = "purchased_item")
+@Table(name = "purchased_items")
 @Immutable
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

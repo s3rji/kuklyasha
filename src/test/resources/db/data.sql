@@ -1,5 +1,5 @@
-DELETE FROM CART_ITEM;
-DELETE FROM PURCHASED_ITEM;
+DELETE FROM CART_ITEMS;
+DELETE FROM PURCHASED_ITEMS;
 DELETE FROM ORDERS;
 DELETE FROM USER_ROLES;
 DELETE FROM USERS;
@@ -38,12 +38,12 @@ VALUES (1, 'NEW', 200.00),
        (1, 'DONE', 100.00),
        (2, 'DONE', 100.00);
 
-INSERT INTO CART_ITEM (doll_id, user_id, quantity)
+INSERT INTO CART_ITEMS (doll_id, user_id, quantity)
 VALUES (1, 1, 1),
        (2, 1, 1),
        (3, 1, 2);
 
-INSERT INTO PURCHASED_ITEM (order_id, doll_id, user_id, quantity, price)
+INSERT INTO PURCHASED_ITEMS (order_id, doll_id, user_id, quantity, price)
 VALUES (1, 1, 1, 1, 100.00),
        (1, 2, 1, 1, 100.00),
        (2, 3, 1, 2, 100.00),
