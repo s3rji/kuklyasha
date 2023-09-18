@@ -17,25 +17,17 @@ const colors = [
     {name: 'Gray', class: 'bg-gray-200', selectedClass: 'ring-gray-400'},
     {name: 'Black', class: 'bg-gray-900', selectedClass: 'ring-gray-900'},
 ]
-const highlights = [
-    'Hand cut and sewn locally',
-    'Dyed with our proprietary colors',
-    'Pre-washed & pre-shrunk',
-    'Ultra-soft 100% cotton',
-]
-const details = 'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.'
-const reviews = {href: '#', average: 4, totalCount: 117}
 
+const reviews = {href: '#', average: 0, totalCount: 0}
 
 const DollPage = observer(() => {
-    const {cart, user} = useContext(Context)
-    const [doll, setDoll] = useState({})
+    const {cart, user, doll} = useContext(Context)
     const {id} = useParams()
     const [selectedColor, setSelectedColor] = useState(colors[0])
     const navigate = useNavigate()
 
     useEffect(() => {
-        getDoll(id).then(data => setDoll(data))
+        getDoll(id).then(data => doll.setSelected(data))
     }, [])
 
     const labelReview = () => {
@@ -54,7 +46,7 @@ const DollPage = observer(() => {
 
     const addItem = async () => {
         try {
-            await addCartItem({"dollId" : doll.id})
+            await addCartItem({"dollId": doll.selected.id})
             getCart().then(data => {
                 cart.setCart(data)
             })
@@ -90,9 +82,9 @@ const DollPage = observer(() => {
                             </li>
                         ))}
                         <li className="text-sm">
-                            <a href={DOLL_ROUTE + '/' + doll.id} aria-current="page"
+                            <a href={DOLL_ROUTE + '/' + doll.selected.id} aria-current="page"
                                className="font-medium text-gray-500 hover:text-gray-600">
-                                {doll.name}
+                                {doll.selected.name}
                             </a>
                         </li>
                     </ol>
@@ -102,31 +94,31 @@ const DollPage = observer(() => {
                 <div className="mt-6 max-w-2xl mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-8">
                     <div className="hidden aspect-w-3 aspect-h-4 rounded-lg overflow-hidden lg:block">
                         <img
-                            src={process.env.REACT_APP_IMAGES_URL + doll.poster}
-                            alt={doll.description}
+                            src={doll.selected.poster && process.env.REACT_APP_IMAGES_URL + doll.selected.poster}
+                            alt={doll.selected.poster}
                             className="w-full h-90 object-center object-cover"
                         />
                     </div>
                     <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
                         <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
                             <img
-                                src={process.env.REACT_APP_IMAGES_URL + doll.poster}
-                                alt={doll.description}
+                                src={process.env.REACT_APP_IMAGES_URL + doll.selected.gallery[1]}
+                                alt={doll.selected.gallery[1]}
                                 className="w-full h-56 object-center object-cover"
                             />
                         </div>
                         <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
                             <img
-                                src={process.env.REACT_APP_IMAGES_URL + doll.poster}
-                                alt={doll.description}
+                                src={process.env.REACT_APP_IMAGES_URL + doll.selected.gallery[2]}
+                                alt={doll.selected.gallery[2]}
                                 className="w-full h-56 object-center object-cover"
                             />
                         </div>
                     </div>
                     <div className="aspect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4">
                         <img
-                            src={process.env.REACT_APP_IMAGES_URL + doll.poster}
-                            alt={doll.description}
+                            src={process.env.REACT_APP_IMAGES_URL + doll.selected.gallery[3]}
+                            alt={doll.selected.gallery[3]}
                             className="w-full h-90 object-center object-cover"
                         />
                     </div>
@@ -136,13 +128,13 @@ const DollPage = observer(() => {
                 <div
                     className="max-w-2xl mx-auto pt-10 pb-16 px-4 sm:px-6 lg:max-w-7xl lg:pt-16 lg:pb-24 lg:px-8 lg:grid lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8">
                     <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-                        <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">{doll.name}</h1>
+                        <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">{doll.selected.name}</h1>
                     </div>
 
                     {/* Options */}
                     <div className="mt-4 lg:mt-0 lg:row-span-3">
                         <h2 className="sr-only">Product information</h2>
-                        <p className="text-3xl text-gray-900">{doll.price + " RUB"}</p>
+                        <p className="text-3xl text-gray-900">{doll.selected.price + " RUB"}</p>
 
                         {/* Reviews */}
                         <div className="mt-6">
@@ -208,12 +200,12 @@ const DollPage = observer(() => {
                                 <button
                                     type="button"
                                     onClick={addItem}
-                                    disabled={doll.quantity === 0 || !cart.isCartItemWithDollNotExist(doll)}
+                                    disabled={doll.selected.quantity === 0 || !cart.isCartItemWithDollNotExist(doll.selected)}
                                     className={classNames('mt-10 w-full border border-transparent rounded-md py-3 px-8' +
                                         'flex items-center justify-center text-base font-medium text-white focus:outline-none ' +
-                                        'focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500', doll.quantity > 0 && cart.isCartItemWithDollNotExist(doll) ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-400')}
+                                        'focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500', doll.selected.quantity > 0 && cart.isCartItemWithDollNotExist(doll.selected) ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-400')}
                                 >
-                                    {doll.quantity === 0 ? 'Товара нет в наличии' : cart.isCartItemWithDollNotExist(doll) ? 'Добавить в корзину' : 'Товар в корзине'}
+                                    {doll.selected.quantity === 0 ? 'Товара нет в наличии' : cart.isCartItemWithDollNotExist(doll.selected) ? 'Добавить в корзину' : 'Товар в корзине'}
                                 </button>
                                 :
                                 <button
@@ -233,29 +225,7 @@ const DollPage = observer(() => {
                             <h3 className="sr-only">Description</h3>
 
                             <div className="space-y-6">
-                                <p className="text-base text-gray-900">{doll.description}</p>
-                            </div>
-                        </div>
-
-                        <div className="mt-10">
-                            <h3 className="text-sm font-medium text-gray-900">Особенности</h3>
-
-                            <div className="mt-4">
-                                <ul role="list" className="pl-4 list-disc text-sm space-y-2">
-                                    {highlights.map((highlight) => (
-                                        <li key={highlight} className="text-gray-400">
-                                            <span className="text-gray-600">{highlight}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div className="mt-10">
-                            <h2 className="text-sm font-medium text-gray-900">Подробности</h2>
-
-                            <div className="mt-4 space-y-6">
-                                <p className="text-sm text-gray-600">{details}</p>
+                                <p className="text-base text-gray-900">{doll.selected.description}</p>
                             </div>
                         </div>
                     </div>
