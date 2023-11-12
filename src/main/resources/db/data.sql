@@ -39,9 +39,9 @@ VALUES ('USER', 1),
        ('USER', 2);
 
 INSERT INTO ORDERS (user_id, status, status_modified, total)
-VALUES (1, 'NEW', '01.11.2022', 200.00),
-       (1, 'DONE', '31.10.2022', 100.00),
-       (2, 'DELIVERY', '01.11.2022', 200.00);
+VALUES (1, 'NEW', '11.01.2022', 200.00),
+       (1, 'DONE', '10.31.2022', 100.00),
+       (2, 'DELIVERY', '11.01.2022', 200.00);
 
 INSERT INTO CART_ITEMS (doll_id, user_id, quantity)
 VALUES (1, 1, 1),
