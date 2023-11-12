@@ -52,6 +52,7 @@ public class DollController {
     }
 
     @GetMapping
+    @Transactional(readOnly = true)
     public List<DollTo> getAll() {
         log.info("get all dolls");
         return dollService.getAll().stream()
