@@ -9,6 +9,7 @@ import ru.serji.kuklyasha.config.*;
 import ru.serji.kuklyasha.dto.*;
 import ru.serji.kuklyasha.dto.order.*;
 import ru.serji.kuklyasha.error.*;
+import ru.serji.kuklyasha.events.*;
 import ru.serji.kuklyasha.service.*;
 import ru.serji.kuklyasha.web.util.*;
 
@@ -25,15 +26,21 @@ import static ru.serji.kuklyasha.web.util.UserUtil.*;
 @Transactional(readOnly = true)
 @CrossOrigin(origins = ReactAppProperties.HOST_NAME)
 public class AdminController {
+
+    private final static String ACTION_UPDATE = "UPDATE";
+
     final static String REST_URL = "/api/admin";
 
     private final OrderService orderService;
     private final UserService userService;
 
+    private final NotificationSourceBean notification;
+
     @Autowired
-    public AdminController(OrderService orderService, UserService userService) {
+    public AdminController(OrderService orderService, UserService userService, NotificationSourceBean notification) {
         this.orderService = orderService;
         this.userService = userService;
+        this.notification = notification;
     }
 
     @GetMapping("/orders/{id}")
@@ -94,7 +101,11 @@ public class AdminController {
         Objects.requireNonNull(orderChange, "order change must not be null");
         assureIdConsistent(orderChange, id);
         orderService.getById(id)
-                .ifPresent(order -> orderService.update(updateOrderFromOrderChange(order, orderChange)));
+                .ifPresent(order -> {
+                    orderService.update(updateOrderFromOrderChange(order, orderChange));
+                    notification.publishNotification(ACTION_UPDATE, order.getUser().getName(), order.getUser().getEmail(),
+                            order.id(), order.getCreated(), order.getStatus().getType().toString());
+                });
     }
 
     @GetMapping("/users/{id}")

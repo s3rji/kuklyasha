@@ -9,6 +9,7 @@ import org.springframework.web.servlet.support.*;
 import ru.serji.kuklyasha.dto.*;
 import ru.serji.kuklyasha.dto.order.*;
 import ru.serji.kuklyasha.error.*;
+import ru.serji.kuklyasha.events.*;
 import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.service.*;
 import ru.serji.kuklyasha.web.util.*;
@@ -28,15 +29,20 @@ import static ru.serji.kuklyasha.web.util.OrderUtil.*;
 @CrossOrigin(origins = "http://localhost:3000")
 public class OrderController {
 
+    private final static String ACTION_CREATE = "CREATE";
+
     final static String REST_URL = "/api/orders";
 
     private final OrderService orderService;
     private final DollService dollService;
 
+    private final NotificationSourceBean notification;
+
     @Autowired
-    public OrderController(OrderService orderService, DollService dollService) {
+    public OrderController(OrderService orderService, DollService dollService, NotificationSourceBean notification) {
         this.orderService = orderService;
         this.dollService = dollService;
+        this.notification = notification;
     }
 
     @GetMapping("/{id}")
@@ -67,6 +73,9 @@ public class OrderController {
         Order newOrder = new Order(null, user, new Status(StatusType.NEW));
         addPurchasedItemsAndSetTotal(newOrder, dolls);
         Order created = orderService.create(newOrder);
+
+        notification.publishNotification(ACTION_CREATE, user.getName(), user.getEmail(), created.id(),
+                created.getCreated(), created.getStatus().getType().toString());
 
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
