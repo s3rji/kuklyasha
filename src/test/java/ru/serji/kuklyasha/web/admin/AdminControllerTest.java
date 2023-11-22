@@ -1,7 +1,9 @@
 package ru.serji.kuklyasha.web.admin;
 
 import org.junit.jupiter.api.*;
+import org.mockito.*;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.boot.test.mock.mockito.*;
 import org.springframework.http.*;
 import org.springframework.security.test.context.support.*;
 import org.springframework.test.web.servlet.*;
@@ -9,6 +11,7 @@ import org.springframework.test.web.servlet.request.*;
 import ru.serji.kuklyasha.*;
 import ru.serji.kuklyasha.dto.*;
 import ru.serji.kuklyasha.dto.order.*;
+import ru.serji.kuklyasha.events.*;
 import ru.serji.kuklyasha.model.Order;
 import ru.serji.kuklyasha.model.*;
 import ru.serji.kuklyasha.service.*;
@@ -30,6 +33,9 @@ public class AdminControllerTest extends AbstractControllerTest {
     private static final String REST_URL = AdminController.REST_URL + "/";
     private static final String ORDERS_URL = REST_URL + "orders";
     private static final String USERS_URL = REST_URL + "users";
+
+    @MockBean
+    private NotificationSourceBean notification;
 
     @Autowired
     private OrderService orderService;
@@ -128,6 +134,7 @@ public class AdminControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_EMAIL)
     void updateOrder() throws Exception {
+        Mockito.doNothing().when(notification).publishNotification("", "", "", 0, null, "");
         OrderChangeTo orderChange = new OrderChangeTo(OrderTestData.ORDER_ID, StatusType.DONE, "27.07.2023");
         Order expected = new Order(order);
         OrderUtil.updateOrderFromOrderChange(expected, orderChange);
@@ -143,6 +150,7 @@ public class AdminControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_EMAIL)
     void failedUpdateOrder() throws Exception {
+        Mockito.doNothing().when(notification).publishNotification("", "", "", 0, null, "");
         OrderChangeTo orderChange = new OrderChangeTo(ORDER_ID, null, null);
         perform(MockMvcRequestBuilders.patch(ORDERS_URL + "/" + ORDER_ID)
                 .contentType(MediaType.APPLICATION_JSON)

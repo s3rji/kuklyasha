@@ -1,12 +1,15 @@
 package ru.serji.kuklyasha.web.order;
 
 import org.junit.jupiter.api.*;
+import org.mockito.*;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.boot.test.mock.mockito.*;
 import org.springframework.http.*;
 import org.springframework.security.test.context.support.*;
 import org.springframework.test.web.servlet.*;
 import org.springframework.test.web.servlet.request.*;
 import ru.serji.kuklyasha.dto.order.*;
+import ru.serji.kuklyasha.events.*;
 import ru.serji.kuklyasha.model.Order;
 import ru.serji.kuklyasha.service.*;
 import ru.serji.kuklyasha.web.*;
@@ -26,6 +29,9 @@ import static ru.serji.kuklyasha.web.util.OrderUtil.*;
 class OrderControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = OrderController.REST_URL + "/";
+
+    @MockBean
+    private NotificationSourceBean notification;
 
     @Autowired
     private OrderService orderService;
@@ -70,6 +76,7 @@ class OrderControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_EMAIL)
     void create() throws Exception {
+        Mockito.doNothing().when(notification).publishNotification("", "", "", 0, null, "");
         List<PurchasedDoll> dolls = getNewPurchasedDolls();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
