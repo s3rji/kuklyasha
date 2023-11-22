@@ -9,13 +9,17 @@ spring:
         format_sql: true
         default_batch_fetch_size: 20
         jdbc.batch_size: 20
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    database: postgresql
   datasource:
-    url: jdbc:postgresql://localhost:5432/kuklyasha
+    #    url: jdbc:postgresql://localhost:5432/kuklyasha
+    url: jdbc:postgresql://database:5432/kuklyasha
     username: kuklyasha
     password: kuklyasha
   sql:
     init:
-      mode: always
+      mode: never
       schema-locations: classpath:/db/schema.sql
       data-locations: classpath:/db/data.sql
   servlet:
@@ -25,6 +29,16 @@ spring:
   jackson:
     deserialization:
       fail-on-unknown-properties: true
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination: notificationTopic
+          content-type: application/json
+      kafka:
+        binder:
+          brokers: kafka
+
 
 logging:
   level:
