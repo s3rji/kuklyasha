@@ -16,7 +16,7 @@ services:
         aliases:
           - "database"
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      test: [ "CMD-SHELL", "pg_isready -U kuklyasha" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -45,22 +45,53 @@ services:
       backend:
         aliases:
           - "kafka"
+  configserver:
+    image: ru.serji/configserver-kuklyasha:0.0.1-snapshot
+    ports:
+      - "8071:8071"
+    environment:
+      ENCRYPT_KEY: "fje83Ki8403Iod87dne7Yjsl3THueh48jfuO9j4U2hf64Lo"
+    networks:
+      backend:
+        aliases:
+          - "configserver"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://configserver:8071/actuator || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
   kuklyasha:
     image: ru.serji/kuklyasha:0.0.1-snapshot
+    environment:
+      PROFILE: "default"
+      CONFIGSERVER_URI: "http://configserver:8071"
+      CONFIGSERVER_PORT: "8071"
+      DATABASESERVER_PORT: "5432"
+      ENCRYPT_KEY: "IMSYMMETRIC"
     depends_on:
       database:
         condition: service_healthy
       kafkaserver:
         condition: service_started
+      configserver:
+        condition: service_healthy
     ports:
       - "8080:8080"
     networks:
       - backend
   notificationserver:
     image: ru.serji/notification-kuklyasha:0.0.1-snapshot
+    environment:
+      PROFILE: "default"
+      CONFIGSERVER_URI: "http://configserver:8071"
+      CONFIGSERVER_PORT: "8071"
+      DATABASESERVER_PORT: "5432"
+      ENCRYPT_KEY: "IMSYMMETRIC"
     depends_on:
       kafkaserver:
         condition: service_started
+      configserver:
+        condition: service_healthy
     ports:
       - "8081:8081"
     networks:
