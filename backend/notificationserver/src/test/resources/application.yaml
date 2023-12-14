@@ -1,0 +1,45 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: notificationTopic
+          content-type: application/json
+          group: notificationGroup
+      kafka:
+        binder:
+          brokers: kafka
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ""
+    password: ""
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+mail-template:
+  from: "Kuklyasha <noreply@kuklaysha.com>"
+  subject: "Заказ %d"
+  create:
+    body: " Здравствуйте, %s!\n
+      Ваш заказ номер %d успешно создан. В ближайшее время наш менеджер с вами свяжется для оплаты заказа.\n
+      Информацию о заказе и его статус Вы можете проверить в личном кабинете.\n 
+      Спасибо, что выбрали наш магазин."
+  change:
+    body: " Здравствуйте, %s!\n
+      Статус Вашего заказа номер %d изменен на %s.\n
+      Подробную информацию о заказе Вы можете узнать в личном кабинете.\n 
+      Спасибо, что выбрали наш магазин."
+
+logging:
+  level:
+    root: WARN
+    ru.serji.notificationkuklyasha: DEBUG
+    org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
+  file:
+    name: log/latest.log

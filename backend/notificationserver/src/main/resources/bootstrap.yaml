@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: notification-kuklyasha
+  cloud:
+    config:
+      uri: http://configserver:8071

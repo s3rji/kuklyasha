@@ -7,3 +7,7 @@ pluginManagement {
 }
 
 rootProject.name = 'kuklyasha'
+
+include 'backend:configserver'
+include 'backend:notificationserver'
+include 'backend:storeserver'

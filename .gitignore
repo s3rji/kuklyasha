@@ -5,8 +5,11 @@ gradle/
 gradlew
 gradlew.bat
 build/
+
+### App ###
 bin/
 log/
+backend/configserver/src/main/resources
 
 ### IntelliJ IDEA ###
 .idea
