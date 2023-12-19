@@ -46,7 +46,7 @@ services:
         aliases:
           - "kafka"
   configserver:
-    image: ru.serji/configserver-kuklyasha:0.0.1-snapshot
+    image: ru.serji/configserver:0.0.1-snapshot
     ports:
       - "8071:8071"
     environment:
@@ -61,7 +61,7 @@ services:
       timeout: 5s
       retries: 5
   kuklyasha:
-    image: ru.serji/kuklyasha:0.0.1-snapshot
+    image: ru.serji/storeserver:0.0.1-snapshot
     environment:
       PROFILE: "default"
       CONFIGSERVER_URI: "http://configserver:8071"
@@ -80,7 +80,7 @@ services:
     networks:
       - backend
   notificationserver:
-    image: ru.serji/notification-kuklyasha:0.0.1-snapshot
+    image: ru.serji/notificationserver:0.0.1-snapshot
     environment:
       PROFILE: "default"
       CONFIGSERVER_URI: "http://configserver:8071"
@@ -96,6 +96,12 @@ services:
       - "8081:8081"
     networks:
       - backend
+  reactserver:
+    image: ru.serji/react-kuklyasha:0.0.1-snapshot
+    ports:
+      - '3000:3000'
+    stdin_open: true
+    tty: true
 
 networks:
   backend:
