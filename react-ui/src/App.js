@@ -16,7 +16,9 @@ const App = observer(() => {
             user.setIsAuth(true)
             user.setRoles(userData.roles)
             user.setActiveRole(userData.roles[0])
-        }).finally(() => setLoading(false))
+        })
+            .catch(error => console.log(error))
+            .finally(() => setLoading(false))
     }, [])
 
     if (loading) {
