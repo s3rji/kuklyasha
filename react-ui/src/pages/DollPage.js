@@ -97,14 +97,14 @@ const DollPage = observer(() => {
                     <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
                         <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
                             <img
-                                src={process.env.REACT_APP_IMAGES_URL + doll.selected.gallery[1]}
+                                src={doll.selected.gallery[1] && process.env.REACT_APP_IMAGES_URL + doll.selected.gallery[1]}
                                 alt={doll.selected.gallery[1]}
                                 className="w-full h-56 object-center object-cover"
                             />
                         </div>
                         <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
                             <img
-                                src={process.env.REACT_APP_IMAGES_URL + doll.selected.gallery[2]}
+                                src={doll.selected.gallery[2] && process.env.REACT_APP_IMAGES_URL + doll.selected.gallery[2]}
                                 alt={doll.selected.gallery[2]}
                                 className="w-full h-56 object-center object-cover"
                             />
@@ -112,7 +112,7 @@ const DollPage = observer(() => {
                     </div>
                     <div className="aspect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4">
                         <img
-                            src={process.env.REACT_APP_IMAGES_URL + doll.selected.gallery[3]}
+                            src={doll.selected.gallery[3] && process.env.REACT_APP_IMAGES_URL + doll.selected.gallery[3]}
                             alt={doll.selected.gallery[3]}
                             className="w-full h-90 object-center object-cover"
                         />
