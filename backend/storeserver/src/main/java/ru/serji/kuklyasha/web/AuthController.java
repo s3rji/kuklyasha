@@ -17,7 +17,7 @@ import javax.validation.*;
 @RestController
 @RequestMapping(value = AuthController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = ReactAppProperties.HOST_NAME)
 public class AuthController {
 
     static final String REST_URL = "/api/auth";

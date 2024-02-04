@@ -24,7 +24,7 @@ import static ru.serji.kuklyasha.web.util.CartUtil.*;
 @RequestMapping(value = CartController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Log4j2
 @Transactional(readOnly = true)
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = ReactAppProperties.HOST_NAME)
 public class CartController {
     final static String REST_URL = "/api/cart";
 

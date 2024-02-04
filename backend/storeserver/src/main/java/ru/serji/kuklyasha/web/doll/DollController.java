@@ -22,7 +22,7 @@ import static ru.serji.kuklyasha.web.util.DollUtil.*;
 @RestController
 @RequestMapping(value = DollController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = ReactAppProperties.HOST_NAME)
 public class DollController {
 
     static final String REST_URL = "/api/dolls";
